@@ -1,0 +1,20 @@
+.main-container {
+    margin: 50px ;
+    background-color: white;
+    border-radius: 30px;
+    padding: 40px;
+    font-family: Arial, sans-serif;
+}
+
+.profile img{
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    text-align: center;
+    border: 1px solid #ccc;
+}
+
+.profile{
+    display: flex;
+    justify-content: space-between;
+}
