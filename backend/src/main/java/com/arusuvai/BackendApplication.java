@@ -1,4 +1,4 @@
-package com.arusuvai.backend;
+package com.arusuvai;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
