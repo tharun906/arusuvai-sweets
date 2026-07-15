@@ -1,24 +1,43 @@
 package com.arusuvai.product;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.math.BigDecimal;
 
 @Getter
 @Setter
 public class ProductRequestDTO {
 
     @NotBlank(message = "Product name is required")
+    @Size(max = 100)
     private String name;
 
     private String description;
 
     private String imageUrl;
 
-    @NotNull(message = "Display Order is required")
-    private Integer displayOrder;
+    @NotNull
+    @DecimalMin(value = "0.00")
+    private BigDecimal price250g;
 
-    @NotNull(message = "Category is required")
+    @NotNull
+    @DecimalMin(value = "0.00")
+    private BigDecimal price500g;
+
+    @NotNull
+    @DecimalMin(value = "0.00")
+    private BigDecimal price1kg;
+
+    @NotNull
+    @PositiveOrZero
+    private Double currentStockKg;
+
+    @NotNull
+    @PositiveOrZero
+    private Double lowStockAlertKg;
+
+    @NotNull
     private Long categoryId;
 }

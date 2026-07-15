@@ -5,6 +5,8 @@ import com.arusuvai.category.CategoryEntity;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "product")
 @Getter
@@ -21,13 +23,26 @@ public class ProductEntity {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @Column(length = 500)
     private String imageUrl;
+
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal price250g;
+
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal price500g;
+
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal price1kg;
+
+    @Column(nullable = false)
+    private Double currentStockKg;
+
+    @Column(nullable = false)
+    private Double lowStockAlertKg;
 
     @Column(nullable = false)
     private boolean active = true;
-
-    @Column(nullable = false)
-    private Integer displayOrder;
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)

@@ -32,8 +32,12 @@ public class ProductServiceImpl implements ProductService{
         product.setName(request.getName());
         product.setDescription(request.getDescription());
         product.setImageUrl(request.getImageUrl());
-        product.setDisplayOrder(request.getDisplayOrder());
         product.setCategory(category);
+        product.setPrice250g(request.getPrice250g());
+        product.setPrice500g(request.getPrice500g());
+        product.setPrice1kg(request.getPrice1kg());
+        product.setCurrentStockKg(request.getCurrentStockKg());
+        product.setLowStockAlertKg(request.getLowStockAlertKg());
 
         ProductEntity saved = productRepository.save(product);
         return mapToResponse(saved);
@@ -74,7 +78,12 @@ public class ProductServiceImpl implements ProductService{
         product.setName(request.getName());
         product.setDescription(request.getDescription());
         product.setImageUrl(request.getImageUrl());
-        product.setDisplayOrder(request.getDisplayOrder());
+        product.setPrice250g(request.getPrice250g());
+        product.setPrice500g(request.getPrice500g());
+        product.setPrice1kg(request.getPrice1kg());
+
+        product.setCurrentStockKg(request.getCurrentStockKg());
+        product.setLowStockAlertKg(request.getLowStockAlertKg());
         product.setCategory(category);
         ProductEntity updated = productRepository.save(product);
         return mapToResponse(updated);
@@ -96,8 +105,12 @@ public class ProductServiceImpl implements ProductService{
                 product.getName(),
                 product.getDescription(),
                 product.getImageUrl(),
+                product.getPrice250g(),
+                product.getPrice500g(),
+                product.getPrice1kg(),
+                product.getCurrentStockKg(),
+                product.getLowStockAlertKg(),
                 product.isActive(),
-                product.getDisplayOrder(),
                 product.getCategory().getId(),
                 product.getCategory().getName()
         );

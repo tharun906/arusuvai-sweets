@@ -3,6 +3,8 @@ package com.arusuvai.product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.math.BigDecimal;
+
 @Getter
 @AllArgsConstructor
 public class ProductResponseDTO {
@@ -14,9 +16,17 @@ public class ProductResponseDTO {
 
     private String imageUrl;
 
-    private boolean active;
+    private BigDecimal price250g;
 
-    private Integer displayOrder;
+    private BigDecimal price500g;
+
+    private BigDecimal price1kg;
+
+    private Double currentStockKg;
+
+    private Double lowStockAlertKg;
+
+    private boolean active;
 
     private Long categoryId;
 
