@@ -36,15 +36,15 @@ public class ProductEntity {
     private BigDecimal price1kg;
 
     @Column(nullable = false)
-    private Double currentStockKg;
+    private BigDecimal currentStockKg;
 
     @Column(nullable = false)
-    private Double lowStockAlertKg;
+    private BigDecimal lowStockAlertKg;
 
     @Column(nullable = false)
     private boolean active = true;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     private CategoryEntity category;
 }

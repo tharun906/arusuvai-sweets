@@ -20,8 +20,8 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderResponseDTO> placeOrder(@Valid @RequestBody OrderRequestDTO request){
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.placeOrder(request));
+    public ResponseEntity<OrderResponseDTO> createOrder(@Valid @RequestBody OrderRequestDTO request){
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.createOrder(request));
     }
 
 

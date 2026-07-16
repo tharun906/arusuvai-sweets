@@ -32,11 +32,11 @@ public class ProductRequestDTO {
 
     @NotNull
     @PositiveOrZero
-    private Double currentStockKg;
+    private BigDecimal currentStockKg;
 
     @NotNull
     @PositiveOrZero
-    private Double lowStockAlertKg;
+    private BigDecimal lowStockAlertKg;
 
     @NotNull
     private Long categoryId;

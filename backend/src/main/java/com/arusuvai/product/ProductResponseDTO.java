@@ -22,9 +22,9 @@ public class ProductResponseDTO {
 
     private BigDecimal price1kg;
 
-    private Double currentStockKg;
+    private BigDecimal currentStockKg;
 
-    private Double lowStockAlertKg;
+    private BigDecimal lowStockAlertKg;
 
     private boolean active;
 
