@@ -1,15 +1,17 @@
 package com.arusuvai.payment;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
-@AllArgsConstructor
+@Setter
 public class PaymentResponseDTO {
+
+    private Long orderId;
 
     private String razorpayOrderId;
 
-    private String key;
+    private String keyId;
 
     private Integer amount;
 

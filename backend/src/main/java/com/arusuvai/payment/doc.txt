@@ -1,0 +1,54 @@
+React
+    │
+    ▼
+PaymentController
+    │
+    ▼
+PaymentService.createPaymentOrder()
+    │
+    ▼
+Razorpay
+    │
+    ▼
+React Payment Popup
+    │
+Customer Pays
+    │
+    ▼
+PaymentController.verifyPayment()
+    │
+    ▼
+PaymentService.verifyPayment()
+    │
+    ▼
+Utils.verifyPaymentSignature()
+    │
+    ▼
+OrderService.createOrder()
+    │
+    ▼
+CustomerRepository
+    │
+    ▼
+OrderRepository
+    │
+    ▼
+ProductRepository
+    │
+    ▼
+OrderItemRepository
+    │
+    ▼
+PostgreSQL
+    │
+    ▼
+OrderResponseDTO
+    │
+    ▼
+PaymentService
+    │
+    ▼
+PaymentController
+    │
+    ▼
+React
