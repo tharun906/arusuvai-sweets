@@ -1,0 +1,476 @@
+Arusuvai Sweets Backend Core Flow Documentation
+
+
+
+
+
+Chapter 1
+
+Overall System Architecture
+React Client
+      │
+      ▼
+Spring Boot REST API
+      │
+      ├──────────────┐
+      │              │
+      ▼              ▼
+Business Layer   Payment Layer
+      │              │
+      └──────┬───────┘
+             ▼
+      PostgreSQL Database
+
+
+
+
+
+Chapter 2
+
+Complete Checkout Flow
+
+Customer
+    │
+    ▼
+Product Page
+    │
+    ▼
+Add to Cart
+    │
+    ▼
+Checkout Page
+    │
+    ▼
+POST /api/checkout/summary
+    │
+    ▼
+CheckoutController
+    │
+    ▼
+CheckoutService
+    │
+    ▼
+OrderCalculationService
+    │
+    ├── Validate Customer
+    ├── Validate Products
+    ├── Validate Stock
+    ├── Calculate Price
+    ├── Calculate Subtotal
+    ├── Calculate Delivery
+    └── Calculate Grand Total
+    │
+    ▼
+CheckoutSummaryDTO
+    │
+    ▼
+React displays bill
+
+
+
+
+
+Chapter 3
+
+Complete Order Creation Flow
+User clicks
+"Pay Now"
+
+        │
+        ▼
+POST /api/orders
+
+        │
+        ▼
+OrderController
+
+        │
+        ▼
+OrderService
+
+        │
+        ▼
+OrderCalculationService
+
+        │
+        ├── Customer Validation
+        ├── Product Validation
+        ├── Stock Validation
+        ├── Weight Validation
+        ├── Price Calculation
+        └── Grand Total Calculation
+
+        │
+        ▼
+OrderCalculationResult
+
+        │
+        ▼
+Create OrderEntity
+
+        │
+        ▼
+Save OrderEntity
+
+        │
+        ▼
+Loop CalculatedOrderItems
+
+        │
+        ▼
+Create OrderItemEntity
+
+        │
+        ▼
+Save OrderItems
+
+        │
+        ▼
+Return OrderResponseDTO
+
+
+
+
+
+Chapter 4
+
+Payment Flow
+OrderController
+
+      │
+      ▼
+PaymentService
+
+      │
+      ▼
+Create Razorpay Client
+
+      │
+      ▼
+Create Razorpay Order
+
+      │
+      ▼
+Receive Razorpay OrderId
+
+      │
+      ▼
+Create PaymentResponseDTO
+
+      │
+      ▼
+Return to React
+
+
+
+
+
+Chapter 5
+
+Razorpay Flow
+React
+
+     │
+     ▼
+Receives
+
+OrderId
+RazorpayOrderId
+Amount
+KeyId
+
+     │
+     ▼
+Open Razorpay Checkout
+
+     │
+     ▼
+Customer Pays
+
+     │
+     ▼
+Razorpay Returns
+
+PaymentId
+OrderId
+Signature
+
+     │
+     ▼
+POST /payments/verify
+
+
+
+
+
+Chapter 6
+
+Payment Verification Flow
+PaymentController
+
+      │
+      ▼
+PaymentService
+
+      │
+      ▼
+Verify Signature
+
+      │
+      ▼
+Signature Valid ?
+
+      │
+ ┌────┴─────┐
+ │          │
+No         Yes
+ │          │
+ ▼          ▼
+Exception   Update Order
+            Payment Status
+            Order Status
+            Reduce Stock
+
+
+
+
+
+
+Chapter 7
+
+OrderCalculationService Internal Flow
+CheckoutRequestDTO
+
+        │
+        ▼
+Validate Customer
+
+        │
+        ▼
+Loop Items
+
+        │
+        ├── Fetch Product
+        ├── Validate Weight
+        ├── Validate Stock
+        ├── Get Price
+        ├── Calculate Item Total
+        └── Create CalculatedOrderItem
+
+        │
+        ▼
+Subtotal
+
+        │
+        ▼
+Delivery
+
+        │
+        ▼
+Grand Total
+
+        │
+        ▼
+OrderCalculationResult
+Chapter 8
+Database Entity Flow
+CustomerEntity
+
+      │
+      │ One Customer
+      ▼
+
+OrderEntity
+
+      │
+      │ One Order
+      ▼
+
+OrderItemEntity
+
+      │
+      │ Many Items
+      ▼
+
+ProductEntity
+
+
+
+
+
+Chapter 9
+
+DTO Flow
+React
+
+      │
+      ▼
+OrderRequestDTO
+
+      │
+      ▼
+CheckoutRequestDTO
+
+      │
+      ▼
+OrderCalculationResult
+
+      │
+      ▼
+OrderEntity
+
+      │
+      ▼
+OrderResponseDTO
+
+      │
+      ▼
+PaymentResponseDTO
+
+      │
+      ▼
+React
+
+
+
+
+
+Chapter 10
+
+Complete End-to-End Sequence Diagram
+React
+ │
+ │ Checkout Summary
+ ▼
+CheckoutController
+ │
+ ▼
+CheckoutService
+ │
+ ▼
+OrderCalculationService
+ │
+ ▼
+CheckoutSummaryDTO
+ │
+ ▼
+React
+
+User clicks Pay
+
+ │
+ ▼
+OrderController
+ │
+ ▼
+OrderService
+ │
+ ▼
+OrderCalculationService
+ │
+ ▼
+OrderRepository
+ │
+ ▼
+OrderItemRepository
+ │
+ ▼
+PaymentService
+ │
+ ▼
+Razorpay
+ │
+ ▼
+PaymentResponseDTO
+ │
+ ▼
+React
+ │
+ ▼
+Razorpay Popup
+ │
+ ▼
+PaymentController
+ │
+ ▼
+PaymentService.verifyPayment()
+ │
+ ▼
+Order Updated
+ │
+ ▼
+Success Response
+
+
+
+
+
+Chapter 11
+
+Responsibility of Each Class
+
+A table documenting every major class:
+
+Class	Responsibility
+CheckoutController	Exposes checkout summary API
+CheckoutService	Converts calculation results into checkout DTOs
+OrderCalculationService	Core business logic: validation, pricing, totals
+OrderService	Creates and persists orders and order items
+PaymentService	Integrates with Razorpay and verifies payments
+OrderRepository	Persists OrderEntity
+OrderItemRepository	Persists OrderItemEntity
+CustomerRepository	Retrieves customer information
+ProductRepository	Retrieves product and stock information
+
+
+
+
+
+
+Steps to Validate and reduce the stocks
+
+Order
+ │
+ ▼
+OrderItems
+ │
+ ▼
+For each OrderItem
+ │
+ ▼
+Get Product
+ │
+ ▼
+Get Ordered Weight
+ │
+ ▼
+Calculate Required Stock (kg)
+ │
+ ▼
+Current Stock - Required Stock
+ │
+ ▼
+Update Product Stock
+ │
+ ▼
+Save Product
+
+
+
+
+
+
+Admin need to see
+
+Admin Dashboard
+Pending Payment Orders
+Preparing Orders
+Out For Delivery Orders
+Delivered Orders
+
+Example APIs:
+
+GET /api/admin/orders
+GET /api/admin/orders/status/PREPARING
+GET /api/admin/orders/status/OUT_FOR_DELIVERY
+GET /api/admin/orders/status/DELIVERED

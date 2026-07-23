@@ -1,54 +1,37 @@
 React
-    │
-    ▼
-PaymentController
-    │
-    ▼
-PaymentService.createPaymentOrder()
-    │
-    ▼
-Razorpay
-    │
-    ▼
-React Payment Popup
-    │
-Customer Pays
-    │
-    ▼
-PaymentController.verifyPayment()
-    │
-    ▼
-PaymentService.verifyPayment()
-    │
-    ▼
-Utils.verifyPaymentSignature()
-    │
-    ▼
+   │
+   ▼
+POST /api/orders
+   │
+   ▼
+OrderController
+   │
+   ▼
 OrderService.createOrder()
-    │
-    ▼
-CustomerRepository
-    │
-    ▼
-OrderRepository
-    │
-    ▼
-ProductRepository
-    │
-    ▼
-OrderItemRepository
-    │
-    ▼
-PostgreSQL
-    │
-    ▼
-OrderResponseDTO
-    │
-    ▼
-PaymentService
-    │
-    ▼
-PaymentController
-    │
-    ▼
-React
+   │
+   ├── Validate customer
+   ├── Calculate totals
+   ├── Validate stock
+   ├── Save Order
+   └── Save OrderItems
+   │
+   ▼
+PaymentService.createPaymentOrder(orderId, totalAmount)
+   │
+   ▼
+Create Razorpay Order
+   │
+   ▼
+Return PaymentResponseDTO
+   │
+   ▼
+React Opens Razorpay
+   │
+   ▼
+POST /api/payments/verify
+   │
+   ▼
+PaymentService.verifyPayment()
+   │
+   ▼
+OrderService.confirmOrder()

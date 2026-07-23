@@ -7,6 +7,20 @@ import lombok.Setter;
 @Setter
 public class PaymentResponseDTO {
 
+    public PaymentResponseDTO(
+            Long orderId,
+            String razorpayOrderId,
+            String keyId,
+            Integer amount,
+            String currency) {
+
+        this.orderId = orderId;
+        this.razorpayOrderId = razorpayOrderId;
+        this.keyId = keyId;
+        this.amount = amount;
+        this.currency = currency;
+    }
+
     private Long orderId;
 
     private String razorpayOrderId;

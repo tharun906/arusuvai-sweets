@@ -2,10 +2,15 @@ package com.arusuvai.order;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
+
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
+//CUSTOMER DETAILS + ORDER ITEM DETALS
 @Getter
+@Setter
 @AllArgsConstructor
 public class OrderResponseDTO {
 
@@ -22,6 +27,8 @@ public class OrderResponseDTO {
     private PaymentStatus paymentStatus;
 
     private String deliveryAddress;
+
+    private LocalDateTime createdAt;
 
     private List<OrderItemResponseDTO> items;
 }

@@ -1,124 +1,87 @@
 package com.arusuvai.order;
 
+import com.arusuvai.checkout.CalculatedOrderItem;
+import com.arusuvai.checkout.CheckoutRequestDTO;
+import com.arusuvai.checkout.OrderCalculationResult;
+import com.arusuvai.checkout.OrderCalculationService;
 import com.arusuvai.customer.CustomerEntity;
 import com.arusuvai.customer.CustomerRepository;
 import com.arusuvai.product.ProductEntity;
 import com.arusuvai.product.ProductRepository;
-import jakarta.transaction.Transactional;
+import com.arusuvai.util.WeightConverter;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 
 @Service
-public class OrderServiceImpl implements OrderService{
+public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
     private final CustomerRepository customerRepository;
+    private final OrderCalculationService orderCalculationService;
     private final ProductRepository productRepository;
 
     public OrderServiceImpl(
             OrderRepository orderRepository,
             OrderItemRepository orderItemRepository,
             CustomerRepository customerRepository,
+            OrderCalculationService orderCalculationService,
             ProductRepository productRepository) {
 
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
         this.customerRepository = customerRepository;
-        this.productRepository = productRepository;
+        this.orderCalculationService = orderCalculationService;
+        this.productRepository=productRepository;
     }
 
     @Transactional
     @Override
-    public OrderResponseDTO createOrder(OrderRequestDTO request){
+    public OrderResponseDTO createOrder(OrderRequestDTO request) {
+
         CustomerEntity customer = customerRepository.findById(request.getCustomerId())
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
 
-        // Create a new Order (Parent Record)
-        OrderEntity order =new OrderEntity();
+        // Calculate the order (stock validation, pricing, totals)
+        OrderCalculationResult calculationResult = orderCalculationService.calculateCheckout(
+                new CheckoutRequestDTO(request.getCustomerId(), request.getItems()));
+
+        // Create Order
+        OrderEntity order = new OrderEntity();
         order.setCustomer(customer);
         order.setOrderStatus(OrderStatus.PENDING_PAYMENT);
         order.setPaymentStatus(PaymentStatus.PENDING);
         order.setDeliveryAddress(customer.getAddress());
-        //  Initially total amount is 0 (will calculate after processing all items)
-        order.setTotalAmount(BigDecimal.ZERO);
+        order.setTotalAmount(calculationResult.getGrandTotal());
+
         order = orderRepository.save(order);
 
-        //grandTotal -  Variable to accumulate the grand total of the complete order
-        BigDecimal grandTotalForClientOrder = BigDecimal.ZERO;
-
-        for(OrderItemRequestDTO itemRequest : request.getItems()){
-            ProductEntity product = productRepository.findById(itemRequest.getProductId())
-                    .orElseThrow(() -> new RuntimeException("Product not found"));
-
-            BigDecimal requestedWeight;
-            switch (itemRequest.getWeight()) {
-                case "250g":
-                    requestedWeight = new BigDecimal("0.25");
-                    break;
-                case "500g":
-                    requestedWeight = new BigDecimal("0.50");
-                    break;
-                case "1kg":
-                    requestedWeight = BigDecimal.ONE;
-                    break;
-                default:
-                    throw new RuntimeException("Invalid weight");
-            }
-            //requiredStock
-            BigDecimal totalStockClientNeed = requestedWeight.multiply(BigDecimal.valueOf(itemRequest.getQuantity()));
-
-            //validate Stock
-            if (product.getCurrentStockKg().compareTo(totalStockClientNeed) < 0) {
-                throw new RuntimeException(
-                        product.getName() + " does not have enough stock.");
-            }
-
-            //  Determine the correct price based on selected weight
-            BigDecimal pricePerUnit;
-            switch (itemRequest.getWeight()) {
-                case "250g":
-                    pricePerUnit = product.getPrice250g();
-                    break;
-                case "500g":
-                    pricePerUnit = product.getPrice500g();
-                    break;
-                case "1kg":
-                    pricePerUnit = product.getPrice1kg();
-                    break;
-                default:
-                    throw new RuntimeException("Invalid weight");
-            }
-            //Calculate total amount for this particular product
-            BigDecimal itemTotal = pricePerUnit.multiply(BigDecimal.valueOf(itemRequest.getQuantity()));
+        // Save Order Items
+        //for each sweet we are storing detail fields
+        for (CalculatedOrderItem calculatedItem : calculationResult.getItems()) {
 
             OrderItemEntity orderItem = new OrderItemEntity();
 
             orderItem.setOrder(order);
-            orderItem.setProduct(product);
-            orderItem.setWeight(itemRequest.getWeight());
-            orderItem.setQuantity(itemRequest.getQuantity());
-            orderItem.setPricePerUnit(pricePerUnit);
-            orderItem.setTotalPrice(itemTotal);
+            orderItem.setProduct(calculatedItem.getProduct());
+            orderItem.setWeight(calculatedItem.getWeight());
+            orderItem.setQuantity(calculatedItem.getQuantity());
+            orderItem.setPricePerUnit(calculatedItem.getPricePerUnit());
+            orderItem.setTotalPrice(calculatedItem.getItemTotal());
 
             orderItemRepository.save(orderItem);
 
             order.getOrderItems().add(orderItem);
-            // Add this item's amount to the grand total
-            grandTotalForClientOrder = grandTotalForClientOrder.add(itemTotal);
         }
-        order.setTotalAmount(grandTotalForClientOrder);
-        order = orderRepository.save(order);
-        order = orderRepository.findById(order.getId())
-                .orElseThrow(() -> new RuntimeException("Order not found"));
 
         return mapToResponse(order);
     }
 
-    private OrderResponseDTO mapToResponse(OrderEntity order){
+    private OrderResponseDTO mapToResponse(OrderEntity order) {
 
         List<OrderItemResponseDTO> items = order.getOrderItems()
                 .stream()
@@ -132,7 +95,6 @@ public class OrderServiceImpl implements OrderService{
                 ))
                 .toList();
 
-
         return new OrderResponseDTO(
                 order.getId(),
                 order.getCustomer().getId(),
@@ -141,7 +103,121 @@ public class OrderServiceImpl implements OrderService{
                 order.getOrderStatus(),
                 order.getPaymentStatus(),
                 order.getDeliveryAddress(),
+                order.getCreatedAt(),
                 items
         );
+    }
+
+    @Override
+    @Transactional
+    public OrderResponseDTO confirmOrder(Long orderId){
+        OrderEntity order  = orderRepository.findById(orderId)
+                .orElseThrow(() ->new RuntimeException("order Not Found"));
+        order.setPaymentStatus(PaymentStatus.PAID);
+        order.setOrderStatus(OrderStatus.PREPARING);
+
+        for(OrderItemEntity orderItem : order.getOrderItems()){
+            ProductEntity product =orderItem.getProduct();
+            BigDecimal orderedWeight = WeightConverter.toKg(orderItem.getWeight());
+            BigDecimal stockTOReduce = orderedWeight.multiply(BigDecimal.valueOf(orderItem.getQuantity()));
+            BigDecimal updatedStock  = product.getCurrentStockKg().subtract(stockTOReduce);
+            if (updatedStock.compareTo(BigDecimal.ZERO) < 0) {
+                throw new RuntimeException(
+                        product.getName() + " is out of stock."
+                );
+            }
+            product.setCurrentStockKg(updatedStock);
+            productRepository.save(product);
+        }
+        orderRepository.save(order);
+        return mapToResponse(order);
+    }
+
+    //LATER
+
+//    Enterprise approach
+//    Usually there are two different DTOs:
+//
+//    Order History
+//
+//    Order ID
+//    Amount
+//     Status
+//    Created At
+//
+//    Order Details
+//
+//    Order ID
+//    Customer
+//    Items
+//    Address
+//    Payment
+//    Total
+//
+
+    //READ OMLY - only reads data and will not make changes.
+    // This optimizes performance by disabling Hibernate change-tracking and
+    // allows the database to run faster read-only queries.
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<OrderResponseDTO> getOrdersByCustomerId(Long customerId) {
+
+        customerRepository.findById(customerId)
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
+
+        List<OrderEntity> orders =
+                orderRepository.findByCustomerIdOrderByCreatedAtDesc(customerId);
+
+        return orders.stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
+
+    //to get the individual order detials
+    @Override
+    @Transactional
+    public OrderResponseDTO getOrderById(Long orderId) {
+
+        OrderEntity order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+
+        return mapToResponse(order);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<OrderResponseDTO> getAllOrders() {
+
+        List<OrderEntity> orders = orderRepository.findAllByOrderByCreatedAtDesc();
+
+        return orders.stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<OrderResponseDTO> getOrdersByStatus(OrderStatus orderStatus) {
+
+        List<OrderEntity> orders = orderRepository.findByOrderStatusOrderByCreatedAtDesc(orderStatus);
+
+        return orders.stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
+
+    @Override
+    @Transactional
+    public OrderResponseDTO updateOrderStatus(Long orderId, OrderStatus orderStatus) {
+
+        OrderEntity order = orderRepository.findById(orderId)
+                .orElseThrow(() ->
+                        new RuntimeException("Order not found"));
+
+        order.setOrderStatus(orderStatus);
+        orderRepository.save(order);
+
+        return mapToResponse(order);
     }
 }
