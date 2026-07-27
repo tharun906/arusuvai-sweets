@@ -1,12 +1,11 @@
 package com.arusuvai.payment;
 
+import com.arusuvai.config.RazorpayProperties;
 import com.arusuvai.order.*;
-import com.arusuvai.product.ProductRepository;
 import com.razorpay.Order;
 import com.razorpay.RazorpayClient;
 import com.razorpay.RazorpayException;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import com.razorpay.Utils;
 
@@ -17,27 +16,24 @@ public class PaymentServiceImpl implements PaymentService {
 
     private final OrderServiceImpl orderService;
     private final OrderRepository orderRepository;
+    private final RazorpayProperties razorpayProperties;
 
     public PaymentServiceImpl(
             OrderRepository orderRepository,
-            OrderServiceImpl orderService) {
+            OrderServiceImpl orderService,
+            RazorpayProperties razorpayProperties) {
 
         this.orderRepository = orderRepository;
         this.orderService = orderService;
+        this.razorpayProperties = razorpayProperties;
     }
 
-
-    @Value("${razorpay.key.id}")
-    private String keyId;
-
-    @Value("${razorpay.key.secret}")
-    private String keySecret;
 
     @Override
     public PaymentResponseDTO createPaymentOrder(Long orderId, BigDecimal totalAmount){
         try {
             // 2. Create Razorpay Client
-            RazorpayClient razorpayClient = new RazorpayClient(keyId, keySecret);
+            RazorpayClient razorpayClient = new RazorpayClient(razorpayProperties.getKeyId(), razorpayProperties.getKeySecret());
 
             // 3. Prepare Razorpay Order Request
             JSONObject options = new JSONObject();
@@ -61,7 +57,7 @@ public class PaymentServiceImpl implements PaymentService {
             return new PaymentResponseDTO(
                     orderId,
                     razorpayOrderId,
-                    keyId,
+                    razorpayProperties.getKeyId(),
                     razorpayAmount,
                     currency);
 
@@ -93,7 +89,7 @@ public class PaymentServiceImpl implements PaymentService {
 //            generatedSignature
 
             //compares the regenerated signature with the received Razorpay signature.
-            boolean isValid = Utils.verifyPaymentSignature(attributes, keySecret);
+            boolean isValid = Utils.verifyPaymentSignature(attributes, razorpayProperties.getKeySecret());
             if (!isValid) {throw new RuntimeException("Invalid Payment Signature");}
             return orderService.confirmOrder(request.getOrderId());
 
