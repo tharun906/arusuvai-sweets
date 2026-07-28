@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -46,18 +47,38 @@ public class OrderServiceImpl implements OrderService {
         CustomerEntity customer = customerRepository.findById(request.getCustomerId())
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
 
+        Optional<OrderEntity> existingOrder = orderRepository
+                .findFirstByCustomerIdAndPaymentStatusOrderByCreatedAtDesc(
+                        customer.getId(),
+                        PaymentStatus.PENDING
+                );
+
         // Calculate the order (stock validation, pricing, totals)
         OrderCalculationResult calculationResult = orderCalculationService.calculateCheckout(
                 new CheckoutRequestDTO(request.getCustomerId(), request.getItems()));
 
         // Create Order
-        OrderEntity order = new OrderEntity();
-        order.setCustomer(customer);
-        order.setOrderStatus(OrderStatus.PENDING_PAYMENT);
-        order.setPaymentStatus(PaymentStatus.PENDING);
-        order.setDeliveryAddress(customer.getAddress());
-        order.setTotalAmount(calculationResult.getGrandTotal());
+        OrderEntity order;
 
+        if (existingOrder.isPresent()) {
+            order = existingOrder.get();
+            // Remove old order items
+            orderItemRepository.deleteAll(order.getOrderItems());
+            order.getOrderItems().clear();
+            // Update latest amount
+            order.setTotalAmount(calculationResult.getGrandTotal());
+            order.setDeliveryAddress(customer.getAddress());
+
+        } else {
+            order = new OrderEntity();
+            order.setCustomer(customer);
+            order.setOrderStatus(OrderStatus.PENDING_PAYMENT);
+            order.setPaymentStatus(PaymentStatus.PENDING);
+            order.setDeliveryAddress(customer.getAddress());
+            order.setTotalAmount(calculationResult.getGrandTotal());
+
+            order = orderRepository.save(order);
+        }
         order = orderRepository.save(order);
 
         // Save Order Items
