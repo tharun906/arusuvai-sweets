@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 //after paid ,razorpay sends the rsponse to verify
 @RestController
 @RequestMapping("/api/payments")
-@CrossOrigin(origins = "http://localhost:5173")
 public class PaymentController {
 
     private final PaymentService paymentService;

@@ -1,0 +1,106 @@
+src
+│
+├── assets
+│   ├── images
+│   ├── icons
+│   └── logo
+│
+├── components
+│   ├── common
+│   ├── home
+│   ├── category
+│   ├── product
+│   ├── cart
+│   ├── checkout
+│   ├── customer
+│   ├── order
+│   └── admin
+│
+├── context
+│
+├── hooks
+│
+├── layouts
+│
+├── pages
+│   ├── customer
+│   └── admin
+│
+├── routes
+│
+├── services
+│
+├── styles
+│
+├── types
+│
+├── utils
+│
+├── App.tsx
+└── main.tsx
+
+
+frontend
+│
+├── public
+├── src
+│
+├── assets
+├── components
+├── context
+├── hooks
+├── layouts
+├── pages
+├── routes
+├── services
+├── styles
+├── types
+├── utils
+│
+├── App.tsx
+└── main.tsx
+
+
+
+
+---------------------------------------------------------
+                    Navbar
+---------------------------------------------------------
+
+        Hero Banner
+"Traditional Taste, Made Fresh Every Day"
+
+        [ Shop Now ]
+
+---------------------------------------------------------
+
+           Shop by Category
+
+[ All ] [ Sweets ] [ Savouries ] [ Gift Boxes ]
+
+---------------------------------------------------------
+
+             Our Products
+
++-------------+   +-------------+   +-------------+
+| Image       |   | Image       |   | Image       |
+| Mysore Pak  |   | Laddu       |   | Mixture     |
+| ₹180/250g   |   | ₹160/250g   |   | ₹140/250g   |
+| Add to Cart |   | Add to Cart |   | Add to Cart |
++-------------+   +-------------+   +-------------+
+
+---------------------------------------------------------
+
+About Arusuvai
+
+---------------------------------------------------------
+
+Contact
+
+---------------------------------------------------------
+
+Footer
+
+
+
+
