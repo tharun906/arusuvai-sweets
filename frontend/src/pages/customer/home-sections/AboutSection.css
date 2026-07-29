@@ -1,0 +1,33 @@
+.about-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+  
+  .about-copy h2 {
+    font-size: var(--fs-h2);
+    margin: var(--space-sm) 0 var(--space-md);
+  }
+  
+  .about-copy p {
+    color: var(--color-ink-soft);
+    max-width: 52ch;
+  }
+  
+  .about-visual {
+    height: 260px;
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, var(--color-peacock) 0%, var(--color-peacock-deep) 100%);
+  }
+  
+  @media (max-width: 900px) {
+    .about-inner {
+      grid-template-columns: 1fr;
+    }
+  
+    .about-visual {
+      order: -1;
+      height: 200px;
+    }
+  }

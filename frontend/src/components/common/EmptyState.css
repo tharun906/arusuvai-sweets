@@ -1,0 +1,10 @@
+.empty-state {
+    text-align: center;
+    padding: var(--space-xl) var(--space-md);
+    color: var(--color-ink-soft);
+  }
+  
+  .empty-state-title {
+    font-size: var(--fs-h3);
+    margin-bottom: var(--space-xs);
+  }

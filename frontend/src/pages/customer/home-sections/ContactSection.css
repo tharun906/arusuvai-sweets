@@ -1,0 +1,35 @@
+.contact-inner {
+    text-align: center;
+  }
+  
+  .contact-inner h2 {
+    font-size: var(--fs-h2);
+    margin: var(--space-xs) 0 var(--space-lg);
+  }
+  
+  .contact-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-md);
+  }
+  
+  .contact-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
+  }
+  
+  .contact-card h4 {
+    color: var(--color-peacock);
+    text-transform: uppercase;
+    font-size: var(--fs-small);
+    letter-spacing: 0.06em;
+    margin-bottom: var(--space-xs);
+  }
+  
+  @media (max-width: 768px) {
+    .contact-cards {
+      grid-template-columns: 1fr;
+    }
+  }

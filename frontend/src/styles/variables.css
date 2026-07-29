@@ -1,0 +1,42 @@
+:root {
+    /* Brand palette — South Indian sweet-shop signage, ties to packaging */
+    --color-bg: #fbf4e8;
+    --color-surface: #ffffff;
+    --color-maroon: #7a1b2e;
+    --color-maroon-deep: #591322;
+    --color-turmeric: #d89b34;
+    --color-turmeric-deep: #b87f22;
+    --color-peacock: #0f6b64;
+    --color-peacock-deep: #0a4f4a;
+    --color-ink: #2b1b1f;
+    --color-ink-soft: #6b5a5e;
+    --color-gold-line: #c9962f;
+    --color-border: #e9dcc3;
+  
+    /* Typography */
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+    --font-body: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  
+    --fs-hero: clamp(2.4rem, 4vw + 1rem, 3.9rem);
+    --fs-h2: clamp(1.8rem, 2vw + 1rem, 2.6rem);
+    --fs-h3: 1.35rem;
+    --fs-body: 1rem;
+    --fs-small: 0.875rem;
+    --fs-eyebrow: 0.8rem;
+  
+    /* Spacing scale */
+    --space-xs: 0.5rem;
+    --space-sm: 1rem;
+    --space-md: 1.5rem;
+    --space-lg: 2.5rem;
+    --space-xl: 4rem;
+    --space-2xl: 6rem;
+  
+    /* Shape & elevation */
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --shadow-soft: 0 8px 24px rgba(89, 19, 34, 0.08);
+    --shadow-lift: 0 14px 32px rgba(89, 19, 34, 0.14);
+  
+    --container-width: 1180px;
+  }
