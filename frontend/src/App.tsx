@@ -1,7 +1,7 @@
-import { ROUTES } from './constants/routes';
+import AppRoutes from "./routes/AppRoutes";
 
 function App() {
-  return <div>Navigate to: <a href={ROUTES.HOME}>Home</a></div>;
+  return <AppRoutes />;
 }
 
 export default App;

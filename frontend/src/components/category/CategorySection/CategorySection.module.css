@@ -1,0 +1,41 @@
+.categorySection {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 0 20px;
+}
+
+.categorySection h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #7b1e22;
+}
+
+.categoryContainer {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.categoryButton,
+.active {
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.categoryButton {
+    background: #f5f5f5;
+}
+
+.categoryButton:hover {
+    background: #7b1e22;
+    color: white;
+}
+
+.active {
+    background: #7b1e22;
+    color: white;
+}

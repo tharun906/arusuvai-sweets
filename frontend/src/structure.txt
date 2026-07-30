@@ -104,3 +104,23 @@ Footer
 
 
 
+Commit it as:
+
+git add .
+git commit -m "Feature Pack 1 - Home Page Foundation Completed"
+git push
+
+This commit includes:
+
+✅ Project architecture
+✅ Routing
+✅ Layout
+✅ Navbar & Footer
+✅ Hero & Feature sections
+✅ Category API integration
+✅ Product API integration
+✅ Product cards
+✅ Category filtering
+✅ Weight selection
+✅ Quantity selector
+✅ Add To Cart (UI logic)
