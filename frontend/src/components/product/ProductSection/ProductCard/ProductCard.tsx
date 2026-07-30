@@ -3,6 +3,7 @@ import { useState } from "react";
 import styles from "./ProductCard.module.css";
 import type { Product } from "../../../../types/Product";
 import type { ProductWeight } from "../../../../types/CartItem";
+import { useCart } from "../../../../context/CartContext";
 
 interface ProductCardProps {
     product: Product;
@@ -10,8 +11,19 @@ interface ProductCardProps {
 
 function ProductCard({ product }: ProductCardProps) {
 
+    const { addToCart } = useCart(); 
     const [selectedWeight, setSelectedWeight] =useState<ProductWeight>("250g");
     const [quantity, setQuantity] = useState(1);
+
+    const handleAddToCart = () => {
+        addToCart({
+            productId: product.id,
+            weight: selectedWeight,
+            quantity,
+        });
+
+    };
+
     const getSelectedPrice = () => {
         switch (selectedWeight) {
             case "250g":
@@ -25,13 +37,7 @@ function ProductCard({ product }: ProductCardProps) {
         }
     };
 
-    const handleAddToCart = () => {
-        console.log({
-            productId: product.id,
-            weight: selectedWeight,
-            quantity
-        });
-    };
+
 
     return (
 

@@ -124,3 +124,21 @@ This commit includes:
 ✅ Weight selection
 ✅ Quantity selector
 ✅ Add To Cart (UI logic)
+
+
+
+git commit -m "Feature Pack 2 - Cart Module Completed"
+What this commit includes
+✅ CartContext
+✅ Global Cart State
+✅ Add To Cart
+✅ Merge Cart Items
+✅ Navbar Cart Badge
+✅ Cart Page
+✅ Increase Quantity
+✅ Decrease Quantity
+✅ Remove Item
+✅ Product Details
+✅ Subtotal
+✅ Grand Total
+✅ Proceed To Checkout Button (UI)

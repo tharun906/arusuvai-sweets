@@ -3,8 +3,11 @@ import { NavLink } from "react-router-dom";
 import styles from "./Navbar.module.css";
 import { APP_NAME } from "../../constants/appConstants";
 import { ROUTES } from "../../constants/routes";
+import { useCart } from "../../context/CartContext";
 
 function Navbar() {
+    const { cartCount } = useCart();
+
     return (
         <header className={styles.navbar}>
             <div className={styles.container}>
@@ -20,7 +23,9 @@ function Navbar() {
                         </li>
 
                         <li>
-                            <NavLink to={ROUTES.CART}>Cart (0)</NavLink>
+                        <NavLink to={ROUTES.CART}>
+                            Cart ({cartCount})
+                        </NavLink>
                         </li>
 
                     </ul>
