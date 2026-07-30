@@ -1,5 +1,7 @@
 import { useCart } from "../../context/CartContext";
 import { useProducts } from "../../hooks/useProducts";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../../constants/routes";
 
 function Cart() {
     const {
@@ -9,6 +11,7 @@ function Cart() {
         removeFromCart,
     } = useCart();
 
+    const navigate = useNavigate();
     const { products, loading } = useProducts();
 
     if (loading) {
@@ -140,7 +143,9 @@ function Cart() {
 
                     <h2>Grand Total: ₹{grandTotal}</h2>
 
-                    <button>
+                    <button
+                        onClick={() => navigate(ROUTES.CHECKOUT)}
+                    >
                         Proceed To Checkout
                     </button>
 
