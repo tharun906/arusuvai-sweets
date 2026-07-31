@@ -1,0 +1,47 @@
+.order-item {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 14px 0;
+
+    border-bottom: 1px solid #ececec;
+
+}
+
+.order-item:last-child {
+
+    border-bottom: none;
+
+}
+
+.order-item-details h4 {
+
+    margin: 0;
+
+    font-size: 1rem;
+
+    color: #222;
+
+}
+
+.order-item-details p {
+
+    margin-top: 6px;
+
+    color: #666;
+
+    font-size: .9rem;
+
+}
+
+.order-item-price {
+
+    font-size: 1rem;
+
+    font-weight: 700;
+
+    color: #222;
+
+}

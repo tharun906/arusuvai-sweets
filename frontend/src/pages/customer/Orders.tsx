@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useOrders } from "../../hooks/useOrders";
-
+import "../../styles/Orders.css";
+import OrderCard from "../../components/orders/OrderCard";
 
 function Orders() {
 
@@ -14,59 +15,52 @@ function Orders() {
 
     if (loading) {
 
-        return <h2>Loading Orders...</h2>;
+        return (
+
+            <div className="orders-loading">
+
+                <h2>Loading your orders...</h2>
+
+            </div>
+
+        );
 
     }
 
     if (orders.length === 0) {
 
-        return <h2>No Orders Found</h2>;
+        return (
+
+            <div className="orders-empty">
+
+                <h2>📦 No Orders Yet</h2>
+
+                <p>
+                    Looks like you haven't placed any orders yet.
+                </p>
+
+            </div>
+
+        );
 
     }
 
     return (
 
-        <div>
+        <div className="orders-page">
 
-            <h1>My Orders</h1>
+            <h1 className="orders-title">
+
+                My Orders
+
+            </h1>
 
             {orders.map((order) => (
 
-                <div key={order.orderId}>
-
-                    <h3>Order #{order.orderId}</h3>
-
-                    <p>Total : ₹{order.totalAmount}</p>
-
-                    <p>Order Status : {order.orderStatus}</p>
-
-                    <p>Payment Status : {order.paymentStatus}</p>
-
-                    <p>Created : {order.createdAt}</p>
-
-                    <h4>Items</h4>
-
-                    {order.items.map((item) => (
-
-                        <div
-                            key={`${order.orderId}-${item.productId}-${item.weight}`}
-                        >
-
-                            <p>{item.productName}</p>
-
-                            <p>Weight : {item.weight}</p>
-
-                            <p>Quantity : {item.quantity}</p>
-
-                            <p>Price : ₹{item.totalPrice}</p>
-
-                            <hr />
-
-                        </div>
-
-                    ))}
-
-                </div>
+                <OrderCard
+                    key={order.orderId}
+                    order={order}
+                />
 
             ))}
 

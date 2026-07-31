@@ -1,0 +1,67 @@
+.orders-page{
+
+    max-width:900px;
+
+    margin:40px auto;
+
+    padding:20px;
+
+}
+
+.orders-title{
+
+    font-size:2rem;
+
+    margin-bottom:30px;
+
+    color:#222;
+
+    font-weight:700;
+
+}
+
+.orders-loading{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    height:50vh;
+
+    font-size:1.2rem;
+
+    color:#666;
+
+}
+
+.orders-empty{
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    height:60vh;
+
+    text-align:center;
+
+}
+
+.orders-empty h2{
+
+    margin-bottom:15px;
+
+}
+
+.orders-empty p{
+
+    color:#666;
+
+    font-size:1rem;
+
+}
