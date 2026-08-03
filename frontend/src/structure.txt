@@ -142,3 +142,52 @@ What this commit includes
 ✅ Subtotal
 ✅ Grand Total
 ✅ Proceed To Checkout Button (UI)
+
+
+//WANT TO DO 
+
+About the "new implementation"
+
+I was referring to this scenario:
+
+Someone manually types:
+
+http://localhost:5173/checkout
+
+or
+
+http://localhost:5173/orders
+
+without clicking any button.
+
+That bypasses the button checks.
+
+We have two options
+Option A (Simple) ⭐⭐⭐⭐⭐
+
+Protect only the buttons.
+
+When logout happens, send the user to Home.
+
+This is enough for Arusuvai Sweets.
+
+Option B (More Secure)
+
+Also protect the routes.
+
+Even if someone types
+
+/checkout
+
+they'll be redirected.
+
+My recommendation
+
+For Version 1 of Arusuvai Sweets:
+
+✅ Protect buttons
+✅ Logout → Home
+
+That's enough.
+
+Later, before production, we'll add protected routes. It only takes about 15–20 minutes, so we can do it later without changing our existing code.

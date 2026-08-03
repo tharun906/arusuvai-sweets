@@ -5,4 +5,7 @@ export const API_ENDPOINTS = {
     ORDERS: "/api/orders",
     CUSTOMER_BY_PHONE: "/api/customers/phone",
     PAYMENT_VERIFY: "/api/payments/verify",
+    AUTH_SEND_OTP: "/api/auth/send-otp",
+    AUTH_VERIFY_OTP: "/api/auth/verify-otp",
+    AUTH_REGISTER: "/api/auth/register",
 } as const;

@@ -1,6 +1,8 @@
 package com.arusuvai.order;
 
 import com.arusuvai.customer.CustomerEntity;
+import com.arusuvai.enums.DeliveryType;
+import com.arusuvai.enums.PaymentMethod;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -46,6 +48,12 @@ public class OrderEntity {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItemEntity> orderItems = new ArrayList<>();
+
+    @Enumerated(EnumType.STRING)
+    private PaymentMethod paymentMethod;
+
+    @Enumerated(EnumType.STRING)
+    private DeliveryType deliveryType;
 
     @PrePersist
     public void onCreate() {

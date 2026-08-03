@@ -2,21 +2,17 @@ import { useCart } from "../../context/CartContext";
 import { useProducts } from "../../hooks/useProducts";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../../constants/routes";
+import { useAuthContext } from "../../auth/context/AuthContext";
+import { useAccountModal } from "../../context/AccountModalContext";
+import { PendingAction } from "../../constants/PendingAction";
 
 function Cart() {
-    const {
-        cartItems,
-        increaseQuantity,
-        decreaseQuantity,
-        removeFromCart,
-    } = useCart();
-
-    const navigate = useNavigate();
+    const { cartItems, increaseQuantity, decreaseQuantity, removeFromCart } = useCart();
     const { products, loading } = useProducts();
-
-    if (loading) {
-        return <h2>Loading...</h2>;
-    }
+    const { isLoggedIn } = useAuthContext();
+    const {  openModal, setPendingAction } = useAccountModal();
+    const navigate = useNavigate();
+    if (loading) { return <h2>Loading...</h2>; }
 
     const grandTotal = cartItems.reduce((total, item) => {
         const product = products.find(
@@ -36,6 +32,24 @@ function Cart() {
 
         return total + price * item.quantity;
     }, 0);
+
+    const handleCheckout = () => {
+
+        if (!isLoggedIn) {
+    
+            setPendingAction(
+                PendingAction.CHECKOUT
+            );
+    
+            openModal();
+    
+            return;
+    
+        }
+    
+        navigate(ROUTES.CHECKOUT);
+    
+    };
 
     return (
         <div>
@@ -144,10 +158,10 @@ function Cart() {
                     <h2>Grand Total: ₹{grandTotal}</h2>
 
                     <button
-                        onClick={() => navigate(ROUTES.CHECKOUT)}
-                    >
-                        Proceed To Checkout
-                    </button>
+    onClick={handleCheckout}
+>
+    Proceed To Checkout
+</button>
 
                 </>
 

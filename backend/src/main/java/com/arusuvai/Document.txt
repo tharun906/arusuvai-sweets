@@ -474,3 +474,31 @@ GET /api/admin/orders
 GET /api/admin/orders/status/PREPARING
 GET /api/admin/orders/status/OUT_FOR_DELIVERY
 GET /api/admin/orders/status/DELIVERED
+
+
+otp flow
+Enter Phone Number
+        │
+        ▼
+POST /send-otp
+        │
+        ▼
+OTP Generated & Stored
+        │
+        ▼
+User Enters OTP
+        │
+        ▼
+POST /verify-otp
+        │
+        ▼
+OTP Valid?
+   │
+   ├── No → Error Response
+   │
+   ▼
+Find Customer by Phone Number
+   │
+   ├── Exists → Login Successful
+   │
+   └── Doesn't Exist → Complete Registration

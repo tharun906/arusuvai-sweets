@@ -2,16 +2,36 @@ import { useEffect } from "react";
 import { useOrders } from "../../hooks/useOrders";
 import "../../styles/Orders.css";
 import OrderCard from "../../components/orders/OrderCard";
+import { useNavigate } from "react-router-dom";
+import { useAccountModal } from "../../context/AccountModalContext";
+import { useAuthContext } from "../../auth/context/AuthContext";
+import { PendingAction } from "../../constants/PendingAction";
 
 function Orders() {
 
     const { orders, loading, loadOrders } = useOrders();
+    const { isLoggedIn } = useAuthContext();
+    const { openModal,  setPendingAction} = useAccountModal();
 
-    useEffect(() => {
+const navigate = useNavigate();
 
-        loadOrders(1);
+useEffect(() => {
 
-    }, []);
+    if (!isLoggedIn) {
+
+        setPendingAction(
+            PendingAction.ORDERS
+        );
+
+        openModal();
+
+        return;
+
+    }
+
+    loadOrders(1);
+
+}, [isLoggedIn]);
 
     if (loading) {
 
