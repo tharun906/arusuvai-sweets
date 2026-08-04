@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { useCart } from "../../context/CartContext";
 import { useCheckout } from "../../hooks/useCheckout";
@@ -7,6 +7,7 @@ import { openRazorpay } from "../../utils/razorpay";
 import { usePayment } from "../../hooks/usePayment";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../../constants/routes";
+import { useAuthContext } from "../../auth/context/AuthContext";
 
 function Checkout() {
 
@@ -14,21 +15,38 @@ function Checkout() {
     const { createOrder, loading: orderLoading } = useOrder();
     const { verifyPayment } = usePayment();
     const navigate = useNavigate();
+    const { customer } = useAuthContext();
 
     const {
+
         summary,
+    
+        deliveryStatus,
+    
         loading,
-        getCheckoutSummary
+    
+        getCheckoutSummary,
+    
+        checkDelivery
+    
     } = useCheckout();
 
-    const handlePayNow = async () => {
+    const [paymentMethod, setPaymentMethod] = useState<
+    "COD" | "ONLINE"
+>(
+    "ONLINE"
+);
+
+    const handlePlaceOrder = async () => {
 
         const payment = await createOrder({
-    
-            customerId: 1,
-    
+
+            customerId: customer!.id,
+
+            paymentMethod,
+
             items: cartItems
-    
+
         });
     
         openRazorpay(payment, async (response) => {
@@ -55,16 +73,44 @@ function Checkout() {
 
     useEffect(() => {
 
+        if (!customer) {
+    
+            return;
+    
+        }
+    
         getCheckoutSummary({
-
-            customerId: 1,
-
+    
+            customerId: customer.id,
+    
             items: cartItems
-
+    
         });
+    
+        checkDelivery({
+    
+            latitude: customer.latitude,
+    
+            longitude: customer.longitude
+    
+        });
+    
+    }, [customer]);
 
-    }, []);
+    useEffect(() => {
 
+        if (
+    
+            deliveryStatus?.codAvailable
+    
+        ) {
+    
+            setPaymentMethod("COD");
+    
+        }
+    
+    }, [deliveryStatus]);
+    
     if (loading) {
 
         return <h2>Loading Checkout...</h2>;
@@ -76,6 +122,9 @@ function Checkout() {
         return <h2>No Checkout Data</h2>;
 
     }
+
+
+
 
     return (
 
@@ -107,11 +156,108 @@ function Checkout() {
     
             <h2>Grand Total : ₹{summary.grandTotal}</h2>
     
+            <hr />
+    
+            <h2>Delivery Status</h2>
+    
+            {
+    
+                deliveryStatus && (
+    
+                    <>
+    
+                        <p>
+    
+                            <strong>Distance :</strong>{" "}
+    
+                            {deliveryStatus.distance.toFixed(2)} km
+    
+                        </p>
+    
+                        <p>{deliveryStatus.message}</p>
+    
+                    </>
+    
+                )
+    
+            }
+    
+            <hr />
+    
+            <h2>Select Payment Method</h2>
+    
+            {
+    
+                deliveryStatus?.codAvailable && (
+    
+                    <label>
+    
+                        <input
+    
+                            type="radio"
+    
+                            value="COD"
+    
+                            checked={paymentMethod === "COD"}
+    
+                            onChange={() =>
+                                setPaymentMethod("COD")
+                            }
+    
+                        />
+    
+                        Cash On Delivery
+    
+                    </label>
+    
+                )
+    
+            }
+    
+            <br />
+    
+            <label>
+    
+                <input
+    
+                    type="radio"
+    
+                    value="ONLINE"
+    
+                    checked={paymentMethod === "ONLINE"}
+    
+                    onChange={() =>
+                        setPaymentMethod("ONLINE")
+                    }
+    
+                />
+    
+                Online Payment
+    
+            </label>
+    
+            <br />
+    
+            <br />
+    
             <button
-                onClick={handlePayNow}
+    
+                onClick={handlePlaceOrder}
+    
                 disabled={orderLoading}
+    
             >
-                {orderLoading ? "Creating Order..." : "Pay Now"}
+    
+                {
+    
+                    orderLoading
+    
+                        ? "Processing..."
+    
+                        : "Place Order"
+    
+                }
+    
             </button>
     
         </div>

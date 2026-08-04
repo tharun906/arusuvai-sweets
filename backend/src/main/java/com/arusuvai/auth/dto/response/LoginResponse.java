@@ -5,9 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class LoginResponse {
 
     private Long id;
@@ -19,6 +19,10 @@ public class LoginResponse {
     private String email;
 
     private String address;
+
+    private Double latitude;
+
+    private Double longitude;
 
     private Role role;
 

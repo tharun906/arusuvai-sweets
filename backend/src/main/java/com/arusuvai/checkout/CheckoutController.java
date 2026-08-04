@@ -12,14 +12,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/checkout")
 public class CheckoutController {
     private final CheckoutService checkoutService;
+    private final DeliveryService deliveryService;
 
-    public CheckoutController(
-            CheckoutService checkoutService) {
+    public CheckoutController(CheckoutService checkoutService, DeliveryService deliveryService) {
         this.checkoutService = checkoutService;
+        this.deliveryService = deliveryService;
     }
 
     @PostMapping("/summary")
     public ResponseEntity<CheckoutSummaryDTO> getSummary(@RequestBody @Valid CheckoutRequestDTO request) {
         return ResponseEntity.ok(checkoutService.getCheckoutSummary(request));
+    }
+
+    @PostMapping("/check-delivery")
+    public ResponseEntity<DeliveryCheckResponse> checkDelivery(@RequestBody DeliveryCheckRequest request) {
+        DeliveryCheckResponse response = deliveryService.checkDeliveryAvailability(request.getLatitude(), request.getLongitude());
+        return ResponseEntity.ok(response);
     }
 }

@@ -15,9 +15,9 @@ public class AuthMapper {
                 customer.getPhoneNumber(),
                 customer.getEmail(),
                 customer.getAddress(),
+                customer.getLatitude(),
+                customer.getLongitude(),
                 customer.getRole()
         );
-
     }
-
 }

@@ -10,6 +10,10 @@ export interface LoginResponse {
 
     address: string;
 
+    latitude: number;
+
+    longitude: number;
+
     role: "ADMIN" | "CUSTOMER";
 
 }
