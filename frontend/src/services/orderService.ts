@@ -2,15 +2,15 @@ import api from "./api";
 import { API_ENDPOINTS } from "../constants/apiEndpoints";
 import type { Order } from "../types/Order";
 import type { OrderRequest } from "../types/OrderRequest";
-import type { PaymentResponse } from "../types/PaymentResponse";
+import type { OrderCreationResponse } from "../types/OrderCreationResponse";
 
 export const orderService = {
 
     createOrder: async (
         request: OrderRequest
-    ): Promise<PaymentResponse> => {
+    ): Promise<OrderCreationResponse> => {
 
-        const response = await api.post<PaymentResponse>(
+        const response = await api.post<OrderCreationResponse>(
             API_ENDPOINTS.ORDERS,
             request
         );

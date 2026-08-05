@@ -191,3 +191,77 @@ For Version 1 of Arusuvai Sweets:
 That's enough.
 
 Later, before production, we'll add protected routes. It only takes about 15–20 minutes, so we can do it later without changing our existing code.
+
+
+
+
+
+
+
+
+
+COD / ONLINE STRUCTURE
+
+
+React
+
+↓
+
+Place Order
+
+↓
+
+COD ?
+
+     │
+ ┌───┴────┐
+ │        │
+Yes       No
+ │        │
+ ▼        ▼
+Create    Create
+Order     Order
+ │        │
+ ▼        ▼
+Orders   Payment API
+ Page        │
+             ▼
+         Razorpay
+             │
+             ▼
+         Verify Payment
+             │
+             ▼
+         Orders Page
+
+
+
+
+
+
+
+
+optimization
+Small improvement for the next step
+
+This works, but it's not ideal to allow every status transition.
+
+For example, an admin shouldn't be able to jump directly from:
+
+PENDING_PAYMENT
+
+to
+
+DELIVERED
+
+A better workflow is:
+
+PENDING_PAYMENT
+        ↓
+PREPARING
+        ↓
+OUT_FOR_DELIVERY
+        ↓
+DELIVERED
+
+In the next step, we'll make the dropdown intelligent so it only shows valid next statuses based on the current order state. That provides a much better user experience and enforces the order lifecycle.

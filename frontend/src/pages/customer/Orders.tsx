@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { useOrders } from "../../hooks/useOrders";
 import "../../styles/Orders.css";
 import OrderCard from "../../components/orders/OrderCard";
-import { useNavigate } from "react-router-dom";
 import { useAccountModal } from "../../context/AccountModalContext";
 import { useAuthContext } from "../../auth/context/AuthContext";
 import { PendingAction } from "../../constants/PendingAction";
@@ -10,10 +9,9 @@ import { PendingAction } from "../../constants/PendingAction";
 function Orders() {
 
     const { orders, loading, loadOrders } = useOrders();
-    const { isLoggedIn } = useAuthContext();
+    const { isLoggedIn, customer } = useAuthContext();
     const { openModal,  setPendingAction} = useAccountModal();
 
-const navigate = useNavigate();
 
 useEffect(() => {
 
@@ -29,9 +27,13 @@ useEffect(() => {
 
     }
 
-    loadOrders(1);
+    if (customer) {
 
-}, [isLoggedIn]);
+        loadOrders(customer.id);
+
+    }
+
+}, [isLoggedIn, customer]);
 
     if (loading) {
 

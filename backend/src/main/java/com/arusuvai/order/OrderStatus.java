@@ -7,3 +7,11 @@ public enum OrderStatus {
     DELIVERED,
     CANCELLED
 }
+
+// | Status           | Color     |
+// | ---------------- | --------- |
+// | PREPARING        | 🟡 Yellow |
+// | OUT_FOR_DELIVERY | 🔵 Blue   |
+// | DELIVERED        | 🟢 Green  |
+// | PENDING_PAYMENT  | 🟠 Orange |
+// | CANCELLED        | 🔴 Red    |

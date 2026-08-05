@@ -1,9 +1,7 @@
 import { useState } from "react";
-
 import { orderService } from "../services/orderService";
-
 import type { OrderRequest } from "../types/OrderRequest";
-import type { PaymentResponse } from "../types/PaymentResponse";
+import type { OrderCreationResponse } from "../types/OrderCreationResponse";
 
 export function useOrder() {
 
@@ -11,7 +9,7 @@ export function useOrder() {
 
     const createOrder = async (
         request: OrderRequest
-    ): Promise<PaymentResponse> => {
+    ): Promise<OrderCreationResponse> => {
 
         setLoading(true);
 

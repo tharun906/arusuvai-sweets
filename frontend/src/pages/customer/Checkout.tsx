@@ -37,39 +37,51 @@ function Checkout() {
     "ONLINE"
 );
 
-    const handlePlaceOrder = async () => {
+const handlePlaceOrder = async () => {
 
-        const payment = await createOrder({
+    const response = await createOrder({
 
-            customerId: customer!.id,
+        customerId: customer!.id,
 
-            paymentMethod,
+        paymentMethod,
 
-            items: cartItems
+        items: cartItems
+
+    });
+
+    // Cash On Delivery
+    if (!response.paymentRequired) {
+
+        clearCart();
+
+        navigate(ROUTES.ORDERS);
+
+        return;
+
+    }
+
+    // Online Payment
+    openRazorpay(response.payment!, async (razorpayResponse) => {
+
+        await verifyPayment({
+
+            orderId: response.payment!.orderId,
+
+            razorpayOrderId: razorpayResponse.razorpay_order_id,
+
+            razorpayPaymentId: razorpayResponse.razorpay_payment_id,
+
+            razorpaySignature: razorpayResponse.razorpay_signature
 
         });
-    
-        openRazorpay(payment, async (response) => {
-    
-            await verifyPayment({
 
-                orderId: payment.orderId,
-            
-                razorpayOrderId: response.razorpay_order_id,
-            
-                razorpayPaymentId: response.razorpay_payment_id,
-            
-                razorpaySignature: response.razorpay_signature
-            
-            });
-            
-            clearCart();
-            
-            navigate(ROUTES.ORDERS);
-    
-        });
-    
-    };
+        clearCart();
+
+        navigate(ROUTES.ORDERS);
+
+    });
+
+};
 
     useEffect(() => {
 

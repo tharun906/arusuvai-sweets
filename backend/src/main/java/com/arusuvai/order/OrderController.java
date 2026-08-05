@@ -1,6 +1,7 @@
 package com.arusuvai.order;
 
 
+import com.arusuvai.enums.PaymentMethod;
 import com.arusuvai.payment.PaymentResponseDTO;
 import com.arusuvai.payment.PaymentService;
 import jakarta.validation.Valid;
@@ -24,11 +25,35 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<PaymentResponseDTO> createOrder(@Valid @RequestBody OrderRequestDTO request){
+    public ResponseEntity<OrderCreationResponseDTO> createOrder(@Valid @RequestBody OrderRequestDTO request) {
+
         OrderResponseDTO order = orderService.createOrder(request);
+
+        if (request.getPaymentMethod() == PaymentMethod.COD) {
+            OrderCreationResponseDTO response = new OrderCreationResponseDTO(
+                            order.getOrderId(),
+                            PaymentMethod.COD,
+                            false,
+                            null
+                    );
+
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(response);
+        }
+
         PaymentResponseDTO payment = paymentService.createPaymentOrder(order.getOrderId(), order.getTotalAmount());
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(payment);
+        OrderCreationResponseDTO response = new OrderCreationResponseDTO(
+                        order.getOrderId(),
+                        PaymentMethod.ONLINE,
+                        true,
+                        payment
+                );
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(response);
     }
 
     @GetMapping("/customer/{customerId}")

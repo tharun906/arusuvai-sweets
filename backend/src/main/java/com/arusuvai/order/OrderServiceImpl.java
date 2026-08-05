@@ -1,11 +1,9 @@
 package com.arusuvai.order;
 
-import com.arusuvai.checkout.CalculatedOrderItem;
-import com.arusuvai.checkout.CheckoutRequestDTO;
-import com.arusuvai.checkout.OrderCalculationResult;
-import com.arusuvai.checkout.OrderCalculationService;
+import com.arusuvai.checkout.*;
 import com.arusuvai.customer.CustomerEntity;
 import com.arusuvai.customer.CustomerRepository;
+import com.arusuvai.enums.DeliveryType;
 import com.arusuvai.product.ProductEntity;
 import com.arusuvai.product.ProductRepository;
 import com.arusuvai.util.WeightConverter;
@@ -25,19 +23,22 @@ public class OrderServiceImpl implements OrderService {
     private final CustomerRepository customerRepository;
     private final OrderCalculationService orderCalculationService;
     private final ProductRepository productRepository;
+    private final DeliveryService deliveryService;
 
     public OrderServiceImpl(
             OrderRepository orderRepository,
             OrderItemRepository orderItemRepository,
             CustomerRepository customerRepository,
             OrderCalculationService orderCalculationService,
-            ProductRepository productRepository) {
+            ProductRepository productRepository,
+            DeliveryService deliveryService) {
 
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
         this.customerRepository = customerRepository;
         this.orderCalculationService = orderCalculationService;
         this.productRepository=productRepository;
+        this.deliveryService=deliveryService;
     }
 
     @Transactional
@@ -54,35 +55,61 @@ public class OrderServiceImpl implements OrderService {
                 );
 
         // Calculate the order (stock validation, pricing, totals)
-        OrderCalculationResult calculationResult = orderCalculationService.calculateCheckout(
-                new CheckoutRequestDTO(request.getCustomerId(), request.getItems()));
+        OrderCalculationResult calculationResult =
+                orderCalculationService.calculateCheckout(
+                        new CheckoutRequestDTO(
+                                request.getCustomerId(),
+                                request.getItems()
+                        )
+                );
 
-        // Create Order
+        // Check delivery availability
+        DeliveryCheckResponse deliveryResponse =
+                deliveryService.checkDeliveryAvailability(
+                        customer.getLatitude(),
+                        customer.getLongitude()
+                );
+
+        DeliveryType deliveryType =
+                deliveryResponse.isWithinDeliveryArea()
+                        ? DeliveryType.LOCAL
+                        : DeliveryType.COURIER;
+
         OrderEntity order;
 
         if (existingOrder.isPresent()) {
+
             order = existingOrder.get();
+
             // Remove old order items
             orderItemRepository.deleteAll(order.getOrderItems());
             order.getOrderItems().clear();
-            // Update latest amount
+
+            // Update latest order details
             order.setTotalAmount(calculationResult.getGrandTotal());
             order.setDeliveryAddress(customer.getAddress());
+            order.setPaymentMethod(request.getPaymentMethod());
+            order.setDeliveryType(deliveryType);
 
         } else {
+
             order = new OrderEntity();
+
             order.setCustomer(customer);
             order.setOrderStatus(OrderStatus.PENDING_PAYMENT);
             order.setPaymentStatus(PaymentStatus.PENDING);
             order.setDeliveryAddress(customer.getAddress());
             order.setTotalAmount(calculationResult.getGrandTotal());
+            order.setPaymentMethod(request.getPaymentMethod());
+            order.setDeliveryType(deliveryType);
 
             order = orderRepository.save(order);
+
         }
+
         order = orderRepository.save(order);
 
         // Save Order Items
-        //for each sweet we are storing detail fields
         for (CalculatedOrderItem calculatedItem : calculationResult.getItems()) {
 
             OrderItemEntity orderItem = new OrderItemEntity();
@@ -97,6 +124,7 @@ public class OrderServiceImpl implements OrderService {
             orderItemRepository.save(orderItem);
 
             order.getOrderItems().add(orderItem);
+
         }
 
         return mapToResponse(order);

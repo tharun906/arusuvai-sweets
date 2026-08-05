@@ -9,4 +9,5 @@ export const API_ENDPOINTS = {
     AUTH_VERIFY_OTP: "/api/auth/verify-otp",
     AUTH_REGISTER: "/api/auth/register",
     CHECK_DELIVERY: "/api/checkout/check-delivery",
+    ADMIN_ORDERS: "/api/admin/orders",
 } as const;

@@ -73,3 +73,39 @@
 .cartButton:hover {
     background: #5f171a;
 }
+
+.outOfStockCard {
+    opacity: 0.6;
+}
+
+.lowStock {
+    color: #d97706;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.outOfStock {
+    color: #dc2626;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.available {
+    color: #15803d;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.cartButton:disabled {
+    background: #bdbdbd;
+    cursor: not-allowed;
+}
+
+.quantity button:disabled {
+    background: #bdbdbd;
+    cursor: not-allowed;
+}
+
+.weightContainer input:disabled {
+    cursor: not-allowed;
+}
