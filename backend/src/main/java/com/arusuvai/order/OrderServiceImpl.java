@@ -269,4 +269,17 @@ public class OrderServiceImpl implements OrderService {
 
         return mapToResponse(order);
     }
+
+    @Override
+    @Transactional
+    public OrderResponseDTO updatePaymentStatus(Long orderId, PaymentStatus paymentStatus) {
+        OrderEntity order = orderRepository.findById(orderId)
+                .orElseThrow(() ->
+                        new RuntimeException("Order not found"));
+
+        order.setPaymentStatus(paymentStatus);
+        orderRepository.save(order);
+
+        return mapToResponse(order);
+    }
 }

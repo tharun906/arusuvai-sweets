@@ -4,6 +4,7 @@ import AdminSidebar from "../components/AdminSidebar";
 import AdminHeader from "../components/AdminHeader";
 
 import "../styles/AdminLayout.css";
+import AdminSummaryCards from "../components/AdminSummaryCards";
 
 function AdminLayout() {
 
@@ -16,6 +17,8 @@ function AdminLayout() {
             <div className="admin-main">
 
                 <AdminHeader />
+
+                <AdminSummaryCards />
 
                 <div className="admin-content">
 

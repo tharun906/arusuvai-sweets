@@ -1,0 +1,14 @@
+.payment-badge.paid {
+    background: #d4edda;
+    color: #155724;
+}
+
+.payment-badge.failed {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.payment-badge.refunded {
+    background: #fff3cd;
+    color: #856404;
+}

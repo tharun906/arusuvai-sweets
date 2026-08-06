@@ -10,4 +10,6 @@ export const API_ENDPOINTS = {
     AUTH_REGISTER: "/api/auth/register",
     CHECK_DELIVERY: "/api/checkout/check-delivery",
     ADMIN_ORDERS: "/api/admin/orders",
+    ADMIN_SUMMARY: "/api/admin/summary",
+    CUSTOMERS: "/api/customer",
 } as const;

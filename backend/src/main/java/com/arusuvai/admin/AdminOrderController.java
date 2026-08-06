@@ -40,6 +40,20 @@ public class AdminOrderController {
         return ResponseEntity.ok(orderService.updateOrderStatus(orderId, request.getOrderStatus()));
     }
 
+    @PutMapping("/{orderId}/payment-status")
+    public ResponseEntity<OrderResponseDTO> updatePaymentStatus(
+            @PathVariable Long orderId,
+            @RequestBody PaymentStatusUpdateRequestDTO request) {
+
+        return ResponseEntity.ok(
+                orderService.updatePaymentStatus(
+                        orderId,
+                        request.getPaymentStatus()
+                )
+        );
+
+    }
+
     //LATER -
     // PREPARING → OUT_FOR_DELIVERY ✅
     //OUT_FOR_DELIVERY → DELIVERED ✅

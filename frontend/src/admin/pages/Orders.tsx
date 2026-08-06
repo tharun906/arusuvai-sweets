@@ -4,19 +4,22 @@ import { useAdminOrders } from "../hooks/useAdminOrders";
 
 import "../styles/AdminOrders.css";
 import OrderStatusSelect from "../components/OrderStatusSelect";
+import PaymentStatusSelect from "../components/PaymentStatusSelect";
 
 function Orders() {
 
     const {
 
         orders,
-
+    
         loading,
-
+    
         loadOrders,
-
-        updateStatus
-
+    
+        updateStatus,
+    
+        updatePaymentStatus,
+    
     } = useAdminOrders();
 
     useEffect(() => {
@@ -115,11 +118,15 @@ function Orders() {
 
                                     <td>
 
-                                        <span className="payment-badge">
+                                      <PaymentStatusSelect
 
-                                            {order.paymentStatus}
+    orderId={order.orderId}
 
-                                        </span>
+    currentStatus={order.paymentStatus}
+
+    onUpdate={updatePaymentStatus}
+
+/>
 
                                     </td>
 

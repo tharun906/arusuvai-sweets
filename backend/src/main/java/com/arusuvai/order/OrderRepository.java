@@ -1,7 +1,9 @@
 package com.arusuvai.order;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,5 +21,5 @@ public interface OrderRepository extends JpaRepository<OrderEntity,Long> {
         FROM OrderEntity o
         WHERE o.paymentStatus = com.arusuvai.order.PaymentStatus.PAID
     """)
-    BigDecimal getTotalSales();
+        BigDecimal getTotalSales();
 }

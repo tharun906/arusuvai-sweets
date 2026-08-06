@@ -502,3 +502,38 @@ Find Customer by Phone Number
    ├── Exists → Login Successful
    │
    └── Doesn't Exist → Complete Registration
+
+
+
+   Online Payment
+
+   Create Order
+         ↓
+   Razorpay Payment
+         ↓
+   PAID
+         ↓
+   PREPARING
+         ↓
+   OUT_FOR_DELIVERY
+         ↓
+   DELIVERED
+
+
+
+
+   COD
+
+   Create Order
+         ↓
+   PENDING PAYMENT
+         ↓
+   PREPARING
+         ↓
+   OUT_FOR_DELIVERY
+         ↓
+   DELIVERED
+         ↓
+   Admin updates Payment
+         ↓
+   PAID

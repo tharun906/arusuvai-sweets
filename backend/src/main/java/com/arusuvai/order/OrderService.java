@@ -10,4 +10,5 @@ public interface OrderService {
     List<OrderResponseDTO> getAllOrders();
     List<OrderResponseDTO> getOrdersByStatus(OrderStatus orderStatus);
     OrderResponseDTO updateOrderStatus(Long orderId, OrderStatus orderStatus);
+    OrderResponseDTO updatePaymentStatus(Long orderId, PaymentStatus paymentStatus);
 }

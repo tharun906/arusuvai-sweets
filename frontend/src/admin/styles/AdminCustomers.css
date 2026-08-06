@@ -1,0 +1,59 @@
+.admin-customers-page{
+
+    padding:20px;
+
+}
+
+.admin-customers-title{
+
+    margin-bottom:20px;
+
+    color:#7b1e22;
+
+}
+
+.admin-customers-table-container{
+
+    background:white;
+
+    border-radius:12px;
+
+    overflow:hidden;
+
+    box-shadow:0 2px 10px rgba(0,0,0,.1);
+
+}
+
+.admin-customers-table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+.admin-customers-table th{
+
+    background:#7b1e22;
+
+    color:white;
+
+    padding:14px;
+
+    text-align:left;
+
+}
+
+.admin-customers-table td{
+
+    padding:14px;
+
+    border-bottom:1px solid #eee;
+
+}
+
+.admin-customers-table tbody tr:hover{
+
+    background:#fafafa;
+
+}
