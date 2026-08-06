@@ -87,7 +87,25 @@ public class OrderServiceImpl implements OrderService {
 
             // Update latest order details
             order.setTotalAmount(calculationResult.getGrandTotal());
-            order.setDeliveryAddress(customer.getAddress());
+            order.setDeliveryAddress(
+                    customer.getDoorNo()
+                            + ", "
+                            + customer.getAddressLine1()
+                            + (customer.getAddressLine2() != null &&
+                            !customer.getAddressLine2().isBlank()
+                            ? ", " + customer.getAddressLine2()
+                            : "")
+                            + (customer.getLandmark() != null &&
+                            !customer.getLandmark().isBlank()
+                            ? ", Near " + customer.getLandmark()
+                            : "")
+                            + ", "
+                            + customer.getCity()
+                            + ", "
+                            + customer.getState()
+                            + " - "
+                            + customer.getPincode()
+            );
             order.setPaymentMethod(request.getPaymentMethod());
             order.setDeliveryType(deliveryType);
 
@@ -98,13 +116,30 @@ public class OrderServiceImpl implements OrderService {
             order.setCustomer(customer);
             order.setOrderStatus(OrderStatus.PENDING_PAYMENT);
             order.setPaymentStatus(PaymentStatus.PENDING);
-            order.setDeliveryAddress(customer.getAddress());
+            order.setDeliveryAddress(
+                    customer.getDoorNo()
+                            + ", "
+                            + customer.getAddressLine1()
+                            + (customer.getAddressLine2() != null &&
+                            !customer.getAddressLine2().isBlank()
+                            ? ", " + customer.getAddressLine2()
+                            : "")
+                            + (customer.getLandmark() != null &&
+                            !customer.getLandmark().isBlank()
+                            ? ", Near " + customer.getLandmark()
+                            : "")
+                            + ", "
+                            + customer.getCity()
+                            + ", "
+                            + customer.getState()
+                            + " - "
+                            + customer.getPincode()
+            );
             order.setTotalAmount(calculationResult.getGrandTotal());
             order.setPaymentMethod(request.getPaymentMethod());
             order.setDeliveryType(deliveryType);
 
             order = orderRepository.save(order);
-
         }
 
         order = orderRepository.save(order);

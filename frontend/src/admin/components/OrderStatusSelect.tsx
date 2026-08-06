@@ -51,6 +51,20 @@ function OrderStatusSelect({
 
     };
 
+    if (currentStatus === "DELIVERED") {
+
+        return (
+
+            <span className="order-status-badge delivered">
+
+                DELIVERED
+
+            </span>
+
+        );
+
+    }
+
     return (
 
         <div>
@@ -67,51 +81,107 @@ function OrderStatusSelect({
 
             >
 
-                <option value="PENDING_PAYMENT">
-
-                    PENDING_PAYMENT
-
-                </option>
-
-                <option value="PREPARING">
-
-                    PREPARING
-
-                </option>
-
-                <option value="OUT_FOR_DELIVERY">
-
-                    OUT_FOR_DELIVERY
-
-                </option>
-
-                <option value="DELIVERED">
-
-                    DELIVERED
-
-                </option>
-
-            </select>
-
-            <button
-
-                onClick={handleUpdate}
-
-                disabled={loading}
-
-            >
-
                 {
 
-                    loading
+                    status === "PENDING_PAYMENT" && (
 
-                        ? "Updating..."
+                        <>
 
-                        : "Update"
+                            <option value="PENDING_PAYMENT">
+
+                                PENDING_PAYMENT
+
+                            </option>
+
+                            <option value="PREPARING">
+
+                                PREPARING
+
+                            </option>
+
+                        </>
+
+                    )
 
                 }
 
-            </button>
+                {
+
+                    status === "PREPARING" && (
+
+                        <>
+
+                            <option value="PREPARING">
+
+                                PREPARING
+
+                            </option>
+
+                            <option value="OUT_FOR_DELIVERY">
+
+                                OUT_FOR_DELIVERY
+
+                            </option>
+
+                        </>
+
+                    )
+
+                }
+
+                {
+
+                    status === "OUT_FOR_DELIVERY" && (
+
+                        <>
+
+                            <option value="OUT_FOR_DELIVERY">
+
+                                OUT_FOR_DELIVERY
+
+                            </option>
+
+                            <option value="DELIVERED">
+
+                                DELIVERED
+
+                            </option>
+
+                        </>
+
+                    )
+
+                }
+
+            </select>
+
+            {
+
+                status !== currentStatus && (
+
+                    <button
+
+                        onClick={handleUpdate}
+
+                        disabled={loading}
+
+                    >
+
+                        {
+
+                            loading
+
+                                ? "Updating..."
+
+                                : "Update"
+
+                        }
+
+                    </button>
+
+                )
+
+                }
 
         </div>
 

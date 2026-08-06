@@ -26,8 +26,27 @@ public class CustomerEntity {
     @Column(length = 100)
     private String email;
 
-    @Column(columnDefinition = "TEXT")
-    private String address;
+    @Column(nullable = false, length = 30)
+    private String doorNo;
+
+    @Column(nullable = false, length = 150)
+    private String addressLine1;
+
+    @Column(length = 150)
+    private String addressLine2;
+
+    @Column(length = 100)
+    private String landmark;
+
+    @Column(nullable = false, length = 100)
+    private String city;
+
+    @Column(nullable = false, length = 100)
+    private String state;
+
+    @Column(nullable = false, length = 10)
+    private String pincode;
+
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

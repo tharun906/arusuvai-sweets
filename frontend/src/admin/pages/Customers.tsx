@@ -84,9 +84,43 @@ function Customers() {
 
                                     <td>
 
-                                        {customer.address}
+                                        {customer.doorNo},
 
-                                    </td>
+                                        {" "}
+
+                                        {customer.addressLine1}
+
+                                        {
+
+                                            customer.addressLine2 &&
+
+                                            `, ${customer.addressLine2}`
+
+                                        }
+
+                                        {
+
+                                            customer.landmark &&
+
+                                            `, Near ${customer.landmark}`
+
+                                        }
+
+                                        ,
+
+                                        {" "}
+
+                                        {customer.city},
+
+                                        {" "}
+
+                                        {customer.state}
+
+                                        {" - "}
+
+                                        {customer.pincode}
+
+                                        </td>
 
                                 </tr>
 

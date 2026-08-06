@@ -18,12 +18,6 @@ function AdminSidebar() {
 
             <nav>
 
-                <NavLink to={ROUTES.ADMIN_DASHBOARD}>
-
-                    Dashboard
-
-                </NavLink>
-
                 <NavLink to={ROUTES.ADMIN_ORDERS}>
 
                     Orders

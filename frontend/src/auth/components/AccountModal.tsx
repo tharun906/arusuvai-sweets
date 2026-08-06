@@ -45,7 +45,26 @@ function AccountModal({
 
     const [email, setEmail] = useState("");
 
-    const [address, setAddress] = useState("");
+    const [doorNo, setDoorNo] =
+    useState("");
+
+const [addressLine1, setAddressLine1] =
+    useState("");
+
+const [addressLine2, setAddressLine2] =
+    useState("");
+
+const [landmark, setLandmark] =
+    useState("");
+
+const [city, setCity] =
+    useState("");
+
+const [state, setState] =
+    useState("");
+
+const [pincode, setPincode] =
+    useState("");
 
     const [latitude, setLatitude] =
         useState<number>();
@@ -62,8 +81,20 @@ function AccountModal({
     const [otpError, setOtpError] = useState("");
 
     const [nameError, setNameError] = useState("");
+    const [doorNoError, setDoorNoError] =
+    useState("");
 
-    const [addressError, setAddressError] = useState("");
+const [addressLine1Error, setAddressLine1Error] =
+    useState("");
+
+const [cityError, setCityError] =
+    useState("");
+
+const [stateError, setStateError] =
+    useState("");
+
+const [pincodeError, setPincodeError] =
+    useState("");
 
     const [locationError, setLocationError] = useState("");
 
@@ -132,8 +163,20 @@ function AccountModal({
         setName("");
     
         setEmail("");
-    
-        setAddress("");
+
+        setDoorNo("");
+
+        setAddressLine1("");
+
+        setAddressLine2("");
+
+        setLandmark("");
+
+        setCity("");
+
+        setState("");
+
+        setPincode("");
     
         setLatitude(undefined);
     
@@ -145,7 +188,15 @@ function AccountModal({
     
         setNameError("");
     
-        setAddressError("");
+        setDoorNoError("");
+
+        setAddressLine1Error("");
+
+        setCityError("");
+
+        setStateError("");
+
+        setPincodeError("");
     
         setLocationError("");
     
@@ -339,13 +390,19 @@ function AccountModal({
 
         setNameError("");
 
-        setAddressError("");
+        setDoorNoError("");
+
+        setAddressLine1Error("");
+
+        setCityError("");
+
+        setStateError("");
+
+        setPincodeError("");
 
         setLocationError("");
 
         let hasError = false;
-
-        // Name validation
 
         if (!name.trim()) {
 
@@ -355,28 +412,67 @@ function AccountModal({
 
         }
 
-        // Address validation
+        if (!doorNo.trim()) {
 
-        if (!address.trim()) {
-
-            setAddressError("Address is required.");
+            setDoorNoError("Door No is required.");
 
             hasError = true;
 
         }
 
-        // Current Location validation
+        if (!addressLine1.trim()) {
+
+            setAddressLine1Error("Address Line 1 is required.");
+
+            hasError = true;
+
+        }
+
+        if (!city.trim()) {
+
+            setCityError("City is required.");
+
+            hasError = true;
+
+        }
+
+        if (!state.trim()) {
+
+            setStateError("State is required.");
+
+            hasError = true;
+
+        }
+
+        if (!/^\d{6}$/.test(pincode)) {
+
+            setPincodeError("Enter a valid 6-digit pincode.");
+
+            hasError = true;
+
+        }
 
         if (
+
             latitude === undefined ||
+
             longitude === undefined
+
         ) {
 
             setLocationError(
+
                 "Please capture your current location."
+
             );
 
             hasError = true;
+
+        }
+
+        if (hasError) {
+
+            return;
 
         }
 
@@ -391,17 +487,29 @@ function AccountModal({
         const response = await register({
 
             phoneNumber,
-
+        
             name,
-
+        
             email,
-
-            address,
-
+        
+            doorNo,
+        
+            addressLine1,
+        
+            addressLine2,
+        
+            landmark,
+        
+            city,
+        
+            state,
+        
+            pincode,
+        
             latitude,
-
+        
             longitude
-
+        
         });
 
         if (!response.success) {
@@ -631,25 +739,169 @@ function AccountModal({
 
                                 className={styles.input}
 
-                                value={address}
+                                value={doorNo}
 
                                 onChange={(e) => {
 
-                                    setAddress(e.target.value);
+                                    setDoorNo(e.target.value);
 
-                                    setAddressError("");
+                                    setDoorNoError("");
 
                                 }}
 
-                                placeholder="Address"
+                                placeholder="Door / Flat No"
 
                             />
 
-                            {addressError && (
+                            {doorNoError && (
 
                                 <p className={styles.errorText}>
 
-                                    {addressError}
+                                    {doorNoError}
+
+                                </p>
+
+                            )}
+
+                            <input
+
+                                className={styles.input}
+
+                                value={addressLine1}
+
+                                onChange={(e) => {
+
+                                    setAddressLine1(e.target.value);
+
+                                    setAddressLine1Error("");
+
+                                }}
+
+                                placeholder="Address Line 1"
+
+                            />
+
+                            {addressLine1Error && (
+
+                                <p className={styles.errorText}>
+
+                                    {addressLine1Error}
+
+                                </p>
+
+                            )}
+
+                            <input
+
+                                className={styles.input}
+
+                                value={addressLine2}
+
+                                onChange={(e) =>
+
+                                    setAddressLine2(e.target.value)
+
+                                }
+
+                                placeholder="Address Line 2 (Optional)"
+
+                            />
+
+                            <input
+
+                                className={styles.input}
+
+                                value={landmark}
+
+                                onChange={(e) =>
+
+                                    setLandmark(e.target.value)
+
+                                }
+
+                                placeholder="Landmark (Optional)"
+
+                            />
+
+                            <input
+
+                                className={styles.input}
+
+                                value={city}
+
+                                onChange={(e) => {
+
+                                    setCity(e.target.value);
+
+                                    setCityError("");
+
+                                }}
+
+                                placeholder="City"
+
+                            />
+
+                            {cityError && (
+
+                                <p className={styles.errorText}>
+
+                                    {cityError}
+
+                                </p>
+
+                            )}
+
+                            <input
+
+                                className={styles.input}
+
+                                value={state}
+
+                                onChange={(e) => {
+
+                                    setState(e.target.value);
+
+                                    setStateError("");
+
+                                }}
+
+                                placeholder="State"
+
+                            />
+
+                            {stateError && (
+
+                                <p className={styles.errorText}>
+
+                                    {stateError}
+
+                                </p>
+
+                            )}
+
+                            <input
+
+                                className={styles.input}
+
+                                value={pincode}
+
+                                onChange={(e) => {
+
+                                    setPincode(e.target.value);
+
+                                    setPincodeError("");
+
+                                }}
+
+                                placeholder="Pincode"
+
+                            />
+
+                            {pincodeError && (
+
+                                <p className={styles.errorText}>
+
+                                    {pincodeError}
 
                                 </p>
 

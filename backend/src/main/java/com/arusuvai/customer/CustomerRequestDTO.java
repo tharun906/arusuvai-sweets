@@ -10,6 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CustomerRequestDTO {
+
     @NotBlank(message = "Customer name is required")
     @Size(max = 100)
     private String name;
@@ -21,6 +22,23 @@ public class CustomerRequestDTO {
     @Email(message = "Invalid email")
     private String email;
 
-    @NotBlank(message = "Address is required")
-    private String address;
+    @NotBlank
+    private String doorNo;
+
+    @NotBlank
+    private String addressLine1;
+
+    private String addressLine2;
+
+    private String landmark;
+
+    @NotBlank
+    private String city;
+
+    @NotBlank
+    private String state;
+
+    @NotBlank
+    private String pincode;
+
 }

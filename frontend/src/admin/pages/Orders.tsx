@@ -1,10 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { useAdminOrders } from "../hooks/useAdminOrders";
 
 import "../styles/AdminOrders.css";
 import OrderStatusSelect from "../components/OrderStatusSelect";
 import PaymentStatusSelect from "../components/PaymentStatusSelect";
+import type { Order } from "../../types/Order";
+import AdminOrderDetailsModal from "../components/AdminOrderDetailsModal";
 
 function Orders() {
 
@@ -21,6 +23,9 @@ function Orders() {
         updatePaymentStatus,
     
     } = useAdminOrders();
+
+    const [selectedOrder, setSelectedOrder] =
+    useState<Order | null>(null);
 
     useEffect(() => {
 
@@ -72,6 +77,8 @@ function Orders() {
 
                             <th>Created</th>
 
+                            <th>Action</th>
+
                         </tr>
 
                     </thead>
@@ -120,13 +127,13 @@ function Orders() {
 
                                       <PaymentStatusSelect
 
-    orderId={order.orderId}
+                                            orderId={order.orderId}
 
-    currentStatus={order.paymentStatus}
+                                            currentStatus={order.paymentStatus}
 
-    onUpdate={updatePaymentStatus}
+                                            onUpdate={updatePaymentStatus}
 
-/>
+                                        />
 
                                     </td>
 
@@ -134,6 +141,26 @@ function Orders() {
 
                                         {new Date(order.createdAt)
                                             .toLocaleString()}
+
+                                    </td>
+
+                                    <td>
+
+                                        <button
+
+                                            className="view-btn"
+
+                                            onClick={() =>
+
+                                                setSelectedOrder(order)
+
+                                            }
+
+                                        >
+
+                                            View
+
+                                        </button>
 
                                     </td>
 
@@ -149,6 +176,23 @@ function Orders() {
 
             </div>
 
+            {
+
+            selectedOrder && (
+
+                <AdminOrderDetailsModal
+
+                    order={selectedOrder}
+
+                    onClose={() =>
+
+                        setSelectedOrder(null)
+
+                    }
+
+                />
+
+            )}
         </div>
 
     );

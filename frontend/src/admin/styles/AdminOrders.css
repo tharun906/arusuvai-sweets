@@ -98,3 +98,25 @@
     font-size: 20px;
 
 }
+
+.view-btn {
+
+    background: #059669;
+
+    color: white;
+
+    border: none;
+
+    padding: 8px 14px;
+
+    border-radius: 6px;
+
+    cursor: pointer;
+
+}
+
+.view-btn:hover {
+
+    background: #047857;
+
+}

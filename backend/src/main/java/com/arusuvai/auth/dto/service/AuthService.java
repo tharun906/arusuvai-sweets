@@ -86,7 +86,13 @@ public class AuthService {
         customer.setName(request.getName());
         customer.setPhoneNumber(request.getPhoneNumber());
         customer.setEmail(request.getEmail());
-        customer.setAddress(request.getAddress());
+        customer.setDoorNo(request.getDoorNo());
+        customer.setAddressLine1(request.getAddressLine1());
+        customer.setAddressLine2(request.getAddressLine2());
+        customer.setLandmark(request.getLandmark());
+        customer.setCity(request.getCity());
+        customer.setState(request.getState());
+        customer.setPincode(request.getPincode());
         customer.setLatitude(request.getLatitude());
         customer.setLongitude(request.getLongitude());
         customer.setRole(Role.CUSTOMER);

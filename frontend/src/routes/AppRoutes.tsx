@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import CustomerLayout from "../layouts/CustomerLayout";
 
@@ -8,7 +8,6 @@ import Checkout from "../pages/customer/Checkout";
 import Orders from "../pages/customer/Orders";
 
 import { ROUTES } from "../constants/routes";
-import Dashboard from "../admin/pages/Dashboard";
 import AdminOrders from "../admin/pages/Orders";
 import Products from "../admin/pages/Products";
 import Customers from "../admin/pages/Customers";
@@ -28,7 +27,10 @@ function AppRoutes() {
                 </Route>
 
                 <Route element={<AdminLayout />}>
-                    <Route path={ROUTES.ADMIN_DASHBOARD} element={<Dashboard />}/>
+                    <Route path={ROUTES.ADMIN_DASHBOARD} element={
+                        <Navigate to={ROUTES.ADMIN_ORDERS}replace/>
+                        }
+                    />
                     <Route path={ROUTES.ADMIN_ORDERS} element={<AdminOrders />}  />
                     <Route path={ROUTES.ADMIN_PRODUCTS} element={<Products />} />
                     <Route path={ROUTES.ADMIN_CUSTOMERS} element={<Customers />} />

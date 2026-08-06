@@ -22,7 +22,13 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setName(request.getName());
         customer.setPhoneNumber(request.getPhoneNumber());
         customer.setEmail(request.getEmail());
-        customer.setAddress(request.getAddress());
+        customer.setDoorNo(request.getDoorNo());
+        customer.setAddressLine1(request.getAddressLine1());
+        customer.setAddressLine2(request.getAddressLine2());
+        customer.setLandmark(request.getLandmark());
+        customer.setCity(request.getCity());
+        customer.setState(request.getState());
+        customer.setPincode(request.getPincode());
 
         CustomerEntity saved = customerRepository.save(customer);
         return mapToResponse(saved);
@@ -55,7 +61,13 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setName(request.getName());
         customer.setPhoneNumber(request.getPhoneNumber());
         customer.setEmail(request.getEmail());
-        customer.setAddress(request.getAddress());
+        customer.setDoorNo(request.getDoorNo());
+        customer.setAddressLine1(request.getAddressLine1());
+        customer.setAddressLine2(request.getAddressLine2());
+        customer.setLandmark(request.getLandmark());
+        customer.setCity(request.getCity());
+        customer.setState(request.getState());
+        customer.setPincode(request.getPincode());
 
         CustomerEntity updated = customerRepository.save(customer);
         return mapToResponse(updated);
@@ -68,7 +80,13 @@ public class CustomerServiceImpl implements CustomerService {
                 customer.getName(),
                 customer.getPhoneNumber(),
                 customer.getEmail(),
-                customer.getAddress()
+                customer.getDoorNo(),
+                customer.getAddressLine1(),
+                customer.getAddressLine2(),
+                customer.getLandmark(),
+                customer.getCity(),
+                customer.getState(),
+                customer.getPincode()
         );
     }
 }
