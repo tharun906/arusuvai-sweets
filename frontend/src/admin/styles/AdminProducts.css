@@ -74,3 +74,11 @@
     border: none;
     border-top: 1px solid #ddd;
 }
+
+.low-stock-row {
+    background: #fff8dc;
+}
+
+.out-of-stock-row {
+    background: #ffe6e6;
+}

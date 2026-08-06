@@ -1,7 +1,38 @@
+import { useState } from "react";
+
 import { useProducts } from "../../hooks/useProducts";
+import { useCreateProduct } from "../../hooks/useCreateProduct";
+
 import ProductForm from "../components/ProductForm";
 
+import type { ProductRequest } from "../../types/ProductRequest";
+
 import "../styles/AdminProducts.css";
+import type { Product } from "../../types/Product";
+import { useUpdateProduct } from "../hooks/useUpdateProduct";
+import { useProductStatus } from "../hooks/useProductStatus";
+
+const EMPTY_PRODUCT: ProductRequest = {
+
+    name: "",
+
+    description: "",
+
+    imageUrl: "",
+
+    price250g: 0,
+
+    price500g: 0,
+
+    price1kg: 0,
+
+    currentStockKg: 0,
+
+    lowStockAlertKg: 0,
+
+    categoryId: 0,
+
+};
 
 function Products() {
 
@@ -14,6 +45,78 @@ function Products() {
         error,
 
     } = useProducts();
+
+    const {
+
+        saveProduct,
+
+        loading: saving,
+
+    } = useCreateProduct();
+
+    const {
+
+        editProduct,
+    
+        loading: updating,
+    
+    } = useUpdateProduct();
+
+    const {
+
+        updateStatus,
+    
+    } = useProductStatus();
+    
+    const [
+    
+        editingProduct,
+    
+        setEditingProduct,
+    
+    ] = useState<Product | null>(null);
+
+    const [
+
+        form,
+
+        setForm,
+
+    ] = useState<ProductRequest>(EMPTY_PRODUCT);
+
+    const handleSubmit = async (
+
+        request: ProductRequest
+    
+    ) => {
+    
+        if (editingProduct) {
+    
+            await editProduct(
+    
+                editingProduct.id,
+    
+                request
+    
+            );
+    
+            alert("Product Updated Successfully");
+    
+        } else {
+    
+            await saveProduct(request);
+    
+            alert("Product Created Successfully");
+    
+        }
+    
+        setEditingProduct(null);
+    
+        setForm(EMPTY_PRODUCT);
+    
+        window.location.reload();
+    
+    };
 
     if (loading) {
 
@@ -37,7 +140,29 @@ function Products() {
 
             </h1>
 
-            <ProductForm />
+            <ProductForm
+
+                initialValues={form}
+
+                buttonText={
+
+                    editingProduct
+                
+                        ? "Update Product"
+                
+                        : "Save Product"
+                
+                }
+
+                loading={
+
+                    saving || updating
+                
+                }
+
+                onSubmit={handleSubmit}
+
+            />
 
             <hr className="admin-products-divider" />
 
@@ -61,11 +186,13 @@ function Products() {
 
                             <th>1kg</th>
 
-                            <th>Stock (Kg)</th>
+                            <th>Stock</th>
 
                             <th>Low Stock</th>
 
                             <th>Status</th>
+
+                            <th>Actions</th>
 
                         </tr>
 
@@ -77,7 +204,16 @@ function Products() {
 
                             products.map((product) => (
 
-                                <tr key={product.id}>
+                                <tr
+    key={product.id}
+    className={
+        product.currentStockKg <= 0
+            ? "out-of-stock-row"
+            : product.currentStockKg <= product.lowStockAlertKg
+            ? "low-stock-row"
+            : ""
+    }
+>
 
                                     <td>
 
@@ -93,47 +229,35 @@ function Products() {
 
                                     </td>
 
-                                    <td>
+                                    <td>{product.name}</td>
 
-                                        {product.name}
+                                    <td>{product.categoryName}</td>
 
-                                    </td>
+                                    <td>₹{product.price250g}</td>
 
-                                    <td>
+                                    <td>₹{product.price500g}</td>
 
-                                        {product.categoryName}
-
-                                    </td>
+                                    <td>₹{product.price1kg}</td>
 
                                     <td>
 
-                                        ₹{product.price250g}
+                                        {
+
+                                            product.currentStockKg <= 0
+
+                                                ? "❌ Out of Stock"
+
+                                                : product.currentStockKg <= product.lowStockAlertKg
+
+                                                    ? `⚠️ ${product.currentStockKg} kg`
+
+                                                    : `${product.currentStockKg} kg`
+
+                                        }
 
                                     </td>
 
-                                    <td>
-
-                                        ₹{product.price500g}
-
-                                    </td>
-
-                                    <td>
-
-                                        ₹{product.price1kg}
-
-                                    </td>
-
-                                    <td>
-
-                                        {product.currentStockKg}
-
-                                    </td>
-
-                                    <td>
-
-                                        {product.lowStockAlertKg}
-
-                                    </td>
+                                    <td>{product.lowStockAlertKg}</td>
 
                                     <td>
 
@@ -141,13 +265,83 @@ function Products() {
 
                                             product.active
 
-                                                ? "Active"
+                                                ? "🟢 Active"
 
-                                                : "Inactive"
+                                                : "🔴 Inactive"
 
                                         }
 
-                                    </td>
+                                     </td>
+
+                                     <td>
+
+<button
+
+    onClick={() => {
+
+        setEditingProduct(product);
+
+        setForm({
+
+            name: product.name,
+            description: product.description,
+            imageUrl: product.imageUrl,
+            price250g: product.price250g,
+            price500g: product.price500g,
+            price1kg: product.price1kg,
+            currentStockKg: product.currentStockKg,
+            lowStockAlertKg: product.lowStockAlertKg,
+            categoryId: product.categoryId,
+
+        });
+
+        window.scrollTo({
+
+            top: 0,
+
+            behavior: "smooth",
+
+        });
+
+    }}
+
+>
+
+    Edit
+
+</button>
+
+<button
+
+    onClick={async () => {
+
+        await updateStatus(
+
+            product.id,
+
+            !product.active
+
+        );
+
+        window.location.reload();
+
+    }}
+
+>
+
+    {
+
+        product.active
+
+            ? "Deactivate"
+
+            : "Activate"
+
+    }
+
+</button>
+
+</td>
 
                                 </tr>
 

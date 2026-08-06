@@ -1,42 +1,39 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useCategories } from "../../hooks/useCategories";
-import { useCreateProduct } from "../../hooks/useCreateProduct";
 
-function ProductForm() {
+import type { ProductRequest } from "../../types/ProductRequest";
+import type { ProductFormProps } from "../types/ProductFormProps";
+
+function ProductForm({
+
+    initialValues,
+
+    buttonText,
+
+    loading,
+
+    onSubmit,
+
+}: ProductFormProps) {
 
     const { categories } = useCategories();
 
-    const { saveProduct, loading } = useCreateProduct();
+    const [form, setForm] =
+        useState<ProductRequest>(initialValues);
 
-    const [form, setForm] = useState({
+    useEffect(() => {
 
-        name: "",
+        setForm(initialValues);
 
-        description: "",
-
-        imageUrl: "",
-
-        price250g: 0,
-
-        price500g: 0,
-
-        price1kg: 0,
-
-        currentStockKg: 0,
-
-        lowStockAlertKg: 0,
-
-        categoryId: 0,
-
-    });
+    }, [initialValues]);
 
     const handleChange = (
-
         event: React.ChangeEvent<
-            HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+            HTMLInputElement |
+            HTMLTextAreaElement |
+            HTMLSelectElement
         >
-
     ) => {
 
         const { name, value } = event.target;
@@ -60,16 +57,12 @@ function ProductForm() {
     };
 
     const handleSubmit = async (
-
         event: React.FormEvent
-
     ) => {
 
         event.preventDefault();
 
-        await saveProduct(form);
-
-        alert("Product Created Successfully");
+        await onSubmit(form);
 
     };
 
@@ -77,7 +70,11 @@ function ProductForm() {
 
         <form onSubmit={handleSubmit}>
 
-            <h2>Add Product</h2>
+            <h2>
+
+                {buttonText}
+
+            </h2>
 
             <input
                 name="name"
@@ -101,19 +98,13 @@ function ProductForm() {
             />
 
             <select
-
                 name="categoryId"
-
                 value={form.categoryId}
-
                 onChange={handleChange}
-
             >
 
                 <option value={0}>
-
                     Select Category
-
                 </option>
 
                 {
@@ -121,11 +112,8 @@ function ProductForm() {
                     categories.map((category) => (
 
                         <option
-
                             key={category.id}
-
                             value={category.id}
-
                         >
 
                             {category.name}
@@ -139,81 +127,48 @@ function ProductForm() {
             </select>
 
             <input
-
                 type="number"
-
                 name="price250g"
-
                 placeholder="250g Price"
-
                 value={form.price250g}
-
                 onChange={handleChange}
-
             />
 
             <input
-
                 type="number"
-
                 name="price500g"
-
                 placeholder="500g Price"
-
                 value={form.price500g}
-
                 onChange={handleChange}
-
             />
 
             <input
-
                 type="number"
-
                 name="price1kg"
-
                 placeholder="1kg Price"
-
                 value={form.price1kg}
-
                 onChange={handleChange}
-
             />
 
             <input
-
                 type="number"
-
                 name="currentStockKg"
-
                 placeholder="Current Stock"
-
                 value={form.currentStockKg}
-
                 onChange={handleChange}
-
             />
 
             <input
-
                 type="number"
-
                 name="lowStockAlertKg"
-
                 placeholder="Low Stock Alert"
-
                 value={form.lowStockAlertKg}
-
                 onChange={handleChange}
-
             />
 
             <button
-
                 type="submit"
-
                 disabled={loading}
-
             >
 
                 {
@@ -222,7 +177,7 @@ function ProductForm() {
 
                         ? "Saving..."
 
-                        : "Save Product"
+                        : buttonText
 
                 }
 

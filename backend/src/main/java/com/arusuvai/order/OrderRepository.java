@@ -13,4 +13,11 @@ public interface OrderRepository extends JpaRepository<OrderEntity,Long> {
             Long customerId,
             PaymentStatus paymentStatus
     );
+
+        @Query("""
+        SELECT COALESCE(SUM(o.totalAmount), 0)
+        FROM OrderEntity o
+        WHERE o.paymentStatus = com.arusuvai.order.PaymentStatus.PAID
+    """)
+    BigDecimal getTotalSales();
 }
