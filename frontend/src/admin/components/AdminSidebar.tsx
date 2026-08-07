@@ -1,10 +1,25 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import { ROUTES } from "../../constants/routes";
 
 import "../styles/AdminSidebar.css";
+import { useAuthContext } from "../../auth/context/AuthContext";
 
 function AdminSidebar() {
+
+    const navigate = useNavigate();
+
+    const { logout } = useAuthContext();
+    
+    const handleLogout = () => {
+    
+        logout(() => {
+    
+            navigate(ROUTES.HOME);
+    
+        });
+    
+    };
 
     return (
 
@@ -37,12 +52,16 @@ function AdminSidebar() {
                 </NavLink>
 
             </nav>
+            <button
+                className="logout-btn"
 
-            <button className="logout-btn">
+                onClick={handleLogout}
+
+                >
 
                 Logout
 
-            </button>
+                </button>
 
         </aside>
 

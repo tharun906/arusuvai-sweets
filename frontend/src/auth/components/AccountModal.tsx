@@ -81,6 +81,10 @@ const [pincode, setPincode] =
     const [otpError, setOtpError] = useState("");
 
     const [nameError, setNameError] = useState("");
+
+    const [emailError, setEmailError] =
+    useState("");
+
     const [doorNoError, setDoorNoError] =
     useState("");
 
@@ -187,6 +191,8 @@ const [pincodeError, setPincodeError] =
         setOtpError("");
     
         setNameError("");
+
+        setEmailError("");
     
         setDoorNoError("");
 
@@ -390,6 +396,8 @@ const [pincodeError, setPincodeError] =
 
         setNameError("");
 
+        setEmailError("");
+
         setDoorNoError("");
 
         setAddressLine1Error("");
@@ -410,6 +418,13 @@ const [pincodeError, setPincodeError] =
 
             hasError = true;
 
+        }
+
+        if (email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+
+            setEmailError( "Please enter a valid email address." );
+            
+            hasError = true;
         }
 
         if (!doorNo.trim()) {
@@ -727,13 +742,30 @@ const [pincodeError, setPincodeError] =
 
                                 value={email}
 
-                                onChange={(e) =>
-                                    setEmail(e.target.value)
-                                }
+                                onChange={(e) => {
+
+                                    setEmail(e.target.value);
+                                
+                                    setEmailError("");
+
+                                }}
 
                                 placeholder="Email (Optional)"
 
                             />
+                            {
+
+                                emailError && (
+
+                                    <p className={styles.errorText}>
+
+                                        {emailError}
+
+                                    </p>
+
+                                )
+
+                                }
 
                             <input
 
