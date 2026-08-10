@@ -1,0 +1,76 @@
+.drawer-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(4, 20, 15, .78);
+
+    backdrop-filter: blur(6px);
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transition: var(--transition);
+
+    z-index: 1000;
+}
+
+.drawer-overlay.show {
+    opacity: 1;
+
+    visibility: visible;
+}
+
+
+/* ========================================
+   Drawer
+======================================== */
+
+.drawer {
+    position: fixed;
+
+    top: 0;
+
+    left: -320px;
+
+    width: 300px;
+
+    max-width: 85vw;
+
+    height: 100vh;
+
+    padding: 24px;
+
+    background: var(--surface-color);
+
+    border-right: 1px solid var(--border-strong);
+
+    box-shadow:
+        12px 0 40px rgba(0, 0, 0, .35);
+
+    transition: var(--transition);
+
+    z-index: 1001;
+
+    overflow-y: auto;
+}
+
+.drawer.open {
+    left: 0;
+}
+
+
+/* ========================================
+   Mobile
+======================================== */
+
+@media (max-width: 600px) {
+
+    .drawer {
+        width: 280px;
+
+        padding: 20px;
+    }
+
+}

@@ -1,67 +1,175 @@
-.orders-page{
+/* ========================================
+   Orders Page
+======================================== */
 
-    max-width:900px;
+.orders-page {
 
-    margin:40px auto;
+    width: min(92%, 900px);
 
-    padding:20px;
+    margin: 0 auto;
 
-}
+    padding: 60px 0 80px;
 
-.orders-title{
-
-    font-size:2rem;
-
-    margin-bottom:30px;
-
-    color:#222;
-
-    font-weight:700;
+    min-height: 100vh;
 
 }
 
-.orders-loading{
 
-    display:flex;
+/* ========================================
+   Page Title
+======================================== */
 
-    justify-content:center;
+.orders-title {
 
-    align-items:center;
+    margin: 0 0 32px;
 
-    height:50vh;
+    color: var(--text-primary);
 
-    font-size:1.2rem;
+    font-family: "Playfair Display", serif;
 
-    color:#666;
+    font-size: 2.3rem;
 
-}
+    font-weight: 600;
 
-.orders-empty{
-
-    display:flex;
-
-    flex-direction:column;
-
-    justify-content:center;
-
-    align-items:center;
-
-    height:60vh;
-
-    text-align:center;
+    line-height: 1.2;
 
 }
 
-.orders-empty h2{
 
-    margin-bottom:15px;
+/* ========================================
+   Loading
+======================================== */
+
+.orders-loading {
+
+    min-height: 60vh;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
 
 }
 
-.orders-empty p{
 
-    color:#666;
+.orders-loading h2 {
 
-    font-size:1rem;
+    color: var(--text-primary);
+
+    font-family: "Playfair Display", serif;
+
+    font-size: 1.3rem;
+
+    font-weight: 600;
+
+}
+
+
+/* ========================================
+   Empty Orders
+======================================== */
+
+.orders-empty {
+
+    min-height: 60vh;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 40px 20px;
+
+    text-align: center;
+
+}
+
+
+.orders-empty h2 {
+
+    margin: 0 0 12px;
+
+    color: var(--text-primary);
+
+    font-family: "Playfair Display", serif;
+
+    font-size: 1.5rem;
+
+    font-weight: 600;
+
+}
+
+
+.orders-empty p {
+
+    margin: 0;
+
+    color: var(--text-primary);
+
+    font-size: .9rem;
+
+    line-height: 1.7;
+
+}
+
+
+/* ========================================
+   Mobile
+======================================== */
+
+@media (max-width: 768px) {
+
+    .orders-page {
+
+        width: 100%;
+
+        padding: 40px 16px 60px;
+
+    }
+
+
+    .orders-title {
+
+        margin-bottom: 24px;
+
+        font-size: 1.7rem;
+
+    }
+
+
+    .orders-loading h2 {
+
+        font-size: 1.1rem;
+
+    }
+
+
+    .orders-empty {
+
+        min-height: 55vh;
+
+        padding: 30px 16px;
+
+    }
+
+
+    .orders-empty h2 {
+
+        font-size: 1.3rem;
+
+    }
+
+
+    .orders-empty p {
+
+        font-size: .82rem;
+
+    }
 
 }

@@ -1,12 +1,16 @@
 .order-item {
 
     display: flex;
+
     justify-content: space-between;
+
     align-items: center;
+
+    gap: 16px;
 
     padding: 14px 0;
 
-    border-bottom: 1px solid #ececec;
+    border-bottom: 1px solid var(--border-strong);
 
 }
 
@@ -16,32 +20,87 @@
 
 }
 
+
+/* ========================================
+   Product Details
+======================================== */
+
 .order-item-details h4 {
 
     margin: 0;
 
-    font-size: 1rem;
+    color: var(--text-primary);
 
-    color: #222;
+    font-size: .9rem;
+
+    font-weight: 600;
+
+    line-height: 1.4;
 
 }
 
 .order-item-details p {
 
-    margin-top: 6px;
+    margin: 5px 0 0;
 
-    color: #666;
+    color: var(--text-primary);
 
     font-size: .9rem;
 
+    font-weight: 500;
+
 }
+
+
+/* ========================================
+   Price
+======================================== */
 
 .order-item-price {
 
-    font-size: 1rem;
+    flex-shrink: 0;
+
+    color: var(--gold-color);
+
+    font-family: "Playfair Display", serif;
+
+    font-size: 1.1rem;
 
     font-weight: 700;
 
-    color: #222;
+}
+
+
+/* ========================================
+   Mobile
+======================================== */
+
+@media (max-width: 600px) {
+
+    .order-item {
+
+        padding: 12px 0;
+
+        gap: 10px;
+
+    }
+
+    .order-item-details h4 {
+
+        font-size: .82rem;
+
+    }
+
+    .order-item-details p {
+
+        font-size: .7rem;
+
+    }
+
+    .order-item-price {
+
+        font-size: .9rem;
+
+    }
 
 }

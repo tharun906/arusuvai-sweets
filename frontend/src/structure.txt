@@ -265,3 +265,39 @@ OUT_FOR_DELIVERY
 DELIVERED
 
 In the next step, we'll make the dropdown intelligent so it only shows valid next statuses based on the current order state. That provides a much better user experience and enforces the order lifecycle.
+
+
+
+Instead of styling pages one by one, we'll create reusable components.
+
+components/common
+
+├── Button ✅
+├── Input ⭐
+├── Card ⭐
+├── Badge ⭐
+├── Modal ⭐
+├── Drawer ⭐
+├── Loading ⭐
+├── Toast ⭐
+├── EmptyState
+└── ConfirmDialog ⭐
+
+
+update to date 
+✅ Navbar
+✅ Hero Banner
+✅ Feature Highlights
+✅ Category Section
+✅ Product Section
+✅ Product Card V1
+✅ Cart
+✅ Checkout
+
+⬜ Orders
+⬜ Order Details
+⬜ Profile
+⬜ Login/Register
+⬜ Footer
+⬜ Admin Dashboard
+⬜ Final Premium UI Polish

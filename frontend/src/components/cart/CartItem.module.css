@@ -1,0 +1,202 @@
+.card {
+
+    display: grid;
+
+    grid-template-columns: 110px minmax(0, 1fr) auto;
+
+    gap: 22px;
+
+    align-items: center;
+
+    padding: 18px;
+
+}
+
+
+/* ========================================
+   Product Image
+======================================== */
+
+.image {
+
+    width: 110px;
+
+    height: 110px;
+
+    object-fit: cover;
+
+    border-radius: var(--radius-md);
+
+    background: var(--surface-alt);
+
+    border: 1px solid var(--border-soft);
+
+}
+
+
+/* ========================================
+   Product Details
+======================================== */
+
+.details {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 7px;
+
+}
+
+
+.details h3 {
+
+    margin: 0;
+
+    color: var(--text-primary);
+
+    font-size: 1.05rem;
+
+    font-weight: 600;
+
+    line-height: 1.35;
+
+}
+
+
+.weight {
+
+    width: max-content;
+
+    padding: 5px 11px;
+
+    border: 1px solid var(--border-soft);
+
+    border-radius: var(--radius-pill);
+
+    background: var(--surface-alt);
+
+    color: var(--text-secondary);
+
+    font-size: .75rem;
+
+    font-weight: 500;
+
+}
+
+
+/* ========================================
+   Actions
+======================================== */
+
+.actions {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-end;
+
+    gap: 12px;
+
+}
+
+
+/* ========================================
+   Mobile
+======================================== */
+
+@media (max-width: 768px) {
+
+    .card {
+
+        grid-template-columns: 76px minmax(0, 1fr);
+
+        gap: 12px;
+
+        padding: 12px;
+
+    }
+
+    .image {
+
+        width: 76px;
+
+        height: 76px;
+
+        border-radius: 10px;
+
+    }
+
+    .details {
+
+        gap: 5px;
+
+    }
+
+    .details h3 {
+
+        font-size: .88rem;
+
+    }
+
+    .weight {
+
+        padding: 4px 8px;
+
+        font-size: .65rem;
+
+    }
+
+    .actions {
+
+        grid-column: 1 / -1;
+
+        width: 100%;
+
+        flex-direction: row;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        gap: 8px;
+
+        margin-top: 4px;
+
+    }
+
+}
+
+
+/* ========================================
+   Small Mobile
+======================================== */
+
+@media (max-width: 420px) {
+
+    .card {
+
+        grid-template-columns: 64px minmax(0, 1fr);
+
+        padding: 10px;
+
+    }
+
+    .image {
+
+        width: 64px;
+
+        height: 64px;
+
+    }
+
+    .details h3 {
+
+        font-size: .82rem;
+
+    }
+
+}

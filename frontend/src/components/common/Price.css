@@ -1,0 +1,65 @@
+.price {
+
+    display: inline-block;
+
+    color: var(--gold-color);
+
+    font-family: "Playfair Display", serif;
+
+    font-weight: 700;
+
+    line-height: 1;
+
+    letter-spacing: .2px;
+
+}
+
+
+/* ========================================
+   Sizes
+======================================== */
+
+.price-sm {
+
+    font-size:1rem;
+
+}
+
+.price-md {
+
+    font-size: 1.25rem;
+
+}
+
+.price-lg {
+
+    font-size: 1.6rem;
+
+}
+
+
+/* ========================================
+   Mobile
+======================================== */
+
+@media (max-width: 768px) {
+
+    .price-sm {
+
+        font-size: .9rem;
+
+    }
+
+    .price-md {
+
+        font-size: 1.1rem;
+
+    }
+
+    .price-lg {
+
+        font-size: 1.3rem;
+
+    }
+
+}

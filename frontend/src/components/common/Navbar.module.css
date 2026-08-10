@@ -1,55 +1,263 @@
 .navbar {
-    background: white;
+
     position: sticky;
+
     top: 0;
+
     z-index: 1000;
-    box-shadow: 0 2px 8px rgba(0,0,0,.08);
+
+    width: 100%;
+
+    background: var(--background-color);
+
+    border-bottom: 1px solid var(--border-strong);
+
 }
 
-.container{
-    max-width:1200px;
-    margin:auto;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:18px 20px;
+
+/* ========================================
+   Container
+======================================== */
+
+.container {
+
+    width: min(92%, var(--container-width));
+
+    min-height: 76px;
+
+    margin: 0 auto;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 32px;
+
 }
 
-.logo{
-    color:#7b1e22;
-    font-size:1.8rem;
-    font-weight:700;
+
+/* ========================================
+   Logo
+======================================== */
+
+.logo {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    text-decoration: none;
+
+    user-select: none;
+
+    flex-shrink: 0;
+
 }
 
-.navLinks{
-    display:flex;
-    gap:30px;
-    list-style:none;
+
+.logoImage {
+
+    width: 40px;
+
+    height: 40px;
+
+    object-fit: contain;
+
 }
 
-.navLinks a{
-    text-decoration:none;
-    color:#333;
-    font-weight:500;
+
+.logoText {
+
+    display: flex;
+
+    align-items: baseline;
+
+    gap: 6px;
+
 }
 
-.navLinks a:hover{
-    color:#7b1e22;
+
+.logoPrimary {
+
+    color: var(--text-primary);
+
+    font-size: 1.25rem;
+
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+
 }
 
-.navLinks a.active{
-    color:#7b1e22;
-    font-weight:700;
+
+.logoSecondary {
+
+    color: var(--gold-color);
+
+    font-size: 1.25rem;
+
+    font-weight: 600;
+
+    letter-spacing: 1px;
+
 }
 
-.accountButton {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    color: inherit;
+
+/* ========================================
+   Navigation
+======================================== */
+
+.navigation {
+
+    display: flex;
+
+    align-items: center;
+
+}
+
+
+.navLinks {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 30px;
+
+    list-style: none;
+
+    margin: 0;
+
+    padding: 0;
+
+}
+
+
+.navLinks li {
+
+    display: flex;
+
+    align-items: center;
+
+}
+
+
+.navLinks a {
+
+    position: relative;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 8px 0;
+
+    color: var(--text-secondary);
+
+    text-decoration: none;
+
+    font-size: .9rem;
+
     font-weight: 500;
+
+    transition: var(--transition);
+
 }
+
+
+.navLinks a:hover {
+
+    color: var(--text-primary);
+
+}
+
+
+.navLinks a::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+
+    bottom: 0;
+
+    width: 0;
+
+    height: 2px;
+
+    background: var(--gold-color);
+
+    transition: width .25s ease;
+
+}
+
+
+.navLinks a:hover::after,
+
+.navLinks a.active::after {
+
+    width: 100%;
+
+}
+
+
+.navLinks a.active {
+
+    color: var(--gold-color);
+
+}
+
+
+/* ========================================
+   Cart
+======================================== */
+
+.cartLink {
+
+    display: inline-flex;
+
+    align-items: center;
+
+}
+
+
+.cartBadge {
+
+    min-width: 20px;
+
+    height: 20px;
+
+    padding: 0 5px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: var(--radius-pill);
+
+    background: var(--gold-color);
+
+    color: var(--background-color);
+
+    font-size: .68rem;
+
+    font-weight: 700;
+
+}
+
+
+/* ========================================
+   Account
+======================================== */
 
 .accountContainer {
 
@@ -57,48 +265,310 @@
 
 }
 
+
+.accountButton {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 9px 14px;
+
+    border: 1px solid var(--border-soft);
+
+    border-radius: var(--radius-pill);
+
+    background: var(--surface-color);
+
+    color: var(--text-primary);
+
+    font-size: .85rem;
+
+    font-weight: 500;
+
+    transition: var(--transition);
+
+}
+
+
+.accountButton:hover {
+
+    border-color: var(--gold-color);
+
+    color: var(--gold-color);
+
+    transform: none;
+
+}
+
+
+.arrow {
+
+    color: var(--gold-color);
+
+    font-size: .6rem;
+
+}
+
+
+/* ========================================
+   Login
+======================================== */
+
+.loginButton {
+
+    padding: 9px 20px;
+
+    border: 1px solid var(--gold-color);
+
+    border-radius: var(--radius-pill);
+
+    background: transparent;
+
+    color: var(--gold-color);
+
+    font-size: .85rem;
+
+    font-weight: 600;
+
+    transition: var(--transition);
+
+}
+
+
+.loginButton:hover {
+
+    background: var(--gold-color);
+
+    color: var(--background-color);
+
+    transform: none;
+
+}
+
+
+/* ========================================
+   Dropdown
+======================================== */
+
 .dropdownMenu {
 
     position: absolute;
 
-    top: 42px;
-
     right: 0;
 
-    width: 150px;
+    top: calc(100% + 10px);
 
-    background: white;
+    width: 180px;
 
-    border: 1px solid #ddd;
+    padding: 6px;
 
-    border-radius: 8px;
+    background: var(--surface-color);
 
-    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    border: 1px solid var(--border-soft);
 
-    z-index: 1000;
+    border-radius: var(--radius-md);
+
+    box-shadow: var(--shadow-md);
+
+    animation: dropdown .2s ease;
 
 }
+
 
 .dropdownItem {
 
     width: 100%;
 
-    padding: 12px;
-
-    background: white;
+    padding: 11px 13px;
 
     border: none;
 
-    cursor: pointer;
+    border-radius: var(--radius-sm);
+
+    background: transparent;
+
+    color: var(--text-secondary);
 
     text-align: left;
 
-    font-size: 14px;
+    font-family: inherit;
+
+    font-size: .85rem;
+
+    transition: var(--transition);
 
 }
 
+
 .dropdownItem:hover {
 
-    background: #f5f5f5;
+    background: var(--surface-hover);
+
+    color: var(--error-color);
+
+    transform: none;
+
+}
+
+
+/* ========================================
+   Animation
+======================================== */
+
+@keyframes dropdown {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(-6px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
+
+}
+
+
+/* ========================================
+   Tablet
+======================================== */
+
+@media (max-width: 900px) {
+
+    .container {
+
+        min-height: auto;
+
+        padding: 14px 0;
+
+        flex-direction: column;
+
+        gap: 14px;
+
+    }
+
+    .navLinks {
+
+        gap: 20px;
+
+        flex-wrap: wrap;
+
+        justify-content: center;
+
+    }
+
+}
+
+
+/* ========================================
+   Mobile
+======================================== */
+
+@media (max-width: 600px) {
+
+    .container {
+
+        width: 94%;
+
+        padding: 12px 0;
+
+    }
+
+    .logoImage {
+
+        width: 34px;
+
+        height: 34px;
+
+    }
+
+    .logoPrimary,
+
+    .logoSecondary {
+
+        font-size: 1rem;
+
+    }
+
+    .logoText {
+
+        gap: 4px;
+
+    }
+
+    .navLinks {
+
+        width: 100%;
+
+        gap: 12px;
+
+        justify-content: space-between;
+
+    }
+
+    .navLinks a {
+
+        font-size: .78rem;
+
+    }
+
+    .accountButton,
+
+    .loginButton {
+
+        padding: 7px 11px;
+
+        font-size: .75rem;
+
+    }
+
+}
+
+
+/* ========================================
+   Small Mobile
+======================================== */
+
+@media (max-width: 420px) {
+
+    .logoPrimary,
+
+    .logoSecondary {
+
+        font-size: .85rem;
+
+    }
+
+    .navLinks {
+
+        gap: 8px;
+
+    }
+
+    .navLinks a {
+
+        font-size: .7rem;
+
+    }
+
+    .cartBadge {
+
+        min-width: 17px;
+
+        height: 17px;
+
+        font-size: .6rem;
+
+    }
 
 }

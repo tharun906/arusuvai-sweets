@@ -1,0 +1,117 @@
+.badge {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 5px 11px;
+
+    border-radius: var(--radius-pill);
+
+    font-size: 13px;
+
+    line-height: 1;
+
+    font-weight: 500;
+
+    letter-spacing: .2px;
+
+    white-space: nowrap;
+
+    border: 1px solid transparent;
+
+}
+
+
+/* ========================================
+   Success
+======================================== */
+
+.badge-success {
+
+    background: var(--success-background);
+
+    color: var(--success-color);
+
+    border-color: rgba(111, 214, 168, .18);
+
+}
+
+
+/* ========================================
+   Warning
+======================================== */
+
+.badge-warning {
+
+    background: var(--warning-background);
+
+    color: var(--warning-color);
+
+    border-color: rgba(232, 196, 104, .18);
+
+}
+
+
+/* ========================================
+   Danger
+======================================== */
+
+.badge-danger {
+
+    background: var(--error-background);
+
+    color: var(--error-color);
+
+    border-color: rgba(240, 160, 160, .18);
+
+}
+
+
+/* ========================================
+   Info
+======================================== */
+
+.badge-info {
+
+    background: var(--info-background);
+
+    color: var(--info-color);
+
+    border-color: rgba(111, 184, 214, .18);
+
+}
+
+
+/* ========================================
+   Secondary
+======================================== */
+
+.badge-secondary {
+
+    background: var(--surface-alt);
+
+    color: var(--text-primary);
+
+    border-color: var(--border-soft);
+
+}
+
+
+/* ========================================
+   Mobile
+======================================== */
+
+@media (max-width: 768px) {
+
+    .badge {
+
+        padding: 4px 8px;
+
+        font-size: 12px;
+
+    }
+
+}

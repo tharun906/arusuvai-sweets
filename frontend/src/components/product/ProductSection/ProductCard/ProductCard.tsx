@@ -1,22 +1,48 @@
 import { useState } from "react";
 
+import Card from "../../../common/Card";
+
+import ProductImage from "./ProductImage";
+import ProductInfo from "./ProductInfo";
+import ProductActions from "./ProductActions";
+
 import styles from "./ProductCard.module.css";
-import type { Product } from "../../../../types/Product";
-import type { ProductWeight } from "../../../../types/CartItem";
+
 import { useCart } from "../../../../context/CartContext";
 
+import type { Product } from "../../../../types/Product";
+import type { ProductWeight } from "../../../../types/CartItem";
+import  sweetbox  from "../../../../assets/sweetbox.jpg";
+
 interface ProductCardProps {
+
     product: Product;
+
 }
 
-function ProductCard({ product }: ProductCardProps) {
+function ProductCard({
+
+    product,
+
+}: ProductCardProps) {
 
     const { addToCart } = useCart();
 
-    const [selectedWeight, setSelectedWeight] =
-        useState<ProductWeight>("250g");
+    const [
 
-    const [quantity, setQuantity] = useState(1);
+        selectedWeight,
+
+        setSelectedWeight,
+
+    ] = useState<ProductWeight>("250g");
+
+    const [
+
+        quantity,
+
+        setQuantity,
+
+    ] = useState(1);
 
     const isUnavailable = !product.active;
 
@@ -27,8 +53,55 @@ function ProductCard({ product }: ProductCardProps) {
         isUnavailable || isOutOfStock;
 
     const isLowStock =
+
         !isDisabled &&
-        product.currentStockKg <= product.lowStockAlertKg;
+
+        product.currentStockKg <=
+        product.lowStockAlertKg;
+
+    const getStatus = () => {
+
+        if (isUnavailable) {
+
+            return "UNAVAILABLE";
+
+        }
+
+        if (isOutOfStock) {
+
+            return "OUT_OF_STOCK";
+
+        }
+
+        if (isLowStock) {
+
+            return "LOW_STOCK";
+
+        }
+
+        return "AVAILABLE";
+
+    };
+
+    const getPrice = () => {
+
+        switch (selectedWeight) {
+
+            case "250g":
+
+                return product.price250g;
+
+            case "500g":
+
+                return product.price500g;
+
+            case "1kg":
+
+                return product.price1kg;
+
+        }
+
+    };
 
     const handleAddToCart = () => {
 
@@ -50,171 +123,37 @@ function ProductCard({ product }: ProductCardProps) {
 
     };
 
-    const getSelectedPrice = () => {
-
-        switch (selectedWeight) {
-
-            case "250g":
-                return product.price250g;
-
-            case "500g":
-                return product.price500g;
-
-            case "1kg":
-                return product.price1kg;
-
-        }
-
-    };
-
     return (
 
-        <div
-            className={`${styles.card} ${
-                isDisabled
-                    ? styles.outOfStockCard
-                    : ""
-            }`}
-        >
+        <Card className={styles.card}>
 
-            <img
-                src={product.imageUrl}
-                alt={product.name}
-                className={styles.image}
+            <ProductImage
+
+                imageUrl={sweetbox}
+
+                productName={product.name}
+
+                status={getStatus()}
+
             />
 
-            <h3>{product.name}</h3>
+            <ProductInfo
 
-            <p>{product.description}</p>
+                productName={product.name}
 
-            {
+                price={getPrice()}
 
-                isUnavailable ? (
+            />
 
-                    <p className={styles.outOfStock}>
+            <ProductActions
 
-                        🚫 Unavailable
+                selectedWeight={selectedWeight}
 
-                    </p>
+                quantity={quantity}
 
-                ) : isOutOfStock ? (
-
-                    <p className={styles.outOfStock}>
-
-                        ❌ Out of Stock
-
-                    </p>
-
-                ) : isLowStock ? (
-
-                    <p className={styles.lowStock}>
-
-                        ⚠️ Only {product.currentStockKg} kg left
-
-                    </p>
-
-                ) : (
-
-                    <p className={styles.available}>
-
-                        ✅ Available
-
-                    </p>
-
-                )
-
-            }
-
-            <h4>Choose Weight</h4>
-
-            <div className={styles.weightContainer}>
-
-                <label>
-
-                    <input
-                        type="radio"
-                        checked={selectedWeight === "250g"}
-                        onChange={() =>
-                            setSelectedWeight("250g")
-                        }
-                        disabled={isDisabled}
-                    />
-
-                    250g - ₹{product.price250g}
-
-                </label>
-
-                <label>
-
-                    <input
-                        type="radio"
-                        checked={selectedWeight === "500g"}
-                        onChange={() =>
-                            setSelectedWeight("500g")
-                        }
-                        disabled={isDisabled}
-                    />
-
-                    500g - ₹{product.price500g}
-
-                </label>
-
-                <label>
-
-                    <input
-                        type="radio"
-                        checked={selectedWeight === "1kg"}
-                        onChange={() =>
-                            setSelectedWeight("1kg")
-                        }
-                        disabled={isDisabled}
-                    />
-
-                    1 Kg - ₹{product.price1kg}
-
-                </label>
-
-            </div>
-
-            <div className={styles.quantity}>
-
-                <button
-                    disabled={isDisabled}
-                    onClick={() =>
-                        setQuantity((q) =>
-                            Math.max(1, q - 1)
-                        )
-                    }
-                >
-                    -
-                </button>
-
-                <span>{quantity}</span>
-
-                <button
-                    disabled={isDisabled}
-                    onClick={() =>
-                        setQuantity((q) => q + 1)
-                    }
-                >
-                    +
-                </button>
-
-            </div>
-
-            <h3>
-
-                ₹{getSelectedPrice()}
-
-            </h3>
-
-            <button
-                className={styles.cartButton}
-                onClick={handleAddToCart}
                 disabled={isDisabled}
-            >
 
-                {
+                buttonText={
 
                     isUnavailable
 
@@ -222,15 +161,21 @@ function ProductCard({ product }: ProductCardProps) {
 
                         : isOutOfStock
 
-                            ? "Out of Stock"
+                            ? "Out Of Stock"
 
                             : "Add To Cart"
 
                 }
 
-            </button>
+                onWeightChange={setSelectedWeight}
 
-        </div>
+                onQuantityChange={setQuantity}
+
+                onAddToCart={handleAddToCart}
+
+            />
+
+        </Card>
 
     );
 

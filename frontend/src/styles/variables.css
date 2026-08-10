@@ -1,52 +1,133 @@
 :root {
-  /* ========= Brand Colors ========= */
-  --primary-color: #7b1e1e;
-  --primary-hover: #641818;
 
-  --secondary-color: #d4af37;
-  --secondary-hover: #c29d2b;
+  /* ========================================
+     ARUSUVAI SWEETS
+     MIDNIGHT EMERALD DESIGN SYSTEM
+  ======================================== */
 
-  --accent-color: #4b7f52;
+
+  /* ========= Brand ========= */
+
+  --primary-color: #D4AF37;
+  --primary-hover: #E0BE4A;
+
+  --secondary-color: #1B6B58;
+  --secondary-hover: #237A65;
+
+  --accent-color: #D4AF37;
+
 
   /* ========= Background ========= */
-  --background-color: #faf6ef;
-  --surface-color: #ffffff;
+
+  --background-color: #072119;
+
+  --surface-color: #0F3A2E;
+
+  --surface-hover: #0A2C22;
+
+  --surface-alt: #0A2C22;
+
+  --deep-background: #04140F;
+
 
   /* ========= Text ========= */
-  --text-primary: #2f2a28;
-  --text-secondary: #6b645f;
-  --text-light: #ffffff;
+
+  --text-primary: #FDFBF7;
+
+  --text-secondary: #8FB3A6;
+
+  --text-light: #FDFBF7;
+
+  --text-dim: #5F7C71;
+
 
   /* ========= Border ========= */
-  --border-color: #e5ddd3;
+
+  --border-color: #2A5548;
+
+  --border-soft: #2A5548;
+
+  --border-strong: #1E4E3F;
+
+
+  /* ========= Gold ========= */
+
+  --gold-color: #D4AF37;
+
+  --gold-hover: #E0BE4A;
+
+  --gold-muted: #6E8F82;
+
 
   /* ========= Status ========= */
-  --success-color: #2e7d32;
-  --warning-color: #ed6c02;
-  --error-color: #d32f2f;
+
+  --success-color: #6FD6A8;
+
+  --success-background: #0F3D2E;
+
+
+  --warning-color: #E8C468;
+
+  --warning-background: #3D2F0F;
+
+
+  --error-color: #F33;
+
+  --error-background: #3A1414;
+
+
+  --info-color: #6FB8D6;
+
+  --info-background: #0F2C3D;
+
 
   /* ========= Shadow ========= */
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
-  --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.12);
-  --shadow-lg: 0 10px 28px rgba(0, 0, 0, 0.18);
 
-  /* ========= Border Radius ========= */
+  --shadow-sm:
+    0 2px 8px rgba(0, 0, 0, 0.18);
+
+  --shadow-md:
+    0 8px 24px rgba(0, 0, 0, 0.28);
+
+  --shadow-lg:
+    0 18px 40px rgba(0, 0, 0, 0.38);
+
+
+  /* ========= Radius ========= */
+
   --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 18px;
-  --radius-xl: 24px;
+
+  --radius-md: 14px;
+
+  --radius-lg: 20px;
+
+  --radius-xl: 28px;
+
+  --radius-pill: 999px;
+
 
   /* ========= Spacing ========= */
+
   --space-xs: 4px;
+
   --space-sm: 8px;
+
   --space-md: 16px;
+
   --space-lg: 24px;
+
   --space-xl: 40px;
+
   --space-xxl: 64px;
 
+
   /* ========= Container ========= */
-  --container-width: 1200px;
+
+  --container-width: 1280px;
+
 
   /* ========= Transition ========= */
-  --transition: all 0.3s ease;
+
+  --transition: all 0.25s ease;
+
 }

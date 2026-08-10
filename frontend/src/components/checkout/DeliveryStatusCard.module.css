@@ -1,0 +1,91 @@
+.card {
+    padding: 24px;
+}
+
+.card h2 {
+    margin: 0 0 20px;
+
+    color: var(--text-primary);
+
+    font-family: "Playfair Display", serif;
+
+    font-size: 1.3rem;
+
+    font-weight: 600;
+}
+
+.row {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 16px;
+
+    margin-bottom: 16px;
+}
+
+.row span {
+    color: var(--text-primary);
+
+    font-size: .95rem;
+
+    font-weight: 500;
+}
+
+.row strong {
+    color: var(--text-primary);
+
+    font-size: .9rem;
+
+    font-weight: 600;
+}
+
+.message {
+    margin: 18px 0 0;
+
+    padding-top: 16px;
+
+    border-top: 1px solid var(--border-strong);
+
+    color: var(--text-primary);
+
+    font-size: .85rem;
+
+    line-height: 1.7;
+}
+
+@media (max-width: 768px) {
+
+    .card {
+        padding: 18px;
+    }
+
+    .card h2 {
+        margin-bottom: 16px;
+
+        font-size: 1.15rem;
+    }
+
+    .row {
+        margin-bottom: 13px;
+    }
+
+    .row span {
+        font-size: .78rem;
+    }
+
+    .row strong {
+        font-size: .82rem;
+    }
+
+    .message {
+        margin-top: 14px;
+
+        padding-top: 14px;
+
+        font-size: .75rem;
+    }
+
+}

@@ -1,54 +1,88 @@
 import type { Category } from "../../../types/category";
+import Chip from "../../common/Chip";
+
 import styles from "./CategorySection.module.css";
 
 interface CategorySectionProps {
+
     categories: Category[];
+
     selectedCategoryId: number | null;
+
     onCategorySelect: (id: number | null) => void;
+
 }
 
 function CategorySection({
+
     categories,
+
     selectedCategoryId,
+
     onCategorySelect,
+
 }: CategorySectionProps) {
 
     return (
-        <section className={styles.categorySection}>
 
-            <h2>Shop By Category</h2>
+        <section className={styles.section}>
 
-            <div className={styles.categoryContainer}>
+            <h2 className={styles.title}>
 
-                <button
-                    className={
-                        selectedCategoryId === null
-                            ? styles.active
-                            : styles.categoryButton
-                    }
+                Shop By Category
+
+            </h2>
+
+            <div className={styles.chips}>
+
+                <Chip
+
+                    active={selectedCategoryId === null}
+
                     onClick={() => onCategorySelect(null)}
-                >
-                    All
-                </button>
 
-                {categories.map((category) => (
-                    <button
-                        key={category.id}
-                        className={
-                            selectedCategoryId === category.id
-                                ? styles.active
-                                : styles.categoryButton
-                        }
-                        onClick={() => onCategorySelect(category.id)}
-                    >
-                        {category.name}
-                    </button>
-                ))}
+                >
+
+                    All
+
+                </Chip>
+
+                {
+
+                    categories.map((category) => (
+
+                        <Chip
+
+                            key={category.id}
+
+                            active={
+
+                                selectedCategoryId === category.id
+
+                            }
+
+                            onClick={() =>
+
+                                onCategorySelect(category.id)
+
+                            }
+
+                        >
+
+                            {category.name}
+
+                        </Chip>
+
+                    ))
+
+                }
 
             </div>
 
         </section>
+
     );
+
 }
 
 export default CategorySection;

@@ -1,0 +1,124 @@
+.toast {
+    position: fixed;
+
+    top: 24px;
+    right: 24px;
+
+    min-width: 280px;
+    max-width: 420px;
+
+    padding: 13px 18px;
+
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+
+    font-size: .8rem;
+    font-weight: 500;
+    line-height: 1.4;
+
+    box-shadow:
+        0 14px 35px rgba(0, 0, 0, .35);
+
+    backdrop-filter: blur(10px);
+
+    animation: slideIn .3s ease;
+
+    z-index: 9999;
+}
+
+
+/* ========================================
+   Success
+======================================== */
+
+.toast-success {
+    background: var(--success-background);
+
+    color: var(--success-color);
+
+    border-color: rgba(111, 214, 168, .2);
+}
+
+
+/* ========================================
+   Error
+======================================== */
+
+.toast-error {
+    background: var(--error-background);
+
+    color: var(--error-color);
+
+    border-color: rgba(240, 160, 160, .2);
+}
+
+
+/* ========================================
+   Warning
+======================================== */
+
+.toast-warning {
+    background: var(--warning-background);
+
+    color: var(--warning-color);
+
+    border-color: rgba(232, 196, 104, .2);
+}
+
+
+/* ========================================
+   Info
+======================================== */
+
+.toast-info {
+    background: var(--info-background);
+
+    color: var(--info-color);
+
+    border-color: rgba(111, 184, 214, .2);
+}
+
+
+/* ========================================
+   Animation
+======================================== */
+
+@keyframes slideIn {
+
+    from {
+        opacity: 0;
+
+        transform: translateX(80px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform: translateX(0);
+    }
+
+}
+
+
+/* ========================================
+   Mobile
+======================================== */
+
+@media (max-width: 600px) {
+
+    .toast {
+        top: 16px;
+
+        right: 16px;
+        left: 16px;
+
+        min-width: 0;
+
+        max-width: none;
+
+        padding: 12px 15px;
+
+        font-size: .75rem;
+    }
+
+}

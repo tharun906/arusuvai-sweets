@@ -1,0 +1,27 @@
+
+
+.actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    padding: 0 16px 16px;
+
+    margin-top: auto;
+}
+
+/* ========================================
+   Mobile
+======================================== */
+
+@media (max-width: 768px) {
+
+    .actions {
+
+        gap: 9px;
+
+        padding: 2px 11px 11px;
+
+    }
+
+}

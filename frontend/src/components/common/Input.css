@@ -1,0 +1,148 @@
+.input-group {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+
+    margin-bottom: 18px;
+}
+
+
+/* ========================================
+   Label
+======================================== */
+
+.input-label {
+    color: var(--text-primary);
+
+    font-size: .8rem;
+
+    font-weight: 500;
+}
+
+.required {
+    margin-left: 4px;
+
+    color: var(--error-color);
+}
+
+
+/* ========================================
+   Input
+======================================== */
+
+.input {
+    width: 100%;
+
+    min-height: 42px;
+
+    padding: 10px 13px;
+
+    background: var(--surface-alt);
+
+    color: var(--text-primary);
+
+    border: 1px solid var(--border-soft);
+
+    border-radius: var(--radius-md);
+
+    outline: none;
+
+    font-family: inherit;
+
+    font-size: .82rem;
+
+    transition: var(--transition);
+}
+
+.input::placeholder {
+    color: var(--text-dim);
+}
+
+.input:hover {
+    border-color: var(--border-strong);
+}
+
+.input:focus {
+    border-color: var(--gold-color);
+
+    background: var(--surface-color);
+
+    box-shadow:
+        0 0 0 2px rgba(212, 175, 55, .10);
+}
+
+
+/* ========================================
+   Error
+======================================== */
+
+.input-error {
+    border-color: var(--error-color);
+}
+
+.input-error:focus {
+    border-color: var(--error-color);
+
+    box-shadow:
+        0 0 0 2px rgba(240, 160, 160, .10);
+}
+
+.error-text {
+    margin: 0;
+
+    color: var(--error-color);
+
+    font-size: .7rem;
+
+    line-height: 1.4;
+}
+
+
+/* ========================================
+   Disabled
+======================================== */
+
+.input:disabled {
+    background: var(--surface-deep);
+
+    color: var(--text-dim);
+
+    border-color: var(--border-soft);
+
+    cursor: not-allowed;
+
+    opacity: .7;
+}
+
+
+/* ========================================
+   Mobile
+======================================== */
+
+@media (max-width: 768px) {
+
+    .input-group {
+        gap: 6px;
+
+        margin-bottom: 15px;
+    }
+
+    .input-label {
+        font-size: .76rem;
+    }
+
+    .input {
+        min-height: 40px;
+
+        padding: 9px 12px;
+
+        font-size: .78rem;
+    }
+
+    .error-text {
+        font-size: .68rem;
+    }
+
+}

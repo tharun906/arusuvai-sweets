@@ -1,0 +1,157 @@
+.card {
+    padding: 24px;
+}
+
+.card h2 {
+    margin: 0 0 20px;
+
+    color: var(--text-primary);
+
+    font-family: "Playfair Display", serif;
+
+    font-size: 1.3rem;
+
+    font-weight: 600;
+}
+
+.options {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+.option {
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 16px;
+
+    padding: 16px;
+
+    border: 1px solid var(--border-soft);
+
+    border-radius: var(--radius-md);
+
+    background: var(--surface-alt);
+
+    color: var(--text-primary);
+
+    cursor: pointer;
+
+    transition: var(--transition);
+
+    text-align: left;
+}
+
+.option:hover {
+    border-color: var(--gold-color);
+
+    background: var(--surface-color);
+
+    transform: translateY(-1px);
+}
+
+.active {
+    border-color: var(--gold-color);
+
+    background: var(--surface-color);
+
+    box-shadow:
+        0 0 0 1px rgba(212, 175, 55, .12);
+}
+
+.icon {
+    width: 46px;
+
+    height: 46px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: 1px solid var(--border-soft);
+
+    border-radius: 12px;
+
+    background: var(--surface-color);
+
+    font-size: 1.25rem;
+}
+
+.active .icon {
+    border-color: var(--gold-color);
+
+    background: rgba(212, 175, 55, .08);
+}
+
+.option h3 {
+    margin: 0 0 4px;
+
+    color: var(--text-primary);
+
+    font-size: 1rem;
+
+    font-weight: 600;
+}
+
+.option p {
+    margin: 0;
+
+    color: var(--text-primary);
+
+    font-size: .85rem;
+
+    font-weight: 500;
+}
+
+
+/* ========================================
+   Mobile
+======================================== */
+
+@media (max-width: 768px) {
+
+    .card {
+        padding: 18px;
+    }
+
+    .card h2 {
+        margin-bottom: 16px;
+
+        font-size: 1.15rem;
+    }
+
+    .option {
+        gap: 12px;
+
+        padding: 13px;
+    }
+
+    .icon {
+        width: 40px;
+
+        height: 40px;
+
+        border-radius: 10px;
+
+        font-size: 1.05rem;
+    }
+
+    .option h3 {
+        font-size: .82rem;
+    }
+
+    .option p {
+        font-size: .68rem;
+    }
+
+}

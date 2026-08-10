@@ -1,174 +1,244 @@
-import { useCart } from "../../context/CartContext";
-import { useProducts } from "../../hooks/useProducts";
+import styles from "./cart.module.css";
+
 import { useNavigate } from "react-router-dom";
+
 import { ROUTES } from "../../constants/routes";
-import { useAuthContext } from "../../auth/context/AuthContext";
-import { useAccountModal } from "../../context/AccountModalContext";
 import { PendingAction } from "../../constants/PendingAction";
 
+import { useCart } from "../../context/CartContext";
+import { useProducts } from "../../hooks/useProducts";
+
+import { useAuthContext } from "../../auth/context/AuthContext";
+import { useAccountModal } from "../../context/AccountModalContext";
+
+import EmptyCart from "../../components/cart/EmptyCart";
+import CartItem from "../../components/cart/CartItem";
+import CartSummary from "../../components/cart/CartSummary";
+
 function Cart() {
-    const { cartItems, increaseQuantity, decreaseQuantity, removeFromCart } = useCart();
-    const { products, loading } = useProducts();
-    const { isLoggedIn } = useAuthContext();
-    const {  openModal, setPendingAction } = useAccountModal();
+
+    const {
+
+        cartItems,
+
+        increaseQuantity,
+
+        decreaseQuantity,
+
+        removeFromCart,
+
+    } = useCart();
+
+    const {
+
+        products,
+
+        loading,
+
+    } = useProducts();
+
+    const {
+
+        isLoggedIn,
+
+    } = useAuthContext();
+
+    const {
+
+        openModal,
+
+        setPendingAction,
+
+    } = useAccountModal();
+
     const navigate = useNavigate();
-    if (loading) { return <h2>Loading...</h2>; }
 
-    const grandTotal = cartItems.reduce((total, item) => {
-        const product = products.find(
-            (p) => p.id === item.productId
-        );
+    if (loading) {
 
-        if (!product) {
-            return total;
-        }
+        return <>Loading...</>;
 
-        const price =
-            item.weight === "250g"
-                ? product.price250g
-                : item.weight === "500g"
-                ? product.price500g
-                : product.price1kg;
+    }
 
-        return total + price * item.quantity;
-    }, 0);
+    if (cartItems.length === 0) {
+
+        return <EmptyCart />;
+
+    }
+
+    const grandTotal = cartItems.reduce(
+
+        (total, item) => {
+
+            const product = products.find(
+
+                p => p.id === item.productId
+
+            );
+
+            if (!product) {
+
+                return total;
+
+            }
+
+            const price =
+
+                item.weight === "250g"
+
+                    ? product.price250g
+
+                    : item.weight === "500g"
+
+                        ? product.price500g
+
+                        : product.price1kg;
+
+            return total + price * item.quantity;
+
+        },
+
+        0
+
+    );
 
     const handleCheckout = () => {
 
         if (!isLoggedIn) {
-    
+
             setPendingAction(
+
                 PendingAction.CHECKOUT
+
             );
-    
+
             openModal();
-    
+
             return;
-    
+
         }
-    
-        navigate(ROUTES.CHECKOUT);
-    
+
+        navigate(
+
+            ROUTES.CHECKOUT
+
+        );
+
     };
 
     return (
-        <div>
 
-            <h1>Shopping Cart</h1>
+        <section className={styles.page}>
 
-            {cartItems.length === 0 ? (
+            <div className={styles.container}>
 
-                <p>Your cart is empty.</p>
+                <div className={styles.items}>
 
-            ) : (
+                    {
 
-                <>
-                    {cartItems.map((item) => {
+                        cartItems.map(item => {
 
-                        const product = products.find(
-                            (p) => p.id === item.productId
-                        );
+                            const product = products.find(
 
-                        if (!product) {
-                            return null;
-                        }
+                                p => p.id === item.productId
 
-                        const price =
-                            item.weight === "250g"
-                                ? product.price250g
-                                : item.weight === "500g"
-                                ? product.price500g
-                                : product.price1kg;
+                            );
 
-                        const subtotal = price * item.quantity;
+                            if (!product) {
 
-                        return (
+                                return null;
 
-                            <div
-                                key={`${item.productId}-${item.weight}`}
-                            >
+                            }
 
-                                <img
-                                    src={product.imageUrl}
-                                    alt={product.name}
-                                    width={150}
+                            const price =
+
+                                item.weight === "250g"
+
+                                    ? product.price250g
+
+                                    : item.weight === "500g"
+
+                                        ? product.price500g
+
+                                        : product.price1kg;
+
+                            return (
+
+                                <CartItem
+
+                                    key={`${item.productId}-${item.weight}`}
+
+                                    imageUrl={product.imageUrl}
+
+                                    productName={product.name}
+
+                                    weight={item.weight}
+
+                                    price={price}
+
+                                    quantity={item.quantity}
+
+                                    subtotal={price * item.quantity}
+
+                                    onIncrease={() =>
+
+                                        increaseQuantity(
+
+                                            item.productId,
+
+                                            item.weight
+
+                                        )
+
+                                    }
+
+                                    onDecrease={() =>
+
+                                        decreaseQuantity(
+
+                                            item.productId,
+
+                                            item.weight
+
+                                        )
+
+                                    }
+
+                                    onRemove={() =>
+
+                                        removeFromCart(
+
+                                            item.productId,
+
+                                            item.weight
+
+                                        )
+
+                                    }
+
                                 />
 
-                                <h2>{product.name}</h2>
+                            );
 
-                                <p>{product.description}</p>
+                        })
 
-                                <p>
-                                    <strong>Weight:</strong> {item.weight}
-                                </p>
+                    }
 
-                                <p>
-                                    <strong>Price:</strong> ₹{price}
-                                </p>
+                </div>
 
-                                <p>
-                                    <strong>Quantity:</strong> {item.quantity}
-                                </p>
+                <CartSummary
 
-                                <button
-                                    onClick={() =>
-                                        increaseQuantity(
-                                            item.productId,
-                                            item.weight
-                                        )
-                                    }
-                                >
-                                    +
-                                </button>
+                    total={grandTotal}
 
-                                <button
-                                    onClick={() =>
-                                        decreaseQuantity(
-                                            item.productId,
-                                            item.weight
-                                        )
-                                    }
-                                >
-                                    -
-                                </button>
+                    onCheckout={handleCheckout}
 
-                                <button
-                                    onClick={() =>
-                                        removeFromCart(
-                                            item.productId,
-                                            item.weight
-                                        )
-                                    }
-                                >
-                                    Remove
-                                </button>
+                />
 
-                                <p>
-                                    <strong>Subtotal:</strong> ₹{subtotal}
-                                </p>
+            </div>
 
-                                <hr />
+        </section>
 
-                            </div>
-
-                        );
-
-                    })}
-
-                    <h2>Grand Total: ₹{grandTotal}</h2>
-
-                    <button
-    onClick={handleCheckout}
->
-    Proceed To Checkout
-</button>
-
-                </>
-
-            )}
-
-        </div>
     );
+
 }
 
 export default Cart;

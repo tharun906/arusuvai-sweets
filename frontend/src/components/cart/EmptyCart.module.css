@@ -1,0 +1,124 @@
+.container {
+
+    min-height: 60vh;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 50px 20px;
+
+    background: var(--background-color);
+
+}
+
+
+.card {
+
+    width: 100%;
+
+    max-width: 500px;
+
+    padding: 42px 36px;
+
+    text-align: center;
+
+}
+
+
+.icon {
+
+    width: 72px;
+
+    height: 72px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin: 0 auto 20px;
+
+    border-radius: 50%;
+
+    background: var(--surface-alt);
+
+    border: 1px solid var(--border-soft);
+
+    font-size: 2.4rem;
+
+}
+
+
+.card h2 {
+
+    margin: 0 0 12px;
+
+    color: var(--text-primary);
+
+    font-family: "Playfair Display", serif;
+
+    font-size: 1.6rem;
+
+    font-weight: 600;
+
+}
+
+
+.card p {
+
+    margin: 0 0 28px;
+
+    color: var(--text-secondary);
+
+    line-height: 1.7;
+
+    font-size: .9rem;
+
+}
+
+
+@media (max-width: 768px) {
+
+    .container {
+
+        min-height: 55vh;
+
+        padding: 40px 16px;
+
+    }
+
+    .card {
+
+        padding: 30px 20px;
+
+    }
+
+    .icon {
+
+        width: 62px;
+
+        height: 62px;
+
+        font-size: 2rem;
+
+        margin-bottom: 16px;
+
+    }
+
+    .card h2 {
+
+        font-size: 1.35rem;
+
+    }
+
+    .card p {
+
+        font-size: .82rem;
+
+    }
+
+}
