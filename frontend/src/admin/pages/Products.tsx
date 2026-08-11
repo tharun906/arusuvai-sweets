@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useProducts } from "../../hooks/useProducts";
 import { useCreateProduct } from "../../hooks/useCreateProduct";
@@ -11,6 +11,8 @@ import "../styles/AdminProducts.css";
 import type { Product } from "../../types/Product";
 import { useUpdateProduct } from "../hooks/useUpdateProduct";
 import { useProductStatus } from "../hooks/useProductStatus";
+import Modal from "../../components/common/Modal";
+import Toast from "../../components/common/Toast";
 
 const EMPTY_PRODUCT: ProductRequest = {
 
@@ -45,6 +47,27 @@ function Products() {
         error,
 
     } = useProducts();
+
+    const [toast, setToast] = useState({
+        show: false,
+        message: "",
+        type: "success" as "success" | "error" | "warning" | "info",
+    });
+
+    useEffect(() => {
+
+        if (!toast.show) return;
+    
+        const timer = setTimeout(() => {
+            setToast((previous) => ({
+                ...previous,
+                show: false,
+            }));
+        }, 3000);
+    
+        return () => clearTimeout(timer);
+    
+    }, [toast.show]);
 
     const {
 
@@ -84,6 +107,8 @@ function Products() {
 
     ] = useState<ProductRequest>(EMPTY_PRODUCT);
 
+    const [showProductModal, setShowProductModal] = useState(false);
+
     const handleSubmit = async (
 
         request: ProductRequest
@@ -100,20 +125,28 @@ function Products() {
     
             );
     
-            alert("Product Updated Successfully");
+            setToast({
+                show: true,
+                message: "Product updated successfully.",
+                type: "success",
+            });
     
         } else {
     
             await saveProduct(request);
     
-            alert("Product Created Successfully");
+            setToast({
+                show: true,
+                message: "Product created successfully.",
+                type: "success",
+            });
     
         }
     
         setEditingProduct(null);
-    
         setForm(EMPTY_PRODUCT);
-    
+        setShowProductModal(false);
+        
         window.location.reload();
     
     };
@@ -131,6 +164,12 @@ function Products() {
     }
 
     return (
+        <>
+        <Toast
+            show={toast.show}
+            message={toast.message}
+            type={toast.type}
+        />
 
         <div className="admin-products-page">
 
@@ -140,29 +179,41 @@ function Products() {
 
             </h1>
 
-            <ProductForm
+            <button
+                className="add-product-btn"
+                onClick={() => {
+                    setEditingProduct(null);
+                    setForm(EMPTY_PRODUCT);
+                    setShowProductModal(true);
+                }}
+            >
+                + Add Product
+            </button>
 
-                initialValues={form}
-
-                buttonText={
-
-                    editingProduct
-                
-                        ? "Update Product"
-                
-                        : "Save Product"
-                
-                }
-
-                loading={
-
-                    saving || updating
-                
-                }
-
-                onSubmit={handleSubmit}
-
-            />
+            <Modal
+    open={showProductModal}
+    title={
+        editingProduct
+            ? "Edit Product"
+            : "Add Product"
+    }
+    onClose={() => {
+        setShowProductModal(false);
+        setEditingProduct(null);
+        setForm(EMPTY_PRODUCT);
+    }}
+>
+    <ProductForm
+        initialValues={form}
+        buttonText={
+            editingProduct
+                ? "Update Product"
+                : "Save Product"
+        }
+        loading={saving || updating}
+        onSubmit={handleSubmit}
+    />
+</Modal>
 
             <hr className="admin-products-divider" />
 
@@ -205,15 +256,15 @@ function Products() {
                             products.map((product) => (
 
                                 <tr
-    key={product.id}
-    className={
-        product.currentStockKg <= 0
-            ? "out-of-stock-row"
-            : product.currentStockKg <= product.lowStockAlertKg
-            ? "low-stock-row"
-            : ""
-    }
->
+                                    key={product.id}
+                                    className={
+                                        product.currentStockKg <= 0
+                                            ? "out-of-stock-row"
+                                            : product.currentStockKg <= product.lowStockAlertKg
+                                            ? "low-stock-row"
+                                            : ""
+                                    }
+                                >
 
                                     <td>
 
@@ -278,30 +329,24 @@ function Products() {
 <button
 
     onClick={() => {
-
         setEditingProduct(product);
 
-        setForm({
+setForm({
+    name: product.name,
+    description: product.description,
+    imageUrl: product.imageUrl,
+    price250g: product.price250g,
+    price500g: product.price500g,
+    price1kg: product.price1kg,
+    currentStockKg: product.currentStockKg,
+    lowStockAlertKg: product.lowStockAlertKg,
+    categoryId: product.categoryId,
+});
 
-            name: product.name,
-            description: product.description,
-            imageUrl: product.imageUrl,
-            price250g: product.price250g,
-            price500g: product.price500g,
-            price1kg: product.price1kg,
-            currentStockKg: product.currentStockKg,
-            lowStockAlertKg: product.lowStockAlertKg,
-            categoryId: product.categoryId,
+setShowProductModal(true);
 
-        });
 
-        window.scrollTo({
-
-            top: 0,
-
-            behavior: "smooth",
-
-        });
+       
 
     }}
 
@@ -356,6 +401,7 @@ function Products() {
             </div>
 
         </div>
+        </>
 
     );
 

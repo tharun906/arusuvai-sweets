@@ -1,3 +1,4 @@
+import "../styles/OrderStatusSelect.css";
 import { useState } from "react";
 
 interface OrderStatusSelectProps {
@@ -67,7 +68,7 @@ function OrderStatusSelect({
 
     return (
 
-        <div>
+       <div className="order-status-control">
 
             <select
 

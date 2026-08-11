@@ -1,14 +1,63 @@
-.payment-badge.paid {
-    background: #d4edda;
-    color: #155724;
+.payment-status-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-.payment-badge.failed {
-    background: #f8d7da;
-    color: #721c24;
+.payment-status-control select {
+    min-width: 120px;
+
+    padding: 8px 10px;
+
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+
+    background: var(--surface-color);
+    color: var(--text-primary);
+
+    font-family: inherit;
+    font-size: .75rem;
 }
 
-.payment-badge.refunded {
-    background: #fff3cd;
-    color: #856404;
+.payment-status-control select:focus {
+    outline: none;
+
+    border-color: var(--gold-color);
+
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, .12);
+}
+
+.payment-status-control button {
+    padding: 8px 11px;
+
+    border: none;
+    border-radius: var(--radius-md);
+
+    background: var(--primary-color);
+    color: white;
+
+    font-family: inherit;
+    font-size: .72rem;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.payment-status-control button:hover {
+    background: var(--primary-hover);
+}
+
+.payment-status-control button:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+    .payment-status-control {
+        gap: 6px;
+    }
+
+    .payment-status-control select {
+        min-width: 110px;
+    }
 }

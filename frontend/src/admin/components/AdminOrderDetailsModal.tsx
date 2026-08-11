@@ -87,78 +87,80 @@ function AdminOrderDetailsModal({
                     Ordered Items
 
                 </h3>
+                <div className="items-table-container">
 
-                <table className="items-table">
+                    <table className="items-table">
 
-                    <thead>
+                        <thead>
 
-                        <tr>
+                            <tr>
 
-                            <th>Product</th>
+                                <th>Product</th>
 
-                            <th>Weight</th>
+                                <th>Weight</th>
 
-                            <th>Qty</th>
+                                <th>Qty</th>
 
-                            <th>Price</th>
+                                <th>Price</th>
 
-                            <th>Total</th>
+                                <th>Total</th>
 
-                        </tr>
+                            </tr>
 
-                    </thead>
+                        </thead>
 
-                    <tbody>
+                        <tbody>
 
-                        {
+                            {
 
-                            order.items.map((item) => (
+                                order.items.map((item) => (
 
-                                <tr
+                                    <tr
 
-                                    key={`${item.productId}-${item.weight}`}
+                                        key={`${item.productId}-${item.weight}`}
 
-                                >
+                                    >
 
-                                    <td>
+                                        <td>
 
-                                        {item.productName}
+                                            {item.productName}
 
-                                    </td>
+                                        </td>
 
-                                    <td>
+                                        <td>
 
-                                        {item.weight}
+                                            {item.weight}
 
-                                    </td>
+                                        </td>
 
-                                    <td>
+                                        <td>
 
-                                        {item.quantity}
+                                            {item.quantity}
 
-                                    </td>
+                                        </td>
 
-                                    <td>
+                                        <td>
 
-                                        ₹{item.pricePerUnit}
+                                            ₹{item.pricePerUnit}
 
-                                    </td>
+                                        </td>
 
-                                    <td>
+                                        <td>
 
-                                        ₹{item.totalPrice}
+                                            ₹{item.totalPrice}
 
-                                    </td>
+                                        </td>
 
-                                </tr>
+                                    </tr>
 
-                            ))
+                                ))
 
-                        }
+                            }
 
-                    </tbody>
+                        </tbody>
 
-                </table>
+                    </table>
+                </div>
 
                 <div className="order-total">
 

@@ -1,22 +1,14 @@
 import { useEffect, useState } from "react";
-
 import { useCategories } from "../../hooks/useCategories";
-
 import type { ProductRequest } from "../../types/ProductRequest";
 import type { ProductFormProps } from "../types/ProductFormProps";
-
 import "../styles/ProductForm.css";
 
 function ProductForm({
-
     initialValues,
-
     buttonText,
-
     loading,
-
     onSubmit,
-
 }: ProductFormProps) {
 
     const { categories } = useCategories();
@@ -24,48 +16,25 @@ function ProductForm({
     const [form, setForm] =
         useState<ProductRequest>(initialValues);
 
-    const [nameError, setNameError] =
-        useState("");
-
-    const [categoryError, setCategoryError] =
-        useState("");
-
-    const [imageUrlError, setImageUrlError] =
-        useState("");
-
-    const [price250Error, setPrice250Error] =
-        useState("");
-
-    const [price500Error, setPrice500Error] =
-        useState("");
-
-    const [price1kgError, setPrice1kgError] =
-        useState("");
-
-    const [stockError, setStockError] =
-        useState("");
-
-    const [lowStockError, setLowStockError] =
-        useState("");
+    const [nameError, setNameError] = useState("");
+    const [categoryError, setCategoryError] = useState("");
+    const [imageUrlError, setImageUrlError] = useState("");
+    const [price250Error, setPrice250Error] = useState("");
+    const [price500Error, setPrice500Error] = useState("");
+    const [price1kgError, setPrice1kgError] = useState("");
+    const [stockError, setStockError] = useState("");
+    const [lowStockError, setLowStockError] = useState("");
 
     useEffect(() => {
-
         setForm(initialValues);
-
     }, [initialValues]);
 
     const handleChange = (
-
         event: React.ChangeEvent<
-
             HTMLInputElement |
-
             HTMLTextAreaElement |
-
             HTMLSelectElement
-
         >
-
     ) => {
 
         const { name, value } = event.target;
@@ -103,33 +72,21 @@ function ProductForm({
             case "lowStockAlertKg":
                 setLowStockError("");
                 break;
-
         }
 
-        setForm((previous) => ({
-
+        setForm(previous => ({
             ...previous,
-
             [name]:
-
                 name === "name" ||
-
                 name === "description" ||
-
                 name === "imageUrl"
-
                     ? value
-
                     : Number(value),
-
         }));
-
     };
 
     const handleSubmit = async (
-
         event: React.FormEvent
-
     ) => {
 
         event.preventDefault();
@@ -146,369 +103,336 @@ function ProductForm({
         let hasError = false;
 
         if (!form.name.trim()) {
-
-            setNameError("Product name is required.");
-
+            setNameError(
+                "Product name is required."
+            );
             hasError = true;
-
         }
 
         if (form.categoryId === 0) {
-
-            setCategoryError("Please select a category.");
-
+            setCategoryError(
+                "Please select a category."
+            );
             hasError = true;
-
         }
 
         if (!form.imageUrl.trim()) {
-
-            setImageUrlError("Image URL is required.");
-
+            setImageUrlError(
+                "Image URL is required."
+            );
             hasError = true;
-
         }
 
         if (form.price250g <= 0) {
-
-            setPrice250Error("Price must be greater than zero.");
-
+            setPrice250Error(
+                "Price must be greater than zero."
+            );
             hasError = true;
-
         }
 
         if (form.price500g <= 0) {
-
-            setPrice500Error("Price must be greater than zero.");
-
+            setPrice500Error(
+                "Price must be greater than zero."
+            );
             hasError = true;
-
         }
 
         if (form.price1kg <= 0) {
-
-            setPrice1kgError("Price must be greater than zero.");
-
+            setPrice1kgError(
+                "Price must be greater than zero."
+            );
             hasError = true;
-
         }
 
         if (form.currentStockKg < 0) {
-
-            setStockError("Stock cannot be negative.");
-
+            setStockError(
+                "Stock cannot be negative."
+            );
             hasError = true;
-
         }
 
         if (form.lowStockAlertKg < 0) {
-
-            setLowStockError("Low stock cannot be negative.");
-
+            setLowStockError(
+                "Low stock cannot be negative."
+            );
             hasError = true;
-
         }
 
-        if (hasError) {
-
-            return;
-
-        }
+        if (hasError) return;
 
         await onSubmit(form);
-
     };
 
     return (
 
-        <form onSubmit={handleSubmit}>
+        <form
+            className="product-form"
+            onSubmit={handleSubmit}
+        >
 
-            <h2>
+            {/* Product Name */}
 
-                {buttonText}
+            <div className="form-field">
 
-            </h2>
+                <label htmlFor="product-name">
+                    Product Name
+                </label>
 
-            <input
+                <input
+                    id="product-name"
+                    name="name"
+                    type="text"
+                    placeholder="Enter product name"
+                    value={form.name}
+                    onChange={handleChange}
+                />
 
-                name="name"
-
-                placeholder="Product Name"
-
-                value={form.name}
-
-                onChange={handleChange}
-
-            />
-
-            {
-
-                nameError && (
-
+                {nameError && (
                     <p className="error">
-
                         {nameError}
-
                     </p>
+                )}
 
-                )
+            </div>
 
-            }
 
-            <textarea
+            {/* Description */}
 
-                name="description"
+            <div className="form-field">
 
-                placeholder="Description"
+                <label htmlFor="product-description">
+                    Description
+                </label>
 
-                value={form.description}
+                <textarea
+                    id="product-description"
+                    name="description"
+                    placeholder="Enter product description"
+                    value={form.description}
+                    onChange={handleChange}
+                />
 
-                onChange={handleChange}
+            </div>
 
-            />
 
-            <input
+            {/* Image URL */}
 
-                name="imageUrl"
+            <div className="form-field">
 
-                placeholder="Image URL"
+                <label htmlFor="product-image">
+                    Image URL
+                </label>
 
-                value={form.imageUrl}
+                <input
+                    id="product-image"
+                    name="imageUrl"
+                    type="text"
+                    placeholder="Enter image URL"
+                    value={form.imageUrl}
+                    onChange={handleChange}
+                />
 
-                onChange={handleChange}
-
-            />
-
-            {
-
-                imageUrlError && (
-
+                {imageUrlError && (
                     <p className="error">
-
                         {imageUrlError}
-
                     </p>
+                )}
 
-                )
+            </div>
 
-            }
 
-            <select
+            {/* Category */}
 
-                name="categoryId"
+            <div className="form-field">
 
-                value={form.categoryId}
+                <label htmlFor="product-category">
+                    Category
+                </label>
 
-                onChange={handleChange}
+                <select
+                    id="product-category"
+                    name="categoryId"
+                    value={form.categoryId}
+                    onChange={handleChange}
+                >
 
-            >
+                    <option value={0}>
+                        Select Category
+                    </option>
 
-                <option value={0}>
-
-                    Select Category
-
-                </option>
-
-                {
-
-                    categories.map((category) => (
+                    {categories.map(category => (
 
                         <option
-
                             key={category.id}
-
                             value={category.id}
-
                         >
-
                             {category.name}
-
                         </option>
 
-                    ))
+                    ))}
 
-                }
+                </select>
 
-            </select>
-
-            {
-
-                categoryError && (
-
+                {categoryError && (
                     <p className="error">
-
                         {categoryError}
-
                     </p>
+                )}
 
-                )
+            </div>
 
-            }
 
-            <input
+            {/* 250g Price */}
 
-                type="number"
+            <div className="form-field">
 
-                name="price250g"
+                <label htmlFor="price-250">
+                    250g Price (₹)
+                </label>
 
-                placeholder="250g Price"
+                <input
+                    id="price-250"
+                    type="number"
+                    name="price250g"
+                    placeholder="Enter price for 250g"
+                    value={form.price250g}
+                    onChange={handleChange}
+                    min="0"
+                />
 
-                value={form.price250g}
-
-                onChange={handleChange}
-
-            />
-
-            {
-
-                price250Error && (
-
+                {price250Error && (
                     <p className="error">
-
                         {price250Error}
-
                     </p>
+                )}
 
-                )
+            </div>
 
-            }
 
-            <input
+            {/* 500g Price */}
 
-                type="number"
+            <div className="form-field">
 
-                name="price500g"
+                <label htmlFor="price-500">
+                    500g Price (₹)
+                </label>
 
-                placeholder="500g Price"
+                <input
+                    id="price-500"
+                    type="number"
+                    name="price500g"
+                    placeholder="Enter price for 500g"
+                    value={form.price500g}
+                    onChange={handleChange}
+                    min="0"
+                />
 
-                value={form.price500g}
-
-                onChange={handleChange}
-
-            />
-
-            {
-
-                price500Error && (
-
+                {price500Error && (
                     <p className="error">
-
                         {price500Error}
-
                     </p>
+                )}
 
-                )
+            </div>
 
-            }
 
-            <input
+            {/* 1kg Price */}
 
-                type="number"
+            <div className="form-field">
 
-                name="price1kg"
+                <label htmlFor="price-1kg">
+                    1kg Price (₹)
+                </label>
 
-                placeholder="1kg Price"
+                <input
+                    id="price-1kg"
+                    type="number"
+                    name="price1kg"
+                    placeholder="Enter price for 1kg"
+                    value={form.price1kg}
+                    onChange={handleChange}
+                    min="0"
+                />
 
-                value={form.price1kg}
-
-                onChange={handleChange}
-
-            />
-
-            {
-
-                price1kgError && (
-
+                {price1kgError && (
                     <p className="error">
-
                         {price1kgError}
-
                     </p>
+                )}
 
-                )
+            </div>
 
-            }
 
-            <input
+            {/* Current Stock */}
 
-                type="number"
+            <div className="form-field">
 
-                name="currentStockKg"
+                <label htmlFor="current-stock">
+                    Current Stock (kg)
+                </label>
 
-                placeholder="Current Stock"
+                <input
+                    id="current-stock"
+                    type="number"
+                    name="currentStockKg"
+                    placeholder="Enter current stock"
+                    value={form.currentStockKg}
+                    onChange={handleChange}
+                    min="0"
+                    step="0.01"
+                />
 
-                value={form.currentStockKg}
-
-                onChange={handleChange}
-
-            />
-
-            {
-
-                stockError && (
-
+                {stockError && (
                     <p className="error">
-
                         {stockError}
-
                     </p>
+                )}
 
-                )
+            </div>
 
-            }
 
-            <input
+            {/* Low Stock Alert */}
 
-                type="number"
+            <div className="form-field">
 
-                name="lowStockAlertKg"
+                <label htmlFor="low-stock">
+                    Low Stock Alert (kg)
+                </label>
 
-                placeholder="Low Stock Alert"
+                <input
+                    id="low-stock"
+                    type="number"
+                    name="lowStockAlertKg"
+                    placeholder="Enter low stock alert"
+                    value={form.lowStockAlertKg}
+                    onChange={handleChange}
+                    min="0"
+                    step="0.01"
+                />
 
-                value={form.lowStockAlertKg}
-
-                onChange={handleChange}
-
-            />
-
-            {
-
-                lowStockError && (
-
+                {lowStockError && (
                     <p className="error">
-
                         {lowStockError}
-
                     </p>
+                )}
 
-                )
+            </div>
 
-            }
+
+            {/* Save / Update */}
 
             <button
-
                 type="submit"
-
+                className="product-submit-btn"
                 disabled={loading}
-
             >
-
-                {
-
-                    loading
-
-                        ? "Saving..."
-
-                        : buttonText
-
-                }
-
+                {loading
+                    ? "Saving..."
+                    : buttonText}
             </button>
 
         </form>
-
     );
-
 }
 
 export default ProductForm;

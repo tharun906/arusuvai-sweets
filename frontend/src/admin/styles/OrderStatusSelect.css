@@ -1,0 +1,62 @@
+.order-status-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.order-status-control select,
+.payment-status-control select {
+    min-width: 145px;
+
+    padding: 8px 10px;
+
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+
+    background: var(--surface-color);
+    color: var(--text-primary);
+
+    font-family: inherit;
+    font-size: .75rem;
+
+    cursor: pointer;
+}
+
+.order-status-control select:focus,
+.payment-status-control select:focus {
+    outline: none;
+
+    border-color: var(--gold-color);
+
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, .12);
+}
+
+.order-status-control button,
+.payment-status-control button {
+    padding: 8px 11px;
+
+    border: 1px solid var(--primary-color);
+    border-radius: var(--radius-md);
+
+    background: var(--primary-color);
+    color: white;
+
+    font-family: inherit;
+    font-size: .72rem;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: var(--transition);
+}
+
+.order-status-control button:hover,
+.payment-status-control button:hover {
+    background: var(--primary-hover);
+}
+
+.order-status-control button:disabled,
+.payment-status-control button:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}

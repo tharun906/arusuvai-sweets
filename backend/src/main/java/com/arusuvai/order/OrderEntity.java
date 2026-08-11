@@ -37,6 +37,12 @@ public class OrderEntity {
     @Column(nullable = false)
     private PaymentStatus paymentStatus;
 
+    @Column(unique = true)
+    private String razorpayOrderId;
+
+    @Column(unique = true)
+    private String razorpayPaymentId;
+
     @Column(nullable = false, columnDefinition = "TEXT")
     private String deliveryAddress;
 

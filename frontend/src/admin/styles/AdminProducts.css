@@ -1,84 +1,183 @@
 .admin-products-page {
+    background: var(--surface-color);
 
-    background: white;
+    padding: 28px;
 
-    padding: 25px;
+    border: 1px solid var(--border-soft);
 
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
 
-    box-shadow: 0 2px 10px rgba(0,0,0,.08);
-
+    box-shadow: var(--shadow-sm);
 }
 
 .admin-products-title {
+    margin: 0 0 22px;
 
-    margin-bottom: 20px;
+    color: var(--text-primary);
 
-    color: #7b1e22;
+    font-size: 1.5rem;
 
+    font-weight: 700;
+}
+
+.add-product-btn {
+    margin-bottom: 24px;
+
+    padding: 11px 20px;
+
+    border: 1px solid var(--gold-color);
+
+    border-radius: var(--radius-md);
+
+    background: var(--gold-color);
+
+    color: var(--background-color);
+
+    font-family: inherit;
+
+    font-size: .85rem;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: var(--transition);
+}
+
+.add-product-btn:hover {
+    background: var(--gold-hover);
+
+    border-color: var(--gold-hover);
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 8px 20px rgba(212, 175, 55, .18);
 }
 
 .admin-products-table-container {
+    width: 100%;
 
     overflow-x: auto;
-
 }
 
 .admin-products-table {
-
     width: 100%;
 
     border-collapse: collapse;
 
+    min-width: 900px;
 }
 
 .admin-products-table thead {
-
-    background: #7b1e22;
+    background: var(--primary-color);
 
     color: white;
-
 }
 
 .admin-products-table th,
 .admin-products-table td {
-
     padding: 14px;
 
     text-align: left;
 
-    border-bottom: 1px solid #ececec;
+    border-bottom: 1px solid var(--border-soft);
 
+    font-size: .84rem;
+    color: var(--text-primary);
+}
+
+.admin-products-table th {
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+.admin-products-table tbody tr {
+    transition: var(--transition);
 }
 
 .admin-products-table tbody tr:hover {
-
-    background: #faf5f5;
-
+    background: var(--surface-alt);
 }
 
 .product-image {
+    width: 56px;
 
-    width: 70px;
-
-    height: 70px;
+    height: 56px;
 
     object-fit: cover;
 
-    border-radius: 8px;
+    border-radius: var(--radius-md);
 
-}
-
-.admin-products-divider {
-    margin: 30px 0;
-    border: none;
-    border-top: 1px solid #ddd;
+    border: 1px solid var(--border-soft);
 }
 
 .low-stock-row {
-    background: #fff8dc;
+    background: var(--warning-background);
 }
 
 .out-of-stock-row {
-    background: #ffe6e6;
+    background: var(--error-background);
+}
+
+/* ========================================
+   Table Buttons
+======================================== */
+
+.admin-products-table button {
+    margin-right: 6px;
+
+    padding: 7px 11px;
+
+    border: 1px solid var(--border-soft);
+
+    border-radius: var(--radius-md);
+
+    background: var(--surface-color);
+
+    color: var(--text-primary);
+
+    font-family: inherit;
+
+    font-size: .75rem;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: var(--transition);
+}
+
+.admin-products-table button:hover {
+    border-color: var(--gold-color);
+
+    color: var(--gold-color);
+}
+
+/* ========================================
+   Mobile
+======================================== */
+
+@media (max-width: 768px) {
+
+    .admin-products-page {
+        padding: 18px;
+
+        border-radius: var(--radius-md);
+    }
+
+    .admin-products-title {
+        font-size: 1.25rem;
+    }
+
+    .add-product-btn {
+        width: 100%;
+
+        padding: 12px;
+    }
+
+    .admin-products-table {
+        min-width: 850px;
+    }
+
 }

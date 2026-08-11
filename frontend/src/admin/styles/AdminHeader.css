@@ -1,0 +1,22 @@
+.admin-header {
+    height: 72px;
+    padding: 0 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: var(--surface-color);
+    border-bottom: 1px solid var(--border-color);
+
+    box-sizing: border-box;
+}
+
+.admin-header h2 {
+    margin: 0;
+
+    font-size: 1.4rem;
+    font-weight: 700;
+
+    color: var(--text-primary);
+}

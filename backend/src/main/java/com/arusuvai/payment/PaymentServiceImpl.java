@@ -5,6 +5,7 @@ import com.arusuvai.order.*;
 import com.razorpay.Order;
 import com.razorpay.RazorpayClient;
 import com.razorpay.RazorpayException;
+import org.springframework.transaction.annotation.Transactional;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import com.razorpay.Utils;
@@ -32,6 +33,10 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public PaymentResponseDTO createPaymentOrder(Long orderId, BigDecimal totalAmount){
         try {
+
+            OrderEntity order = orderRepository.findById(orderId)
+                    .orElseThrow(() ->
+                            new RuntimeException("Order not found"));
             // 2. Create Razorpay Client
             RazorpayClient razorpayClient = new RazorpayClient(razorpayProperties.getKeyId(), razorpayProperties.getKeySecret());
 
@@ -52,6 +57,9 @@ public class PaymentServiceImpl implements PaymentService {
             String razorpayOrderId = razorpayOrder.get("id");
             Integer razorpayAmount = ((Number) razorpayOrder.get("amount")).intValue();
             String currency = razorpayOrder.get("currency");
+
+            order.setRazorpayOrderId(razorpayOrderId);
+            orderRepository.save(order);
 
             // 6. Return Response to React
             return new PaymentResponseDTO(
@@ -91,10 +99,102 @@ public class PaymentServiceImpl implements PaymentService {
             //compares the regenerated signature with the received Razorpay signature.
             boolean isValid = Utils.verifyPaymentSignature(attributes, razorpayProperties.getKeySecret());
             if (!isValid) {throw new RuntimeException("Invalid Payment Signature");}
+
+            OrderEntity order = orderRepository.findById(request.getOrderId())
+                    .orElseThrow(() ->
+                            new RuntimeException("Order not found"));
+
+            if (!request.getRazorpayOrderId().equals(order.getRazorpayOrderId())) {
+                throw new RuntimeException("Razorpay Order does not match our Order");
+            }
+
+            order.setRazorpayPaymentId(request.getRazorpayPaymentId());
+            orderRepository.save(order);
+
             return orderService.confirmOrder(request.getOrderId());
 
         } catch (RazorpayException e) {
             throw new RuntimeException("Payment Verification Failed", e);
+        }
+    }
+
+    @Override
+    @Transactional
+    public OrderResponseDTO markPaymentFailed(Long orderId) {
+        OrderEntity order = orderRepository.findById(orderId)
+                .orElseThrow(() ->
+                        new RuntimeException("Order not found"));
+
+        // Already successfully paid.
+        // Never turn a paid order into FAILED.
+        if (order.getPaymentStatus() == PaymentStatus.PAID) {
+            return orderService.getOrderById(orderId);
+        }
+
+        order.setPaymentStatus(PaymentStatus.FAILED);
+        order.setOrderStatus(OrderStatus.CANCELLED);
+        orderRepository.save(order);
+
+        return orderService.getOrderById(orderId);
+    }
+
+    @Override
+    @Transactional
+    public void handleWebhook(String payload, String signature) {
+
+        try {
+            // 1. Verify webhook signature
+            boolean valid = Utils.verifyWebhookSignature(payload, signature, razorpayProperties.getWebhookSecret());
+
+            if (!valid) {
+                throw new RuntimeException("Invalid Razorpay Webhook Signature");
+            }
+
+            // 2. Parse the event
+            JSONObject webhook = new JSONObject(payload);
+
+            String event =
+                    webhook.getString("event");
+
+            // 3. We only process successful payments
+            if (!event.equals("payment.captured")
+                    && !event.equals("order.paid")) {
+
+                return;
+            }
+
+            JSONObject payment =
+                    webhook
+                            .getJSONObject("payload")
+                            .getJSONObject("payment")
+                            .getJSONObject("entity");
+
+            String razorpayOrderId =
+                    payment.getString("order_id");
+
+            String razorpayPaymentId =
+                    payment.getString("id");
+
+            // 4. Find our order using Razorpay Order ID
+            OrderEntity order =
+                    orderRepository.findByRazorpayOrderId(razorpayOrderId)
+                            .orElseThrow(() ->
+                                    new RuntimeException("Order not found for Razorpay Order ID")
+                            );
+
+            // 5. Save payment ID if not already saved
+            if (order.getRazorpayPaymentId() == null) {
+                order.setRazorpayPaymentId(razorpayPaymentId);
+
+                orderRepository.save(order);
+            }
+
+            // 6. confirmOrder() is already idempotent
+            // so stock cannot be reduced twice.
+            orderService.confirmOrder(order.getId());
+
+        } catch (Exception e) {
+            throw new RuntimeException("Razorpay Webhook Processing Failed", e);
         }
     }
 }

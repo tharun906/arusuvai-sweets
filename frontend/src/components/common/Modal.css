@@ -28,7 +28,9 @@
 .modal {
     width: min(92%, 600px);
 
-    max-height: 90vh;
+    max-height: 95vh;
+
+    overflow-y: auto;
 
     overflow: hidden;
 

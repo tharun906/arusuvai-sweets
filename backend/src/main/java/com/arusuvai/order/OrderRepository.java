@@ -22,4 +22,6 @@ public interface OrderRepository extends JpaRepository<OrderEntity,Long> {
         WHERE o.paymentStatus = com.arusuvai.order.PaymentStatus.PAID
     """)
         BigDecimal getTotalSales();
+
+    Optional<OrderEntity> findByRazorpayOrderId(String razorpayOrderId);
 }

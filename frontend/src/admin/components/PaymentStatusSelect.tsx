@@ -68,7 +68,7 @@ function PaymentStatusSelect({
     
     return (
     
-        <div>
+        <div className="payment-status-control">
     
             <select
     

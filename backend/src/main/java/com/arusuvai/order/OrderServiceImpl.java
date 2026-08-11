@@ -197,6 +197,9 @@ public class OrderServiceImpl implements OrderService {
     public OrderResponseDTO confirmOrder(Long orderId){
         OrderEntity order  = orderRepository.findById(orderId)
                 .orElseThrow(() ->new RuntimeException("order Not Found"));
+
+        if (order.getPaymentStatus() == PaymentStatus.PAID) {return mapToResponse(order);}
+
         order.setPaymentStatus(PaymentStatus.PAID);
         order.setOrderStatus(OrderStatus.PREPARING);
 

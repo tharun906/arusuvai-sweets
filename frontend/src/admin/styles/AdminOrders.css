@@ -1,122 +1,216 @@
 .admin-orders-page {
+    background: var(--surface-color);
 
-    background: white;
+    padding: 28px;
 
-    border-radius: 12px;
+    border: 1px solid var(--border-soft);
 
-    padding: 25px;
+    border-radius: var(--radius-lg);
 
-    box-shadow: 0 2px 10px rgba(0,0,0,.08);
-
+    box-shadow: var(--shadow-sm);
 }
 
 .admin-orders-title {
+    margin: 0 0 24px;
 
-    margin-bottom: 20px;
+    color: var(--text-primary);
 
-    color: #7b1e22;
-
+    font-size: 1.5rem;
+    font-weight: 700;
 }
 
 .admin-orders-table-container {
+    width: 100%;
 
     overflow-x: auto;
 
+    border: 1px solid var(--border-soft);
+
+    border-radius: var(--radius-md);
 }
 
 .admin-orders-table {
-
     width: 100%;
 
-    border-collapse: collapse;
+    min-width: 900px;
 
+    border-collapse: collapse;
 }
 
 .admin-orders-table thead {
-
-    background: #7b1e22;
+    background: var(--primary-color);
 
     color: white;
-
 }
 
-.admin-orders-table th,
-.admin-orders-table td {
-
-    padding: 14px;
+.admin-orders-table th {
+    padding: 14px 16px;
 
     text-align: left;
 
-    border-bottom: 1px solid #ececec;
+    font-size: .78rem;
+    font-weight: 600;
 
+    white-space: nowrap;
+}
+
+.admin-orders-table td {
+    padding: 14px 16px;
+
+    color: var(--text-primary);
+
+    font-size: .82rem;
+
+    border-bottom: 1px solid var(--border-soft);
+
+    white-space: nowrap;
+}
+
+.admin-orders-table tbody tr {
+    transition: var(--transition);
 }
 
 .admin-orders-table tbody tr:hover {
-
-    background: #faf5f5;
-
+    background: var(--surface-alt);
 }
 
-.status-badge {
-
-    background: #fff4d6;
-
-    color: #8a5b00;
-
-    padding: 6px 12px;
-
-    border-radius: 20px;
-
-    font-size: 13px;
-
-    font-weight: bold;
-
+.admin-orders-table tbody tr:last-child td {
+    border-bottom: none;
 }
 
-.payment-badge {
-
-    background: #dff7e5;
-
-    color: #0b7a35;
-
-    padding: 6px 12px;
-
-    border-radius: 20px;
-
-    font-size: 13px;
-
-    font-weight: bold;
-
-}
-
-.admin-orders-loading {
-
-    padding: 40px;
-
-    text-align: center;
-
-    font-size: 20px;
-
-}
+/* ========================================
+   View Button
+======================================== */
 
 .view-btn {
-
-    background: #059669;
-
-    color: white;
-
-    border: none;
-
     padding: 8px 14px;
 
-    border-radius: 6px;
+    border: 1px solid var(--gold-color);
+
+    border-radius: var(--radius-md);
+
+    background: var(--gold-color);
+
+    color: var(--background-color);
+
+    font-family: inherit;
+
+    font-size: .76rem;
+    font-weight: 700;
 
     cursor: pointer;
 
+    transition: var(--transition);
 }
 
 .view-btn:hover {
+    background: var(--gold-hover);
 
-    background: #047857;
+    border-color: var(--gold-hover);
+
+    transform: translateY(-1px);
+}
+
+/* ========================================
+   Status Badges
+======================================== */
+
+.status-badge,
+.payment-badge,
+.order-status-badge {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 6px 10px;
+
+    border-radius: 999px;
+
+    font-size: .7rem;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+/* Delivered */
+
+.order-status-badge.delivered {
+    background: var(--success-background);
+    border: 1px solid #D4AF37;
+    color: var(--success-color);
+}
+
+/* Payment */
+
+.payment-badge {
+    background: var(--warning-background);
+
+    color: var(--warning-color);
+}
+
+.payment-badge.paid {
+    background: var(--success-background);
+    border: 1px solid #D4AF37;
+    color: var(--success-color);
+}
+
+.payment-badge.failed {
+    background: var(--error-background);
+
+    color: var(--error-color);
+}
+
+.payment-badge.refunded {
+    background: var(--info-background);
+
+    color: var(--info-color);
+}
+
+/* ========================================
+   Loading
+======================================== */
+
+.admin-orders-loading {
+    min-height: 200px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    color: var(--text-secondary);
+
+    font-size: 1rem;
+}
+
+/* ========================================
+   Mobile
+======================================== */
+
+@media (max-width: 768px) {
+
+    .admin-orders-page {
+        padding: 18px;
+
+        border-radius: var(--radius-md);
+    }
+
+    .admin-orders-title {
+        font-size: 1.25rem;
+
+        margin-bottom: 18px;
+    }
+
+    .admin-orders-table-container {
+        border-radius: var(--radius-md);
+
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .admin-orders-table {
+        min-width: 900px;
+    }
 
 }
