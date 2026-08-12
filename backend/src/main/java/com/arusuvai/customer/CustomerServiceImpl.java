@@ -1,5 +1,6 @@
 package com.arusuvai.customer;
 
+import com.arusuvai.exception.ResourceNotFoundException;
 import com.arusuvai.product.ProductEntity;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +48,7 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerResponseDTO getCustomerById(Long id) {
 
         CustomerEntity customer = customerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
 
         return mapToResponse(customer);
     }
@@ -56,7 +57,7 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerResponseDTO updateCustomer(Long id, CustomerRequestDTO request) {
 
         CustomerEntity customer = customerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
 
         customer.setName(request.getName());
         customer.setPhoneNumber(request.getPhoneNumber());

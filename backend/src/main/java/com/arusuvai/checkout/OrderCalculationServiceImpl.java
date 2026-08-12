@@ -2,6 +2,8 @@ package com.arusuvai.checkout;
 
 import com.arusuvai.customer.CustomerEntity;
 import com.arusuvai.customer.CustomerRepository;
+import com.arusuvai.exception.BusinessException;
+import com.arusuvai.exception.ResourceNotFoundException;
 import com.arusuvai.order.OrderItemRequestDTO;
 import com.arusuvai.product.ProductEntity;
 import com.arusuvai.product.ProductRepository;
@@ -59,7 +61,7 @@ public class OrderCalculationServiceImpl  implements OrderCalculationService{
     public OrderCalculationResult calculateCheckout(CheckoutRequestDTO request){
 
         customerRepository.findById(request.getCustomerId())
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
 
         List<CalculatedOrderItem> calculatedItems = new ArrayList<>();
 
@@ -68,7 +70,7 @@ public class OrderCalculationServiceImpl  implements OrderCalculationService{
         for (OrderItemRequestDTO itemRequest : request.getItems()) {
 
             ProductEntity product = productRepository.findById(itemRequest.getProductId())
-                    .orElseThrow(() -> new RuntimeException("Product not found"));
+                    .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
             //old
 //            BigDecimal requestedWeight = switch (itemRequest.getWeight()) {
@@ -86,14 +88,14 @@ public class OrderCalculationServiceImpl  implements OrderCalculationService{
 
             //validate Stock
             if (product.getCurrentStockKg().compareTo(requiredStock) < 0) {
-                throw new RuntimeException(product.getName() + " does not have enough stock.");
+                throw new BusinessException(product.getName() + " does not have enough stock.");
             }
 
             BigDecimal pricePerUnit = switch (itemRequest.getWeight()) {
                 case "250g" -> product.getPrice250g();
                 case "500g" -> product.getPrice500g();
                 case "1kg" -> product.getPrice1kg();
-                default -> throw new RuntimeException("Invalid weight");
+                default -> throw new BusinessException("Invalid weight");
             };
 
             BigDecimal itemTotal =

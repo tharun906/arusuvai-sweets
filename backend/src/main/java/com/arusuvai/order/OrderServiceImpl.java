@@ -4,6 +4,8 @@ import com.arusuvai.checkout.*;
 import com.arusuvai.customer.CustomerEntity;
 import com.arusuvai.customer.CustomerRepository;
 import com.arusuvai.enums.DeliveryType;
+import com.arusuvai.exception.BusinessException;
+import com.arusuvai.exception.ResourceNotFoundException;
 import com.arusuvai.product.ProductEntity;
 import com.arusuvai.product.ProductRepository;
 import com.arusuvai.util.WeightConverter;
@@ -46,7 +48,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderResponseDTO createOrder(OrderRequestDTO request) {
 
         CustomerEntity customer = customerRepository.findById(request.getCustomerId())
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
 
         Optional<OrderEntity> existingOrder = orderRepository
                 .findFirstByCustomerIdAndPaymentStatusOrderByCreatedAtDesc(
@@ -196,7 +198,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public OrderResponseDTO confirmOrder(Long orderId){
         OrderEntity order  = orderRepository.findById(orderId)
-                .orElseThrow(() ->new RuntimeException("order Not Found"));
+                .orElseThrow(() ->new ResourceNotFoundException("order Not Found"));
 
         if (order.getPaymentStatus() == PaymentStatus.PAID) {return mapToResponse(order);}
 
@@ -209,7 +211,7 @@ public class OrderServiceImpl implements OrderService {
             BigDecimal stockTOReduce = orderedWeight.multiply(BigDecimal.valueOf(orderItem.getQuantity()));
             BigDecimal updatedStock  = product.getCurrentStockKg().subtract(stockTOReduce);
             if (updatedStock.compareTo(BigDecimal.ZERO) < 0) {
-                throw new RuntimeException(
+                throw new BusinessException(
                         product.getName() + " is out of stock."
                 );
             }
@@ -251,7 +253,7 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderResponseDTO> getOrdersByCustomerId(Long customerId) {
 
         customerRepository.findById(customerId)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
 
         List<OrderEntity> orders =
                 orderRepository.findByCustomerIdOrderByCreatedAtDesc(customerId);
@@ -267,7 +269,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderResponseDTO getOrderById(Long orderId) {
 
         OrderEntity order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new RuntimeException("Order not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
 
         return mapToResponse(order);
     }
@@ -300,7 +302,7 @@ public class OrderServiceImpl implements OrderService {
 
         OrderEntity order = orderRepository.findById(orderId)
                 .orElseThrow(() ->
-                        new RuntimeException("Order not found"));
+                        new ResourceNotFoundException("Order not found"));
 
         order.setOrderStatus(orderStatus);
         orderRepository.save(order);
@@ -313,7 +315,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderResponseDTO updatePaymentStatus(Long orderId, PaymentStatus paymentStatus) {
         OrderEntity order = orderRepository.findById(orderId)
                 .orElseThrow(() ->
-                        new RuntimeException("Order not found"));
+                        new ResourceNotFoundException("Order not found"));
 
         order.setPaymentStatus(paymentStatus);
         orderRepository.save(order);

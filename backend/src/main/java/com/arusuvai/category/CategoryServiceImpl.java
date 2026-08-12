@@ -1,5 +1,6 @@
 package com.arusuvai.category;
 
+import com.arusuvai.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class CategoryServiceImpl  implements CategoryService{
     @Override
     public void changeCategoryStatus(Long id, boolean active) {
         CategoryEntity category = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
 
         category.setActive(active);
         repository.save(category);

@@ -1,6 +1,8 @@
 package com.arusuvai.payment;
 
 import com.arusuvai.config.RazorpayProperties;
+import com.arusuvai.exception.BusinessException;
+import com.arusuvai.exception.ResourceNotFoundException;
 import com.arusuvai.order.*;
 import com.razorpay.Order;
 import com.razorpay.RazorpayClient;
@@ -36,7 +38,7 @@ public class PaymentServiceImpl implements PaymentService {
 
             OrderEntity order = orderRepository.findById(orderId)
                     .orElseThrow(() ->
-                            new RuntimeException("Order not found"));
+                            new ResourceNotFoundException("Order not found"));
             // 2. Create Razorpay Client
             RazorpayClient razorpayClient = new RazorpayClient(razorpayProperties.getKeyId(), razorpayProperties.getKeySecret());
 
@@ -98,14 +100,14 @@ public class PaymentServiceImpl implements PaymentService {
 
             //compares the regenerated signature with the received Razorpay signature.
             boolean isValid = Utils.verifyPaymentSignature(attributes, razorpayProperties.getKeySecret());
-            if (!isValid) {throw new RuntimeException("Invalid Payment Signature");}
+            if (!isValid) {throw new BusinessException("Invalid Payment Signature");}
 
             OrderEntity order = orderRepository.findById(request.getOrderId())
                     .orElseThrow(() ->
-                            new RuntimeException("Order not found"));
+                            new ResourceNotFoundException("Order not found"));
 
             if (!request.getRazorpayOrderId().equals(order.getRazorpayOrderId())) {
-                throw new RuntimeException("Razorpay Order does not match our Order");
+                throw new BusinessException("Razorpay Order does not match our Order");
             }
 
             order.setRazorpayPaymentId(request.getRazorpayPaymentId());
@@ -123,7 +125,7 @@ public class PaymentServiceImpl implements PaymentService {
     public OrderResponseDTO markPaymentFailed(Long orderId) {
         OrderEntity order = orderRepository.findById(orderId)
                 .orElseThrow(() ->
-                        new RuntimeException("Order not found"));
+                        new ResourceNotFoundException("Order not found"));
 
         // Already successfully paid.
         // Never turn a paid order into FAILED.
@@ -147,7 +149,7 @@ public class PaymentServiceImpl implements PaymentService {
             boolean valid = Utils.verifyWebhookSignature(payload, signature, razorpayProperties.getWebhookSecret());
 
             if (!valid) {
-                throw new RuntimeException("Invalid Razorpay Webhook Signature");
+                throw new BusinessException("Invalid Razorpay Webhook Signature");
             }
 
             // 2. Parse the event
@@ -179,7 +181,7 @@ public class PaymentServiceImpl implements PaymentService {
             OrderEntity order =
                     orderRepository.findByRazorpayOrderId(razorpayOrderId)
                             .orElseThrow(() ->
-                                    new RuntimeException("Order not found for Razorpay Order ID")
+                                    new ResourceNotFoundException("Order not found for Razorpay Order ID")
                             );
 
             // 5. Save payment ID if not already saved

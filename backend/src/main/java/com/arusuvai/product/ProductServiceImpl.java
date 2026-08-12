@@ -3,6 +3,8 @@ package com.arusuvai.product;
 
 import com.arusuvai.category.CategoryEntity;
 import com.arusuvai.category.CategoryRepository;
+import com.arusuvai.exception.BusinessException;
+import com.arusuvai.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -23,10 +25,10 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public ProductResponseDTO createProduct(ProductRequestDTO request){
         CategoryEntity category = categoryRepository.findById(request.getCategoryId())
-                .orElseThrow(()-> new RuntimeException("Category Not found"));
+                .orElseThrow(()-> new ResourceNotFoundException("Category Not found"));
 
         if (!category.isActive()) {
-            throw new RuntimeException("Category is inactive");
+            throw new BusinessException("Category is inactive");
         }
 
         ProductEntity product = new ProductEntity();
@@ -58,7 +60,7 @@ public class ProductServiceImpl implements ProductService{
     public ProductResponseDTO getProductById(Long id) {
 
         ProductEntity product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
         return mapToResponse(product);
     }
@@ -67,13 +69,13 @@ public class ProductServiceImpl implements ProductService{
     public ProductResponseDTO updateProduct(Long id, ProductRequestDTO request) {
 
         ProductEntity product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
         CategoryEntity category = categoryRepository.findById(request.getCategoryId())
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
 
         if (!category.isActive()) {
-            throw new RuntimeException("Category is inactive");
+            throw new BusinessException("Category is inactive");
         }
 
         product.setName(request.getName());
@@ -94,7 +96,7 @@ public class ProductServiceImpl implements ProductService{
     public void changeProductStatus(Long id, boolean active) {
 
         ProductEntity product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
         product.setActive(active);
         productRepository.save(product);
