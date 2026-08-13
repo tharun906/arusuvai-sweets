@@ -5,10 +5,7 @@ import styles from "./Checkout.module.css";
 
 import { ROUTES } from "../../constants/routes";
 
-import { PendingAction } from "../../constants/PendingAction";
-
 import { useAuthContext } from "../../auth/context/AuthContext";
-import { useAccountModal } from "../../context/AccountModalContext";
 import { useCart } from "../../context/CartContext";
 
 import { useCheckout } from "../../hooks/useCheckout";
@@ -21,12 +18,19 @@ import CheckoutItems from "../../components/checkout/CheckoutItems";
 import DeliveryStatusCard from "../../components/checkout/DeliveryStatusCard";
 import PaymentMethodCard from "../../components/checkout/PaymentMethodCard";
 import CheckoutSummaryCard from "../../components/checkout/CheckoutSummaryCard";
+import { PendingAction } from "../../constants/PendingAction";
+import { useAccountModal } from "../../context/AccountModalContext";
 
 function Checkout() {
 
     const navigate = useNavigate();
 
     const { customer } = useAuthContext();
+    const {
+        openModal,
+        setPendingAction
+    } = useAccountModal();
+    const [showPhoneConfirmation, setShowPhoneConfirmation] = useState(false);
 
     const { cartItems, clearCart } = useCart();
 
@@ -106,66 +110,45 @@ function Checkout() {
 
     }, [deliveryStatus]);
 
-    const handlePlaceOrder = async () => {
 
+    const handlePlaceOrder = () => {
+        setShowPhoneConfirmation(true);
+    };
+
+    const handleConfirmPhone = async () => {
+
+        setShowPhoneConfirmation(false);
+    
         const response = await createOrder({
-
             customerId: customer!.id,
-
             paymentMethod,
-
             items: cartItems,
-
         });
-
+    
         if (!response.paymentRequired) {
-
             clearCart();
-
             navigate(ROUTES.ORDERS);
-
             return;
-
         }
-
+    
         openRazorpay(
-
             response.payment!,
-
-            async (paymentResponse) => {
-
+            async paymentResponse => {
+    
                 await verifyPayment({
-
-                    orderId:
-
-                        response.payment!.orderId,
-
+                    orderId: response.payment!.orderId,
                     razorpayOrderId:
-
                         paymentResponse.razorpay_order_id,
-
                     razorpayPaymentId:
-
                         paymentResponse.razorpay_payment_id,
-
                     razorpaySignature:
-
                         paymentResponse.razorpay_signature,
-
                 });
-
+    
                 clearCart();
-
-                navigate(
-
-                    ROUTES.ORDERS
-
-                );
-
+                navigate(ROUTES.ORDERS);
             }
-
         );
-
     };
 
     if (loading) {
@@ -235,6 +218,50 @@ function Checkout() {
                 </div>
 
             </div>
+
+            {showPhoneConfirmation && (
+    <div className={styles.confirmOverlay}>
+        <div className={styles.confirmModal}>
+
+            <h3>Confirm Phone Number</h3>
+
+            <p>
+                Is this phone number correct?
+            </p>
+
+            <strong>
+                📱 {customer?.phoneNumber}
+            </strong>
+
+            <p className={styles.confirmInfo}>
+                Your order updates will be sent to this number.
+            </p>
+
+            <div className={styles.confirmActions}>
+
+                <button
+                    type="button"
+                    onClick={() => {
+                        setShowPhoneConfirmation(false);
+                        setPendingAction(PendingAction.CHECKOUT);
+                        openModal();
+                    }}
+                >
+                    Change Number
+                </button>
+
+                <button
+                    type="button"
+                    onClick={handleConfirmPhone}
+                >
+                    Yes, Continue to Payment
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+)}
 
         </section>
 

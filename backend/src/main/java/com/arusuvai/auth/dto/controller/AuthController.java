@@ -21,20 +21,14 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping("/send-otp")
-    public ResponseEntity<MessageResponse> sendOtp(@RequestBody PhoneLoginRequest request) {
-        return ResponseEntity.ok(authService.sendOtp(request));
-    }
+    @PostMapping("/check-phone")
+    public ResponseEntity<AuthResponse> checkPhone(
+            @Valid @RequestBody PhoneLoginRequest request) {
 
-    @PostMapping("/verify-otp")
-    public ResponseEntity<AuthResponse> verifyOtp(@Valid @RequestBody OtpVerifyRequest request) {
-        AuthResponse response = authService.verifyOtp(request);
-        if (!response.isSuccess()) {
-            return ResponseEntity.badRequest().body(response);
-        }
+        AuthResponse response = authService.checkPhone(request);
+
         return ResponseEntity.ok(response);
     }
-
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> registerCustomer(@Valid @RequestBody RegisterCustomerRequest request
     ) {

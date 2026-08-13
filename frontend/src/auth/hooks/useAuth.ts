@@ -1,6 +1,5 @@
 import { useState } from "react";
 import type { LoginRequest } from "../models/LoginRequest";
-import type { OtpVerifyRequest } from "../models/OtpVerifyRequest";
 import type { RegisterRequest } from "../models/RegisterRequest";
 import { authService } from "../services/authService";
 
@@ -8,27 +7,21 @@ export function useAuth() {
 
     const [loading, setLoading] = useState(false);
 
-    const sendOtp = async (request: LoginRequest) => {
+    const checkPhone = async (request: LoginRequest) => {
+
         setLoading(true);
 
         try {
-            return await authService.sendOtp(request);
+            return await authService.checkPhone(request);
         } finally {
             setLoading(false);
         }
     };
 
-    const verifyOtp = async (request: OtpVerifyRequest) => {
-        setLoading(true);
-        try {
-            return await authService.verifyOtp(request);
-        } finally { 
-            setLoading(false);
-        }
-    };
-
     const register = async (request: RegisterRequest) => {
+
         setLoading(true);
+
         try {
             return await authService.register(request);
         } finally {
@@ -37,10 +30,8 @@ export function useAuth() {
     };
 
     return {
-        loading,    
-        sendOtp,
-        verifyOtp,
+        loading,
+        checkPhone,
         register
     };
-
 }

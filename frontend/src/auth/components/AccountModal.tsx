@@ -30,9 +30,6 @@ function AccountModal({
 
     const [phoneNumber, setPhoneNumber] = useState("");
 
-    const [otpSent, setOtpSent] = useState(false);
-
-    const [otp, setOtp] = useState("");
 
     const [showRegistration, setShowRegistration] =
         useState(false);
@@ -78,7 +75,6 @@ const [pincode, setPincode] =
 
     const [phoneError, setPhoneError] = useState("");
 
-    const [otpError, setOtpError] = useState("");
 
     const [nameError, setNameError] = useState("");
 
@@ -115,21 +111,12 @@ const [pincodeError, setPincodeError] =
     const [locationMessage, setLocationMessage] =
         useState("");
 
-    // -----------------------------
+    // -----------------------------</span>
     // Hooks
     // -----------------------------
 
-    const {
+    const { checkPhone, register, loading } = useAuth();
 
-        sendOtp,
-
-        verifyOtp,
-
-        register,
-
-        loading
-
-    } = useAuth();
 
     const { login } = useAuthContext();
 
@@ -158,10 +145,6 @@ const [pincodeError, setPincodeError] =
 
         setPhoneNumber("");
     
-        setOtpSent(false);
-    
-        setOtp("");
-    
         setShowRegistration(false);
     
         setName("");
@@ -187,8 +170,6 @@ const [pincodeError, setPincodeError] =
         setLongitude(undefined);
     
         setPhoneError("");
-    
-        setOtpError("");
     
         setNameError("");
 
@@ -223,38 +204,6 @@ const [pincodeError, setPincodeError] =
     };
 
 
-    const handleSendOtp = async () => {
-
-        setPhoneError("");
-
-        if (!/^[6-9]\d{9}$/.test(phoneNumber)) {
-
-            setPhoneError(
-                "Enter a valid 10-digit mobile number."
-            );
-
-            return;
-
-        }
-
-        const response = await sendOtp({
-
-            phoneNumber
-
-        });
-
-        if (!response.success) {
-
-            alert(response.message);
-
-            return;
-
-        }
-
-        setOtpSent(true);
-
-    };
-
     const continuePendingAction = () => {
 
         switch (pendingAction) {
@@ -283,56 +232,32 @@ const [pincodeError, setPincodeError] =
     
     };
 
-    // ==========================================
-    // Verify OTP
-    // ==========================================
-
-    const handleVerifyOtp = async () => {
-
-        setOtpError("");
-
-        if (!/^\d{6}$/.test(otp)) {
-
-            setOtpError(
-                "Please enter a valid 6-digit OTP."
-            );
-
+    const handleContinue = async () => {
+        setPhoneError("");
+    
+        if (!/^[6-9]\d{9}$/.test(phoneNumber)) {
+            setPhoneError("Enter a valid 10-digit mobile number.");
             return;
-
         }
-
-        const response = await verifyOtp({
-
-            phoneNumber,
-
-            otp
-
-        });
-
+    
+        const response = await checkPhone({ phoneNumber });
+    
         if (!response.success) {
-
             alert(response.message);
-
             return;
-
         }
-
+    
         if (response.existingCustomer) {
-
             login(response.customer!);
-
             resetModal();
-            
             continuePendingAction();
-            
             return;
         }
-
+    
         setShowRegistration(true);
-
     };
 
-        // ==========================================
+    // ==========================================
     // Capture Current Location
     // ==========================================
 
@@ -547,147 +472,87 @@ const [pincodeError, setPincodeError] =
     return (
 
         <div className={styles.overlay}>
-
+    
             <div className={styles.modal}>
-
+    
                 <h2 className={styles.title}>
-
+    
                     Login / Register
-
+    
                 </h2>
-
+    
                 {
-
+    
                     // ==========================================
                     // Screen 1 : Phone Number
                     // ==========================================
-
-                    !otpSent ? (
-
+    
+                    !showRegistration ? (
+    
                         <>
-
+    
                             <input
-
+    
                                 className={styles.input}
-
+    
                                 value={phoneNumber}
-
+    
                                 onChange={(e) => {
-
+    
                                     setPhoneNumber(e.target.value);
-
+    
                                     setPhoneError("");
-
+    
                                 }}
-
+    
                                 placeholder="Enter Phone Number"
-
+    
+                                maxLength={10}
+    
                             />
-
+    
                             {phoneError && (
-
+    
                                 <p className={styles.errorText}>
-
+    
                                     {phoneError}
-
+    
                                 </p>
-
+    
                             )}
-
-                      
-
-                            <button
-
-                                className={styles.primaryButton}
-
-                                onClick={handleSendOtp}
-
-                                disabled={loading}
-
-                            >
-
-                                {
-
-                                    loading
-
-                                        ? "Sending..."
-
-                                        : "Send OTP"
-
-                                }
-
-                            </button>
-
-                        </>
-
-                    )
-
-                    // ==========================================
-                    // Screen 2 : OTP Verification
-                    // ==========================================
-
-                    : !showRegistration ? (
-
-                        <>
-
-                            <input
-
-                                className={styles.input}
-
-                                value={otp}
-
-                                onChange={(e) => {
-
-                                    setOtp(e.target.value);
-
-                                    setOtpError("");
-
-                                }}
-
-                                placeholder="Enter OTP"
-
-                            />
-
-                            {otpError && (
-
-                                <p className={styles.errorText}>
-
-                                    {otpError}
-
-                                </p>
-
-                            )}
-
+    
                             <p className={styles.infoText}>
-
-                                OTP is valid for 5 minutes.
-
+    
+                                ⚠️ Please make sure this number is correct.
+                                <br />
+                                We'll use it for your order updates.
+    
                             </p>
-
+    
                             <button
-
+    
                                 className={styles.primaryButton}
-
-                                onClick={handleVerifyOtp}
-
+    
+                                onClick={handleContinue}
+    
                                 disabled={loading}
-
+    
                             >
-
+    
                                 {
-
+    
                                     loading
-
-                                        ? "Verifying..."
-
-                                        : "Verify OTP"
-
+    
+                                        ? "Checking..."
+    
+                                        : "Continue"
+    
                                 }
-
+    
                             </button>
-
+    
                         </>
-
+    
                     )
 
                     // ==========================================
@@ -700,7 +565,7 @@ const [pincodeError, setPincodeError] =
 
                             <p className={styles.infoText}>
 
-                                Phone number verified successfully.
+                                Phone number confirmed successfully.
 
                                 <br />
 
