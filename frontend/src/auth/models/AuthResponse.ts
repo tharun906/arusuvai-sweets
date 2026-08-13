@@ -10,4 +10,6 @@ export interface AuthResponse {
 
     customer: LoginResponse | null;
 
+    token: string | null;
+
 }

@@ -16,4 +16,6 @@ public class AuthResponse {
     private boolean existingCustomer;
 
     private LoginResponse customer;
+
+    private String token;
 }

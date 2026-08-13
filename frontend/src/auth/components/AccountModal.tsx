@@ -248,7 +248,7 @@ const [pincodeError, setPincodeError] =
         }
     
         if (response.existingCustomer) {
-            login(response.customer!);
+            login(response.customer!,response.token!);
             resetModal();
             continuePendingAction();
             return;
@@ -461,7 +461,7 @@ const [pincodeError, setPincodeError] =
         }
 
         // Auto Login
-        login(response.customer!);
+        login(response.customer!, response.token!);
 
         resetModal();
 

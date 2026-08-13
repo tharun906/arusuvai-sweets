@@ -537,3 +537,36 @@ Find Customer by Phone Number
    Admin updates Payment
          ↓
    PAID
+
+
+
+
+
+
+
+   JWT Authentication
+
+   
+1. JwtService
+      ↓
+Create + validate JWT
+
+2. SecurityConfig
+      ↓
+   Configure Spring Security
+
+3. JwtAuthenticationFilter
+      ↓
+   Read JWT from Authorization header
+
+4. AuthService
+      ↓
+   Generate JWT after login
+
+5. UserDetailsService / authentication setup
+      ↓
+   Connect our CustomerEntity to Spring Security
+
+6. Role protection
+      ↓
+   ADMIN / CUSTOMER

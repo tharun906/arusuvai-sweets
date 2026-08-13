@@ -9,6 +9,7 @@ import com.arusuvai.auth.dto.response.LoginResponse;
 import com.arusuvai.customer.CustomerEntity;
 import com.arusuvai.customer.CustomerRepository;
 import com.arusuvai.enums.Role;
+import com.arusuvai.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import java.util.Optional;
 public class AuthService {
     private final CustomerRepository customerRepository;
     private final AuthMapper authMapper;
+    private final JwtService jwtService;
 
 
 
@@ -29,12 +31,17 @@ public class AuthService {
 
         if (existingCustomer.isPresent()) {
             LoginResponse loginResponse = authMapper.toLoginResponse(existingCustomer.get());
+            String token = jwtService.generateToken(
+                    existingCustomer.get().getId(),
+                    existingCustomer.get().getRole().name()
+            );
 
             return new AuthResponse(
                     false,
                     "Customer already exists",
                     true,
-                    loginResponse
+                    loginResponse,
+                    token
             );
         }
 
@@ -57,35 +64,41 @@ public class AuthService {
 
         customerRepository.save(customer);
 
-        LoginResponse loginResponse =
-                authMapper.toLoginResponse(customer);
+        LoginResponse loginResponse = authMapper.toLoginResponse(customer);
+        String token = jwtService.generateToken(
+                customer.getId(),
+                customer.getRole().name()
+        );
 
         return new AuthResponse(
                 true,
                 "Registration Successful",
                 true,
-                loginResponse
+                loginResponse,
+                token
         );
 
     }
 
     public AuthResponse checkPhone(PhoneLoginRequest request) {
 
-        Optional<CustomerEntity> customer =
-                customerRepository.findByPhoneNumber(
-                        request.getPhoneNumber()
-                );
+        Optional<CustomerEntity> customer = customerRepository.findByPhoneNumber(request.getPhoneNumber());
 
         if (customer.isPresent()) {
 
-            LoginResponse loginResponse =
-                    authMapper.toLoginResponse(customer.get());
+            LoginResponse loginResponse = authMapper.toLoginResponse(customer.get());
+
+            String token = jwtService.generateToken(
+                    customer.get().getId(),
+                    customer.get().getRole().name()
+            );
 
             return new AuthResponse(
                     true,
                     "Login Successful",
                     true,
-                    loginResponse
+                    loginResponse,
+                    token
             );
         }
 
@@ -93,6 +106,7 @@ public class AuthService {
                 true,
                 "Complete Register",
                 false,
+                null,
                 null
         );
     }

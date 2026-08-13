@@ -11,12 +11,16 @@ interface AuthContextType {
 
     customer: LoginResponse | null;
 
-    login: (customer: LoginResponse) => void;
+    token: string | null;
+
+    login: (
+        customer: LoginResponse,
+        token: string
+    ) => void;
 
     logout: (callback?: () => void) => void;
 
     isLoggedIn: boolean;
-
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(
@@ -24,86 +28,85 @@ const AuthContext = createContext<AuthContextType | undefined>(
 );
 
 interface AuthProviderProps {
-
     children: ReactNode;
-
 }
 
 export function AuthProvider({
-    children
-}: AuthProviderProps) {
+                                 children
+                             }: AuthProviderProps) {
 
     const [customer, setCustomer] =
-    useState<LoginResponse | null>(() => {
+        useState<LoginResponse | null>(() => {
 
-        const savedCustomer =
-            localStorage.getItem("customer");
+            const savedCustomer =
+                localStorage.getItem("customer");
 
-        if (savedCustomer) {
+            if (savedCustomer) {
+                return JSON.parse(savedCustomer);
+            }
 
-            return JSON.parse(savedCustomer);
+            return null;
+        });
 
-        }
+    const [token, setToken] =
+        useState<string | null>(() => {
 
-        return null;
+            return localStorage.getItem("token");
 
-    });
+        });
+
     const login = (
-        customer: LoginResponse
+        customer: LoginResponse,
+        token: string
     ) => {
-    
+
         setCustomer(customer);
-    
+        setToken(token);
+
         localStorage.setItem(
-    
             "customer",
-    
             JSON.stringify(customer)
-    
         );
-    
+
+        localStorage.setItem(
+            "token",
+            token
+        );
     };
 
     const logout = (
         callback?: () => void
     ) => {
-    
+
         setCustomer(null);
-    
+        setToken(null);
+
         localStorage.removeItem("customer");
-    
+        localStorage.removeItem("token");
+
         if (callback) {
-    
             callback();
-    
         }
-    
     };
 
     return (
 
         <AuthContext.Provider
-
             value={{
-
                 customer,
-
+                token,
                 login,
-
                 logout,
-
-                isLoggedIn: customer !== null
-
+                isLoggedIn:
+                    customer !== null &&
+                    token !== null
             }}
-
         >
 
             {children}
 
         </AuthContext.Provider>
-
     );
-
 }
 
 export function useAuthContext() {
@@ -113,13 +116,10 @@ export function useAuthContext() {
     if (!context) {
 
         throw new Error(
-
             "useAuthContext must be used inside AuthProvider"
-
         );
 
     }
 
     return context;
-
 }
