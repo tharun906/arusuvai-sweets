@@ -12,6 +12,8 @@ export interface Order {
 
     paymentStatus: string;
 
+    deliveryType: "LOCAL" | "COURIER";
+
     deliveryAddress: string;
 
     createdAt: string;

@@ -188,6 +188,7 @@ public class OrderServiceImpl implements OrderService {
                 order.getTotalAmount(),
                 order.getOrderStatus(),
                 order.getPaymentStatus(),
+                order.getDeliveryType(),
                 order.getDeliveryAddress(),
                 order.getCreatedAt(),
                 items
@@ -303,6 +304,22 @@ public class OrderServiceImpl implements OrderService {
         OrderEntity order = orderRepository.findById(orderId)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Order not found"));
+
+        DeliveryType deliveryType = order.getDeliveryType();
+
+        // LOCAL delivery cannot be marked as courier dispatched
+        if (deliveryType == DeliveryType.LOCAL
+                && orderStatus == OrderStatus.COURIER_DISPATCHED) {
+
+            throw new BusinessException("Local orders cannot be marked as courier dispatched");
+        }
+
+        // COURIER delivery cannot be marked as locally delivered
+        if (deliveryType == DeliveryType.COURIER
+                && orderStatus == OrderStatus.DELIVERED) {
+
+            throw new BusinessException("Courier orders cannot be marked as delivered");
+        }
 
         order.setOrderStatus(orderStatus);
         orderRepository.save(order);

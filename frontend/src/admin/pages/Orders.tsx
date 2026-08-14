@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import { useAdminOrders } from "../hooks/useAdminOrders";
 
 import "../styles/AdminOrders.css";
-import OrderStatusSelect from "../components/OrderStatusSelect";
 import PaymentStatusSelect from "../components/PaymentStatusSelect";
 import type { Order } from "../../types/Order";
 import AdminOrderDetailsModal from "../components/AdminOrderDetailsModal";
+import OrderStatusSelect from "../components/OrderStatusSelect";
 
 function Orders() {
 
@@ -116,6 +116,8 @@ function Orders() {
                                         orderId={order.orderId}
 
                                         currentStatus={order.orderStatus}
+
+                                        deliveryType={order.deliveryType}
 
                                         onUpdate={updateStatus}
 

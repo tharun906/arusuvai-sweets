@@ -250,6 +250,10 @@ const [pincodeError, setPincodeError] =
         if (response.existingCustomer) {
             login(response.customer!,response.token!);
             resetModal();
+            if (response.customer?.role === "ADMIN") {
+                navigate(ROUTES.ADMIN_DASHBOARD);
+                return;
+            }
             continuePendingAction();
             return;
         }

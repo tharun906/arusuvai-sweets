@@ -7,6 +7,8 @@ interface OrderStatusSelectProps {
 
     currentStatus: string;
 
+    deliveryType: "LOCAL" | "COURIER";
+
     onUpdate: (
         orderId: number,
         orderStatus: string
@@ -19,6 +21,8 @@ function OrderStatusSelect({
     orderId,
 
     currentStatus,
+
+    deliveryType,
 
     onUpdate,
 
@@ -37,11 +41,8 @@ function OrderStatusSelect({
         try {
 
             await onUpdate(
-
                 orderId,
-
                 status
-
             );
 
         } finally {
@@ -68,96 +69,97 @@ function OrderStatusSelect({
 
     return (
 
-       <div className="order-status-control">
+        <div className="order-status-control">
 
             <select
 
                 value={status}
 
                 onChange={(event) =>
-
                     setStatus(event.target.value)
-
                 }
 
             >
 
                 {
-
                     status === "PENDING_PAYMENT" && (
 
                         <>
 
                             <option value="PENDING_PAYMENT">
-
                                 PENDING_PAYMENT
-
                             </option>
 
                             <option value="PREPARING">
-
                                 PREPARING
-
                             </option>
 
                         </>
 
                     )
-
                 }
 
                 {
-
                     status === "PREPARING" && (
 
                         <>
 
                             <option value="PREPARING">
-
                                 PREPARING
-
                             </option>
 
-                            <option value="OUT_FOR_DELIVERY">
+                            {
+                                deliveryType === "LOCAL" ? (
 
-                                OUT_FOR_DELIVERY
+                                    <option value="OUT_FOR_DELIVERY">
+                                        OUT_FOR_DELIVERY
+                                    </option>
 
-                            </option>
+                                ) : (
+
+                                    <option value="COURIER_DISPATCHED">
+                                        COURIER_DISPATCHED
+                                    </option>
+
+                                )
+                            }
 
                         </>
 
                     )
-
                 }
 
                 {
-
                     status === "OUT_FOR_DELIVERY" && (
 
                         <>
 
                             <option value="OUT_FOR_DELIVERY">
-
                                 OUT_FOR_DELIVERY
-
                             </option>
 
                             <option value="DELIVERED">
-
                                 DELIVERED
-
                             </option>
 
                         </>
 
                     )
+                }
 
+                {
+                    status === "COURIER_DISPATCHED" && (
+
+                        <option value="COURIER_DISPATCHED">
+                            COURIER_DISPATCHED
+                        </option>
+
+                    )
                 }
 
             </select>
 
             {
-
                 status !== currentStatus && (
 
                     <button
@@ -169,20 +171,15 @@ function OrderStatusSelect({
                     >
 
                         {
-
                             loading
-
                                 ? "Updating..."
-
                                 : "Update"
-
                         }
 
                     </button>
 
                 )
-
-                }
+            }
 
         </div>
 
