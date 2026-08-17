@@ -4,7 +4,7 @@
 
     color: var(--gold-color);
 
-    font-family: "Playfair Display", serif;
+    font-family: var(--font-body);
 
     font-weight: 700;
 

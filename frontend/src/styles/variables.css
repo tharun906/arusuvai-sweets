@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
+
 :root {
 
   /* ========================================
@@ -34,7 +36,7 @@
 
   --text-primary: #FDFBF7;
 
-  --text-secondary: #8FB3A6;
+  --text-secondary: #FFFFFFB8;
 
   --text-light: #FDFBF7;
 
@@ -52,7 +54,7 @@
 
   /* ========= Gold ========= */
 
-  --gold-color: #D4AF37;
+  --gold-color: #FDCB13;
 
   --gold-hover: #E0BE4A;
 
@@ -129,5 +131,11 @@
   /* ========= Transition ========= */
 
   --transition: all 0.25s ease;
+
+  /* ========= Typography ========= */
+
+
+  --font-body: "Montserrat", sans-serif;
+
 
 }

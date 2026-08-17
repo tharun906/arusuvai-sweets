@@ -10,24 +10,35 @@ import {
     useRef,
     useEffect
 } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 
 function Navbar() {
+
     const { cartCount } = useCart();
     const { customer, logout } = useAuthContext();
     const { openModal } = useAccountModal();
     const navigate = useNavigate();
+
     const [showMenu, setShowMenu] = useState(false);
-    const dropdownRef = useRef<HTMLDivElement>(null);
+
+    const dropdownRef =
+        useRef<HTMLDivElement>(null);
 
     const handleLogout = () => {
+
         setShowMenu(false);
+
         logout(() => {
             navigate(ROUTES.HOME);
         });
+
     };
 
     useEffect(() => {
+
         const handleClickOutside = (event: MouseEvent) => {
+
             if (
                 dropdownRef.current &&
                 !dropdownRef.current.contains(
@@ -36,66 +47,255 @@ function Navbar() {
             ) {
                 setShowMenu(false);
             }
+
         };
-        document.addEventListener("mousedown",handleClickOutside);
-    
+
+        document.addEventListener(
+            "mousedown",
+            handleClickOutside
+        );
+
         return () => {
-            document.removeEventListener( "mousedown",handleClickOutside);
+
+            document.removeEventListener(
+                "mousedown",
+                handleClickOutside
+            );
+
         };
+
     }, []);
 
     return (
+
         <header className={styles.navbar}>
+
             <div className={styles.container}>
-            <h2 className={styles.logo}>
-                <img src={heartfulness} alt="Arusuvai" className={styles.logoImage}/>
-                <span className={styles.logoPrimary}> ARUSUVAI </span>
-                <span className={styles.logoSecondary}> SWEETS </span>
-            </h2>
-                <nav>
+
+                {/* BRAND */}
+
+                <h2 className={styles.logo}>
+
+                    <img
+                        src={heartfulness}
+                        alt="Arusuvai"
+                        className={styles.logoImage}
+                    />
+
+                    <span className={styles.logoPrimary}>
+                        ARUSUVAI
+                    </span>
+
+                    <span className={styles.logoSecondary}>
+                        SWEETS
+                    </span>
+
+                </h2>
+
+
+                {/* DESKTOP NAVIGATION */}
+
+                <nav className={styles.desktopNav}>
+
                     <ul className={styles.navLinks}>
+
                         <li>
-                        <NavLink to={ROUTES.HOME} onClick={() => setShowMenu(false)}>Home</NavLink>
-                        </li>
-                        <li>
-                            <NavLink to={ROUTES.ORDERS} onClick={() => setShowMenu(false)}>My Orders</NavLink>
+                            <NavLink
+                                to={ROUTES.HOME}
+                                onClick={() =>
+                                    setShowMenu(false)
+                                }
+                            >
+                                Home
+                            </NavLink>
                         </li>
 
                         <li>
-                        <NavLink to={ROUTES.CART} onClick={() => setShowMenu(false)}>🛒 Cart
-                             <span className={styles.cartBadge}>{cartCount}</span>
-                        </NavLink>
+                            <NavLink
+                                to={ROUTES.ORDERS}
+                                onClick={() =>
+                                    setShowMenu(false)
+                                }
+                            >
+                                My Orders
+                            </NavLink>
                         </li>
 
                         <li>
-                            {  customer ? 
-                                (<div ref={dropdownRef} className={styles.accountContainer}>
+                            <NavLink
+                                to={ROUTES.CART}
+                                onClick={() =>
+                                    setShowMenu(false)
+                                }
+                            >
+                                🛒 Cart
+                                <span className={styles.cartBadge}>
+                                    {cartCount}
+                                </span>
+                            </NavLink>
+                        </li>
 
-                                    <button className={styles.accountButton} onClick={() => setShowMenu(!showMenu)}>
+                        <li>
+
+                            {customer ? (
+
+                                <div
+                                    ref={dropdownRef}
+                                    className={styles.accountContainer}
+                                >
+
+                                    <button
+                                        className={styles.accountButton}
+                                        onClick={() =>
+                                            setShowMenu(!showMenu)
+                                        }
+                                    >
                                         👋 Hi {customer.name} ▼
                                     </button>
-                                    {                         
-                                        showMenu && (                          
-                                            <div className={styles.dropdownMenu}>                     
-                                                <button className={styles.dropdownItem} onClick={handleLogout}>
+
+                                    {showMenu && (
+
+                                        <div
+                                            className={
+                                                styles.dropdownMenu
+                                            }
+                                        >
+
+                                            <button
+                                                className={
+                                                    styles.dropdownItem
+                                                }
+                                                onClick={
+                                                    handleLogout
+                                                }
+                                            >
                                                 🚪 Logout
-                                                </button>
-                                            </div>
-                                        )
-                                    }
-                                </div>
-                                ) : (
-                                            <button className={styles.accountButton} onClick={openModal}>
-                                                Login
                                             </button>
-                                )
-                            }
+
+                                        </div>
+
+                                    )}
+
+                                </div>
+
+                            ) : (
+
+                                <button
+                                    className={
+                                        styles.accountButton
+                                    }
+                                    onClick={openModal}
+                                >
+                                    Login
+                                </button>
+
+                            )}
+
                         </li>
+
                     </ul>
+
                 </nav>
+
+
+                {/* MOBILE PROFILE */}
+
+                <div
+                    ref={dropdownRef}
+                    className={styles.mobileAccount}
+                >
+
+                    <button
+                        className={styles.mobileProfileButton}
+                        onClick={() =>
+                            setShowMenu(!showMenu)
+                        }
+                    >
+
+                        <FontAwesomeIcon icon={faUser} />
+
+                    </button>
+
+                    {showMenu && customer && (
+
+                        <div
+                            className={
+                                styles.mobileProfilePopup
+                            }
+                        >
+
+                            <div
+                                className={
+                                    styles.mobileCustomerName
+                                }
+                            >
+                                Hi {customer.name}
+                            </div>
+
+                            <button
+                                className={
+                                    styles.mobileLogout
+                                }
+                                onClick={handleLogout}
+                            >
+                                Logout
+                            </button>
+
+                        </div>
+
+                    )}
+
+                    {showMenu && !customer && (
+
+                        <div
+                            className={
+                                styles.mobileProfilePopup
+                            }
+                        >
+
+                            <button
+                                className={
+                                    styles.mobileLogin
+                                }
+                                onClick={openModal}
+                            >
+                                Login
+                            </button>
+
+                        </div>
+
+                    )}
+
+                </div>
+
             </div>
+
+
+            {/* MOBILE NAVIGATION */}
+
+            <nav className={styles.mobileNav}>
+
+                <NavLink to={ROUTES.HOME}>
+                    Home
+                </NavLink>
+
+                <NavLink to={ROUTES.ORDERS}>
+                    My Orders
+                </NavLink>
+
+                <NavLink to={ROUTES.CART}>
+                    🛒 Cart
+                    <span className={styles.cartBadge}>
+                        {cartCount}
+                    </span>
+                </NavLink>
+
+            </nav>
+
         </header>
+
     );
+
 }
 
 export default Navbar;
