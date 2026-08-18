@@ -31,24 +31,35 @@
 
 }
 
-/* Mobile */
 @media (max-width: 768px) {
 
     .card {
         width: 100%;
         max-width: none;
         margin: 0;
-        border-radius: 14px;
+        border-radius: 40px;
+        padding: 1px;
+        border: 2px solid #FDCB137A;
+
+
     }
 
 }
 
-/* Small mobile */
 @media (max-width: 480px) {
 
     .card {
         width: 100%;
-        max-width: none;
+        border-radius: 40px;
+        padding: 2px;
+        border: 1px solid #FDCB137A !important;
+
+
     }
 
+    .card:hover {
+        transform: translateY(-5px);
+        border-color: #fdca13ce !important;
+        box-shadow: var(--shadow-md);
+    }
 }

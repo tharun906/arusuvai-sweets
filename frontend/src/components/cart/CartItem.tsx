@@ -90,33 +90,29 @@ function CartItem({
 
             <div className={styles.actions}>
 
-            <CartQuantitySelector
-                value={quantity}
-                onIncrease={onIncrease}
-                onDecrease={onDecrease}
-            />
+                <CartQuantitySelector
+                    value={quantity}
+                    onIncrease={onIncrease}
+                    onDecrease={onDecrease}
+                />
+
+                <span className={styles.itemCount}>
+                    {quantity} Items
+                </span>
 
                 <Price
-
                     amount={subtotal}
-
                     size="lg"
-
                 />
 
                 <Button
-
                     variant="danger"
-
                     onClick={onRemove}
-
                 >
-
                     Remove
-
                 </Button>
 
-            </div>
+                </div>
 
         </Card>
 

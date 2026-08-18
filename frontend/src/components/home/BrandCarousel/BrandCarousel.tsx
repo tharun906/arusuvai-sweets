@@ -39,7 +39,7 @@ function BrandCarousel() {
                     : current + 1
             );
 
-        }, 5000);
+        }, 3000);
 
         return () => clearInterval(interval);
 

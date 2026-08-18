@@ -471,6 +471,34 @@
 
 @media (max-width: 480px) {
 
+    .content {
+        display: flex;
+        flex-direction: column;
+    }
+.content h2 {
+    font-size: 1.4rem;
+    line-height: 1.35;
+    margin: 0 auto;
+}
+
+.divider {
+    order: 2;
+    width: 220px;
+    margin: 12px auto 0;
+}
+    
+    .content p {
+        order: 3;
+    }
+    
+    .button {
+        order: 4;
+    }
+    
+    .features {
+        order: 5;
+    }
+
     .eyebrow {
         display: none;
     }

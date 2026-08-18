@@ -93,7 +93,8 @@
 
         gap: 7px;
 
-        margin: 6px 0;
+        margin-top: 0px;
+        margin-bottom: 6px;
 
     }
 
@@ -116,5 +117,7 @@
         font-size: .82rem;
 
     }
+
+    
 
 }

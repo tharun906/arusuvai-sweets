@@ -27,10 +27,24 @@ function OrderCard({ order }: OrderCardProps) {
 
                 <div className="status-container">
 
+                <div className="status-group">
+
+                    <span className="status-label">
+                        Payment :
+                    </span>
+
                     <span
                         className={`payment-status ${order.paymentStatus.toLowerCase()}`}
                     >
                         {order.paymentStatus}
+                    </span>
+
+                </div>
+
+                <div className="status-group">
+
+                    <span className="status-label">
+                        Delivery :
                     </span>
 
                     <span
@@ -38,6 +52,8 @@ function OrderCard({ order }: OrderCardProps) {
                     >
                         {order.orderStatus.replace("_", " ")}
                     </span>
+
+                </div>
 
                 </div>
 

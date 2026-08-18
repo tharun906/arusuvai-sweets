@@ -47,21 +47,22 @@
 
 }
 
-
 @media (max-width: 768px) {
 
     .imageContainer {
+        width: 100%;
+        aspect-ratio: 1 / 1.25;
+        margin: 0;
+    }
 
-        border-bottom: 1px solid var(--border-soft);
-
+    .image {
+        border-radius: 15px 15px 0 0 !important;
     }
 
     .badge {
-
-        top: 8px;
-
-        right: 8px;
-
+        top: 5px;
+        right: 5px;
+        font-size: .65rem;
     }
 
 }

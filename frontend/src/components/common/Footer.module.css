@@ -143,9 +143,6 @@
 }
 
 
-/* ========================================
-   Mobile
-======================================== */
 
 @media (max-width: 900px) {
 
@@ -174,27 +171,117 @@
     .contact {
         align-items: center;
     }
-
 }
+
+
+/* ========================================
+   Small Mobile
+======================================== */
 
 @media (max-width: 600px) {
 
     .footer {
-        margin-top: 70px;
+        margin-top: 50px;
     }
 
     .container {
-        padding: 38px 18px;
+        /*
+         * Brand = full width
+         * Links = 40%
+         * Contact = 60%
+         */
+        grid-template-columns: 2fr 3fr;
 
-        gap: 30px;
+        gap: 22px 8px;
+
+        padding: 30px 16px 28px;
+
+        text-align: center;
+    }
+
+
+    /* ====================================
+       Brand
+    ==================================== */
+
+    .brand {
+        grid-column: 1 / -1;
     }
 
     .brand h2 {
-        font-size: 1.3rem;
+        font-size: 1.25rem;
+
+        margin-bottom: 8px;
     }
 
     .brand p {
-        font-size: .76rem;
+        font-size: .72rem;
+
+        line-height: 1.5;
+
+        max-width: 280px;
+
+        margin: auto;
     }
 
+
+    /* ====================================
+       Quick Links - 40%
+    ==================================== */
+
+    .links {
+        align-items: center;
+
+        gap: 7px;
+
+        min-width: 0;
+    }
+
+    .links h3 {
+        margin-bottom: 3px;
+    }
+
+    .links a {
+        width: auto;
+
+        font-size: .82rem;
+    }
+
+
+    /* ====================================
+       Contact - 60%
+    ==================================== */
+
+    .contact {
+        align-items: center;
+
+        gap: 7px;
+
+        min-width: 0;
+    }
+
+    .contact h3 {
+        margin-bottom: 3px;
+    }
+
+    .contact p {
+        font-size: .78rem;
+
+        line-height: 1.4;
+
+        max-width: 100%;
+
+        overflow-wrap: anywhere;
+    }
+
+
+    /* ====================================
+       Copyright
+    ==================================== */
+
+    .bottom {
+        padding: 14px 12px;
+
+        font-size: .65rem;
+    }
 }

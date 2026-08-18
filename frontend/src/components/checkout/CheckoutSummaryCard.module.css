@@ -92,6 +92,8 @@
         margin-bottom: 18px;
 
         font-size: 1.15rem;
+
+        color: #fdcb13;
     }
 
     .row {
@@ -109,7 +111,7 @@
     }
 
     .total span {
-        font-size: .85rem;
+        font-size: .95rem;
     }
 
 }

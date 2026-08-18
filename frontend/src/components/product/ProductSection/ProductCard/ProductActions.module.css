@@ -17,11 +17,32 @@
 @media (max-width: 768px) {
 
     .actions {
-
-        gap: 9px;
-
-        padding: 2px 11px 11px;
-
+        gap: 5px;
+        padding: 0px 0px 0px;
     }
+
+    .actions button {
+        padding: 0px 6px;
+        font-size: .7rem;
+        border-radius: 40px;
+    }
+
+
+
+}
+
+@media (max-width: 480px) {
+
+    .actions {
+        gap: 5px;
+        padding: 0px 0px 0px;
+    }
+
+    .actions button {
+        padding: 0px 6px;
+        font-size: .6rem;
+        border-radius: 40px;
+    }
+
 
 }

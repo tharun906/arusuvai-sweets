@@ -96,7 +96,11 @@
         font-size: 1.15rem;
 
         margin-bottom: 14px;
+
+        color: #fdcb13 !important;
     }
+
+  
 
     .item {
         padding: 14px 0;
@@ -113,7 +117,7 @@
     }
 
     .right span {
-        font-size: .68rem;
+        font-size: .78rem;
     }
 
 }

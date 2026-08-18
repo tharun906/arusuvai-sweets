@@ -20,10 +20,16 @@ function Navbar() {
     const { openModal } = useAccountModal();
     const navigate = useNavigate();
 
+
+
+    const [cartUpdated, setCartUpdated] = useState(false);
     const [showMenu, setShowMenu] = useState(false);
 
-    const dropdownRef =
-        useRef<HTMLDivElement>(null);
+    const desktopDropdownRef =
+    useRef<HTMLDivElement>(null);
+
+const mobileDropdownRef =
+    useRef<HTMLDivElement>(null);
 
     const handleLogout = () => {
 
@@ -35,35 +41,80 @@ function Navbar() {
 
     };
 
+    const previousCartCount = useRef(cartCount);
+
+    useEffect(() => {
+
+        if (cartCount !== previousCartCount.current) {
+
+            setCartUpdated(true);
+
+            const timer = setTimeout(() => {
+                setCartUpdated(false);
+            }, 700);
+
+            previousCartCount.current = cartCount;
+
+            return () => clearTimeout(timer);
+        }
+
+    }, [cartCount]);
+
     useEffect(() => {
 
         const handleClickOutside = (event: MouseEvent) => {
-
+    
+            const target = event.target as Node;
+    
+            const clickedInsideDesktop =
+                desktopDropdownRef.current?.contains(target);
+    
+            const clickedInsideMobile =
+                mobileDropdownRef.current?.contains(target);
+    
             if (
-                dropdownRef.current &&
-                !dropdownRef.current.contains(
-                    event.target as Node
-                )
+                !clickedInsideDesktop &&
+                !clickedInsideMobile
             ) {
                 setShowMenu(false);
             }
-
+    
         };
-
+    
         document.addEventListener(
             "mousedown",
             handleClickOutside
         );
-
+    
         return () => {
-
+    
             document.removeEventListener(
                 "mousedown",
                 handleClickOutside
             );
-
+    
         };
+    
+    }, []);
 
+    useEffect(() => {
+
+        const handleScroll = () => {
+            setShowMenu(false);
+        };
+    
+        window.addEventListener(
+            "scroll",
+            handleScroll
+        );
+    
+        return () => {
+            window.removeEventListener(
+                "scroll",
+                handleScroll
+            );
+        };
+    
     }, []);
 
     return (
@@ -122,17 +173,16 @@ function Navbar() {
                         </li>
 
                         <li>
-                            <NavLink
-                                to={ROUTES.CART}
-                                onClick={() =>
-                                    setShowMenu(false)
-                                }
-                            >
-                                🛒 Cart
-                                <span className={styles.cartBadge}>
-                                    {cartCount}
-                                </span>
-                            </NavLink>
+                        <NavLink
+                            to={ROUTES.CART}
+                            className={`${cartUpdated ? styles.cartUpdated : ""}`}
+                            onClick={() => setShowMenu(false)}
+                        >
+                            🛒 Cart
+                            <span className={styles.cartBadge}>
+                                {cartCount}
+                            </span>
+                        </NavLink>
                         </li>
 
                         <li>
@@ -140,18 +190,18 @@ function Navbar() {
                             {customer ? (
 
                                 <div
-                                    ref={dropdownRef}
+                                    ref={desktopDropdownRef}
                                     className={styles.accountContainer}
                                 >
 
-                                    <button
-                                        className={styles.accountButton}
-                                        onClick={() =>
-                                            setShowMenu(!showMenu)
-                                        }
-                                    >
-                                        👋 Hi {customer.name} ▼
-                                    </button>
+                                <button
+                                    className={`${styles.accountButton} ${styles.loggedIn}`}
+                                    onClick={() =>
+                                        setShowMenu(!showMenu)
+                                    }
+                                >
+                                    👋 Hi {customer.name} ▼
+                                </button>
 
                                     {showMenu && (
 
@@ -181,9 +231,7 @@ function Navbar() {
                             ) : (
 
                                 <button
-                                    className={
-                                        styles.accountButton
-                                    }
+                                    className={`${styles.accountButton} ${styles.loggedOut}`}
                                     onClick={openModal}
                                 >
                                     Login
@@ -201,7 +249,7 @@ function Navbar() {
                 {/* MOBILE PROFILE */}
 
                 <div
-                    ref={dropdownRef}
+                    ref={mobileDropdownRef}
                     className={styles.mobileAccount}
                 >
 
@@ -212,7 +260,14 @@ function Navbar() {
                         }
                     >
 
-                        <FontAwesomeIcon icon={faUser} />
+                    <FontAwesomeIcon
+                        icon={faUser}
+                        className={
+                            customer
+                                ? styles.profileLoggedIn
+                                : styles.profileLoggedOut
+                        }
+                    />
 
                     </button>
 
@@ -283,7 +338,10 @@ function Navbar() {
                     My Orders
                 </NavLink>
 
-                <NavLink to={ROUTES.CART}>
+                <NavLink
+                    to={ROUTES.CART}
+                    className={cartUpdated ? styles.cartUpdated : ""}
+                >
                     🛒 Cart
                     <span className={styles.cartBadge}>
                         {cartCount}
