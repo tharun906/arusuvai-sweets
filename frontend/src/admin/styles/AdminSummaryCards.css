@@ -104,8 +104,8 @@
     }
 
     .summary-card h4 {
-        font-size: .72rem;
-
+        font-size: .75rem;
+        color: #fdcb13;        
         margin-bottom: 8px;
     }
 

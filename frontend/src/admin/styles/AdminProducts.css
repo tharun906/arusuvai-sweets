@@ -167,17 +167,26 @@
     }
 
     .admin-products-title {
-        font-size: 1.25rem;
+        font-size: 1rem;
     }
 
     .add-product-btn {
-        width: 100%;
-
-        padding: 12px;
+        font-size: .65rem;
+        padding: 10px;
     }
 
     .admin-products-table {
         min-width: 850px;
+    }
+
+    .admin-products-table td {
+        padding: 4px;
+        font-size: .75rem;
+    }
+
+    .admin-products-table th{
+        background: var(--primary-color);
+        font: 0.78rem;
     }
 
 }

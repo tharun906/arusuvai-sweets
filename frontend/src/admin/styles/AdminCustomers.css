@@ -83,7 +83,7 @@
 @media (max-width: 768px) {
 
     .admin-customers-page {
-        padding: 18px;
+        padding: 5px;
 
         border-radius: var(--radius-md);
     }
@@ -98,4 +98,12 @@
         min-width: 850px;
     }
 
+    .admin-customers-table td{
+        padding: 10px;
+
+        font-size: .75rem;
+    }
+    .admin-customers-table th{
+        font-size: 0.80rem;
+    }
 }
