@@ -1,5 +1,6 @@
 package com.arusuvai.auth.dto.controller;
 
+import com.arusuvai.auth.dto.GoogleLoginRequest;
 import com.arusuvai.auth.dto.OtpVerifyRequest;
 import com.arusuvai.auth.dto.PhoneLoginRequest;
 import com.arusuvai.auth.dto.RegisterCustomerRequest;
@@ -38,5 +39,14 @@ public class AuthController {
         }
         return ResponseEntity.ok(response);
 
+    }
+
+    @PostMapping("/google")
+    public ResponseEntity<AuthResponse> googleLogin(
+            @RequestBody GoogleLoginRequest request) {
+
+        AuthResponse response = authService.googleLogin(request);
+
+        return ResponseEntity.ok(response);
     }
 }

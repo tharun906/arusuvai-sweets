@@ -1,15 +1,21 @@
 package com.arusuvai.auth.dto.service;
 
 
+import com.arusuvai.auth.dto.GoogleLoginRequest;
 import com.arusuvai.auth.dto.PhoneLoginRequest;
 import com.arusuvai.auth.dto.RegisterCustomerRequest;
 import com.arusuvai.auth.dto.mapper.AuthMapper;
 import com.arusuvai.auth.dto.response.AuthResponse;
 import com.arusuvai.auth.dto.response.LoginResponse;
 import com.arusuvai.customer.CustomerEntity;
+import com.arusuvai.customer.CustomerIdentityEntity;
+import com.arusuvai.customer.CustomerIdentityRepository;
 import com.arusuvai.customer.CustomerRepository;
 import com.arusuvai.enums.Role;
+import com.arusuvai.exception.BusinessException;
+import com.arusuvai.security.GoogleTokenVerifierService;
 import com.arusuvai.security.JwtService;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +27,8 @@ public class AuthService {
     private final CustomerRepository customerRepository;
     private final AuthMapper authMapper;
     private final JwtService jwtService;
+    private final GoogleTokenVerifierService googleTokenVerifierService;
+    private final CustomerIdentityRepository customerIdentityRepository;
 
 
 
@@ -111,6 +119,74 @@ public class AuthService {
         );
     }
 
+    public AuthResponse googleLogin(GoogleLoginRequest request) {
+
+        GoogleIdToken.Payload payload =
+                googleTokenVerifierService.verify(request.getCredential());
+
+        String googleSubject = payload.getSubject();
+        String email = payload.getEmail();
+        String name = (String) payload.get("name");
+
+        Optional<CustomerIdentityEntity> existingIdentity =
+                customerIdentityRepository
+                        .findByProviderAndProviderSubject(
+                                "GOOGLE",
+                                googleSubject
+                        );
+
+        CustomerIdentityEntity identity;
+
+        if (existingIdentity.isPresent()) {
+
+            identity = existingIdentity.get();
+
+        } else {
+
+            identity = new CustomerIdentityEntity();
+
+            identity.setProvider("GOOGLE");
+            identity.setProviderSubject(googleSubject);
+
+            customerIdentityRepository.save(identity);
+        }
+
+        // Google authentication succeeded,
+        // but the Arusuvai customer profile may not exist yet.
+        if (identity.getCustomer() == null) {
+
+            return new AuthResponse(
+                    true,
+                    "Google login successful. Complete your profile before checkout.",
+                    false,
+                    null,
+                    null
+            );
+        }
+
+        CustomerEntity customer = identity.getCustomer();
+
+        if (!Boolean.TRUE.equals(customer.getActive())) {
+            throw new BusinessException("Customer account is inactive");
+        }
+
+        LoginResponse loginResponse =
+                authMapper.toLoginResponse(customer);
+
+        String token = jwtService.generateToken(
+                customer.getId(),
+                customer.getRole().name()
+        );
+
+        return new AuthResponse(
+                true,
+                "Login Successful",
+                true,
+                loginResponse,
+                token
+        );
+    }
+
     //OLD OTP FEATURE
 //    private String generateOtp(){
 //        Random random = new Random();
@@ -155,6 +231,7 @@ public class AuthService {
 //                null
 //        );
 //    }
+
 
 
 }

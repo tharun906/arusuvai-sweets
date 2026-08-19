@@ -3,6 +3,7 @@ import type { AuthResponse } from "../models/AuthResponse";
 import type { LoginRequest } from "../models/LoginRequest";
 import type { RegisterRequest } from "../models/RegisterRequest";
 import { API_ENDPOINTS } from "../../constants/apiEndpoints";
+import type { GoogleLoginRequest } from "../models/GoogleLoginRequest";
 
 export const authService = {
 
@@ -28,6 +29,18 @@ export const authService = {
         );
 
         return response.data;
-    }
+    },
+
+    googleLogin: async (
+        request: GoogleLoginRequest
+    ): Promise<AuthResponse> => {
+    
+        const response = await api.post<AuthResponse>(
+            API_ENDPOINTS.AUTH_GOOGLE,
+            request
+        );
+    
+        return response.data;
+    },
 
 };
