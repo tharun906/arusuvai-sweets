@@ -1,15 +1,21 @@
 import { useGoogleOneTapLogin } from "@react-oauth/google";
-import { useAuthContext } from "../context/AuthContext";
 import { authService } from "../services/authService";
-
+import { useAuthContext } from "../context/AuthContext";
 
 export default function GoogleOneTap() {
 
-    const { login } = useAuthContext();
+    const {
+        login,
+        setGoogleUser,
+        isLoggedIn
+    } = useAuthContext();
 
     useGoogleOneTapLogin({
+
         use_fedcm_for_prompt: true,
-    
+
+        disabled: isLoggedIn,
+
         onSuccess: async (credentialResponse) => {
 
             if (!credentialResponse.credential) {
@@ -20,12 +26,15 @@ export default function GoogleOneTap() {
 
                 const response =
                     await authService.googleLogin({
-                        credential: credentialResponse.credential
+                        credential:
+                            credentialResponse.credential
                     });
 
                 if (response.success && response.token) {
 
                     if (response.customer) {
+
+                        setGoogleUser(false);
 
                         login(
                             response.customer,
@@ -34,8 +43,8 @@ export default function GoogleOneTap() {
 
                     } else {
 
-                        // Google authentication succeeded,
-                        // but Arusuvai profile is not completed yet.
+                        setGoogleUser(true);
+
                         localStorage.setItem(
                             "token",
                             response.token
@@ -53,7 +62,9 @@ export default function GoogleOneTap() {
         },
 
         onError: () => {
-            console.error("Google One Tap failed");
+            console.error(
+                "Google One Tap failed"
+            );
         }
     });
 

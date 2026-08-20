@@ -7,6 +7,7 @@ import com.arusuvai.payment.PaymentService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -56,13 +57,41 @@ public class OrderController {
                 .body(response);
     }
 
-    @GetMapping("/customer/{customerId}")
-    public ResponseEntity<List<OrderResponseDTO>> getOrdersByCustomerId(@PathVariable Long customerId) {
-        return ResponseEntity.ok(orderService.getOrdersByCustomerId(customerId));
+//    @GetMapping("/customer/{customerId}")
+//    public ResponseEntity<List<OrderResponseDTO>> getOrdersByCustomerId(@PathVariable Long customerId) {
+//        return ResponseEntity.ok(orderService.getOrdersByCustomerId(customerId));
+//    }
+
+    @GetMapping("/customer")
+    public ResponseEntity<List<OrderResponseDTO>> getMyOrders(
+            Authentication authentication) {
+
+        Long customerId =
+                Long.parseLong(authentication.getName());
+
+        return ResponseEntity.ok(
+                orderService.getOrdersByCustomerId(customerId)
+        );
     }
 
+//    @GetMapping("/{orderId}")
+//    public ResponseEntity<OrderResponseDTO> getOrderById(@PathVariable Long orderId) {
+//        return ResponseEntity.ok(orderService.getOrderById(orderId));
+//    }
+
     @GetMapping("/{orderId}")
-    public ResponseEntity<OrderResponseDTO> getOrderById(@PathVariable Long orderId) {
-        return ResponseEntity.ok(orderService.getOrderById(orderId));
+    public ResponseEntity<OrderResponseDTO> getMyOrder(
+            @PathVariable Long orderId,
+            Authentication authentication) {
+
+        Long customerId =
+                Long.parseLong(authentication.getName());
+
+        return ResponseEntity.ok(
+                orderService.getOrderById(
+                        orderId,
+                        customerId
+                )
+        );
     }
 }

@@ -21,6 +21,10 @@ interface AuthContextType {
     logout: (callback?: () => void) => void;
 
     isLoggedIn: boolean;
+
+    isGoogleUser: boolean;
+
+    setGoogleUser: (value: boolean) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(
@@ -32,8 +36,8 @@ interface AuthProviderProps {
 }
 
 export function AuthProvider({
-                                 children
-                             }: AuthProviderProps) {
+    children
+}: AuthProviderProps) {
 
     const [customer, setCustomer] =
         useState<LoginResponse | null>(() => {
@@ -55,39 +59,55 @@ export function AuthProvider({
 
         });
 
-    const login = (
-        customer: LoginResponse,
-        token: string
-    ) => {
+        const [isGoogleUser, setGoogleUser] =
+        useState<boolean>(() => {
+    
+            return localStorage.getItem(
+                "googleProfileIncomplete"
+            ) === "true";
+    
+        });
 
-        setCustomer(customer);
-        setToken(token);
+        const login = (
+            customer: LoginResponse,
+            token: string
+        ) => {
+        
+            setCustomer(customer);
+            setToken(token);
+            setGoogleUser(false);
+        
+            localStorage.setItem(
+                "customer",
+                JSON.stringify(customer)
+            );
+        
+            localStorage.setItem(
+                "token",
+                token
+            );
+        
+            localStorage.removeItem(
+                "googleProfileIncomplete"
+            );
+        };
 
-        localStorage.setItem(
-            "customer",
-            JSON.stringify(customer)
-        );
-
-        localStorage.setItem(
-            "token",
-            token
-        );
-    };
-
-    const logout = (
-        callback?: () => void
-    ) => {
-
-        setCustomer(null);
-        setToken(null);
-
-        localStorage.removeItem("customer");
-        localStorage.removeItem("token");
-
-        if (callback) {
-            callback();
-        }
-    };
+        const logout = (
+            callback?: () => void
+        ) => {
+        
+            setCustomer(null);
+            setToken(null);
+            setGoogleUser(false);
+        
+            localStorage.removeItem("customer");
+            localStorage.removeItem("token");
+            localStorage.removeItem("googleProfileIncomplete");
+        
+            if (callback) {
+                callback();
+            }
+        };
 
     return (
 
@@ -97,9 +117,12 @@ export function AuthProvider({
                 token,
                 login,
                 logout,
+
                 isLoggedIn:
-                    customer !== null &&
-                    token !== null
+                token !== null,
+
+                isGoogleUser,
+                setGoogleUser
             }}
         >
 

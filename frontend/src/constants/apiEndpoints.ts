@@ -12,4 +12,5 @@ export const API_ENDPOINTS = {
     ADMIN_SUMMARY: "/api/admin/summary",
     CUSTOMERS: "/api/customer",
     AUTH_GOOGLE: "/api/auth/google",
+    CUSTOMER_PROFILE: "/api/customer/profile",
 } as const;

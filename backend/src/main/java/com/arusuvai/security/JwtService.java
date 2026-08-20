@@ -39,6 +39,18 @@ public class JwtService {
                 .compact(); // it created the JWT hhhhhh.pppppp.ssssss (Header).(Payload).(Signature)
     }
 
+    public String generateGoogleToken(String googleSubject) {
+
+    return Jwts.builder()
+            .subject(googleSubject)
+            .claim("provider", "GOOGLE")
+            .claim("profileCompleted", false)
+            .issuedAt(new Date())
+            .expiration(new Date(System.currentTimeMillis() + expiration))
+            .signWith(getSigningKey())
+            .compact();
+}
+
     private SecretKey getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secret);
         return Keys.hmacShaKeyFor(keyBytes);

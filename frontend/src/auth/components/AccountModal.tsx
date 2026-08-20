@@ -7,6 +7,7 @@ import { useAccountModal } from "../../context/AccountModalContext";
 import { useNavigate } from "react-router-dom";
 import { PendingAction } from "../../constants/PendingAction";
 import { ROUTES } from "../../constants/routes";
+import { completeCustomerProfile } from "../../services/customerService";
 
 interface AccountModalProps {
 
@@ -69,6 +70,7 @@ const [pincode, setPincode] =
     const [longitude, setLongitude] =
         useState<number>();
 
+
     // -----------------------------
     // Validation States
     // -----------------------------
@@ -118,7 +120,10 @@ const [pincodeError, setPincodeError] =
     const { checkPhone, register, loading } = useAuth();
 
 
-    const { login } = useAuthContext();
+    const {
+        login,
+        isGoogleUser
+    } = useAuthContext();
 
     const {
     
@@ -428,32 +433,34 @@ const [pincodeError, setPincodeError] =
 
         // Call Backend
 
-        const response = await register({
-
+        const response = isGoogleUser
+        ? await completeCustomerProfile({
             phoneNumber,
-        
             name,
-        
             email,
-        
             doorNo,
-        
             addressLine1,
-        
             addressLine2,
-        
             landmark,
-        
             city,
-        
             state,
-        
             pincode,
-        
             latitude,
-        
             longitude
-        
+        })
+        : await register({
+            phoneNumber,
+            name,
+            email,
+            doorNo,
+            addressLine1,
+            addressLine2,
+            landmark,
+            city,
+            state,
+            pincode,
+            latitude,
+            longitude
         });
 
         if (!response.success) {

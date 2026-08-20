@@ -1,9 +1,11 @@
 package com.arusuvai.customer;
 
+import com.arusuvai.auth.dto.response.AuthResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
@@ -36,5 +38,17 @@ public class CustomerController {
     @PutMapping("/{id}")
     public ResponseEntity<CustomerResponseDTO> updateCustomer(@PathVariable Long id, @Valid @RequestBody CustomerRequestDTO request) {
         return ResponseEntity.ok(service.updateCustomer(id, request));
+    }
+    @PostMapping("/profile")
+    public ResponseEntity<AuthResponse> completeProfile(
+            @Valid @RequestBody CustomerRequestDTO request,
+            Authentication authentication
+    ) {
+
+        String googleSubject = authentication.getName();
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(service.completeProfile(googleSubject, request));
     }
 }

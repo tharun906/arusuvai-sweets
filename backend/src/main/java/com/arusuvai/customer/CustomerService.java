@@ -1,5 +1,7 @@
 package com.arusuvai.customer;
 
+import com.arusuvai.auth.dto.response.AuthResponse;
+
 import java.util.List;
 
 public interface CustomerService {
@@ -11,4 +13,9 @@ public interface CustomerService {
     CustomerResponseDTO getCustomerById(Long id);
 
     CustomerResponseDTO updateCustomer(Long id, CustomerRequestDTO request);
+
+    AuthResponse completeProfile(
+            String googleSubject,
+            CustomerRequestDTO request
+    );
 }

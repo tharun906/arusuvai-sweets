@@ -155,13 +155,16 @@ public class AuthService {
         // but the Arusuvai customer profile may not exist yet.
         if (identity.getCustomer() == null) {
 
-            return new AuthResponse(
-                    true,
-                    "Google login successful. Complete your profile before checkout.",
-                    false,
-                    null,
-                    null
-            );
+        String token =
+                jwtService.generateGoogleToken(googleSubject);
+
+        return new AuthResponse(
+                true,
+                "Google login successful. Complete your profile before checkout.",
+                false,
+                null,
+                token
+        );
         }
 
         CustomerEntity customer = identity.getCustomer();

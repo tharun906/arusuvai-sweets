@@ -266,11 +266,25 @@ public class OrderServiceImpl implements OrderService {
 
     //to get the individual order detials
     @Override
-    @Transactional
-    public OrderResponseDTO getOrderById(Long orderId) {
+    @Transactional(readOnly = true)
+    public OrderResponseDTO getOrderById(
+            Long orderId,
+            Long customerId) {
 
-        OrderEntity order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
+        OrderEntity order =
+                orderRepository.findById(orderId)
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "Order not found"
+                                ));
+
+        if (!order.getCustomer().getId()
+                .equals(customerId)) {
+
+            throw new BusinessException(
+                    "You are not allowed to access this order"
+            );
+        }
 
         return mapToResponse(order);
     }
