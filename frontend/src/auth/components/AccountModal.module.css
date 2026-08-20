@@ -118,6 +118,80 @@
 
 
 /* ========================================
+   Saved Address
+======================================== */
+
+.savedAddress {
+    padding: 14px 16px;
+
+    margin-bottom: 10px;
+
+    background: var(--surface-alt);
+
+    border: 1px solid var(--border-soft);
+
+    border-radius: var(--radius-md);
+
+    color: var(--text-primary);
+
+    font-size: .82rem;
+
+    line-height: 1.6;
+
+    white-space: pre-line;
+}
+
+.savedAddressTitle {
+    margin: 0 0 8px;
+
+    color: var(--gold-color);
+
+    font-size: .78rem;
+
+    font-weight: 600;
+}
+
+
+/* ========================================
+   Secondary Button
+======================================== */
+
+.secondaryButton {
+    width: 100%;
+
+    min-height: 40px;
+
+    padding: 9px 16px;
+
+    margin-top: 8px;
+
+    border: 1px solid var(--border-soft);
+
+    border-radius: var(--radius-md);
+
+    background: transparent;
+
+    color: var(--text-primary);
+
+    font-family: inherit;
+
+    font-size: .82rem;
+
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: var(--transition);
+}
+
+.secondaryButton:hover {
+    border-color: var(--gold-color);
+
+    color: var(--gold-color);
+
+    background: var(--surface-alt);
+}
+/* ========================================
    Primary Button
 ======================================== */
 

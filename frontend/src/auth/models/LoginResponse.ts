@@ -8,12 +8,23 @@ export interface LoginResponse {
 
     email: string;
 
-    address: string;
+    doorNo: string;
+
+    addressLine1: string;
+
+    addressLine2: string;
+
+    landmark: string;
+
+    city: string;
+
+    state: string;
+
+    pincode: string;
 
     latitude: number;
 
     longitude: number;
 
     role: "ADMIN" | "CUSTOMER";
-
 }

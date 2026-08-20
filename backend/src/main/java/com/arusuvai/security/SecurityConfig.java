@@ -7,8 +7,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -42,31 +40,138 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
 
-                        // CORS preflight
-                        .requestMatchers(
-                                HttpMethod.OPTIONS,
-                                "/**"
-                        ).permitAll()
+// =========================
+// CORS PREFLIGHT
+// =========================
 
-                        // Authentication
-                        .requestMatchers(
-                                "/api/auth/**"
-                        ).permitAll()
+                                .requestMatchers(
+                                        HttpMethod.OPTIONS,
+                                        "/**"
+                                ).permitAll()
 
-                        // Public APIs
-                        .requestMatchers(
-                                "/api/products/**",
-                                "/api/categories/**",
-                                "/api/checkout/**"
-                        ).permitAll()
+// =========================
+// AUTHENTICATION
+// =========================
 
-                        // ALL ADMIN APIs → ADMIN ONLY
-                        .requestMatchers(
-                                "/api/admin/**"
-                        ).hasRole("ADMIN")
+                                .requestMatchers(
+                                        "/api/auth/**"
+                                ).permitAll()
 
-                        // Everything else → authenticated user
-                        .anyRequest().authenticated()
+// =========================
+// PUBLIC PRODUCT READ APIs
+// =========================
+
+                                .requestMatchers(
+                                        HttpMethod.GET,
+                                        "/api/products/**"
+                                ).permitAll()
+
+// =========================
+// ADMIN PRODUCT APIs
+// =========================
+
+                                .requestMatchers(
+                                        HttpMethod.POST,
+                                        "/api/products/**"
+                                ).hasRole("ADMIN")
+
+                                .requestMatchers(
+                                        HttpMethod.PUT,
+                                        "/api/products/**"
+                                ).hasRole("ADMIN")
+
+                                .requestMatchers(
+                                        HttpMethod.PATCH,
+                                        "/api/products/**"
+                                ).hasRole("ADMIN")
+
+// =========================
+// PUBLIC CATEGORY READ API
+// =========================
+
+                                .requestMatchers(
+                                        HttpMethod.GET,
+                                        "/api/categories/**"
+                                ).permitAll()
+
+// =========================
+// ADMIN CATEGORY API
+// =========================
+
+                                .requestMatchers(
+                                        HttpMethod.PATCH,
+                                        "/api/categories/**"
+                                ).hasRole("ADMIN")
+
+// =========================
+// GOOGLE PROFILE COMPLETION
+// =========================
+
+// New Google customer
+                                .requestMatchers(
+                                        HttpMethod.POST,
+                                        "/api/customer/profile"
+                                ).authenticated()
+
+// =========================
+// EXISTING CUSTOMER PROFILE
+// =========================
+
+// Verify phone against authenticated Google identity
+                                .requestMatchers(
+                                        HttpMethod.POST,
+                                        "/api/customer/verify-phone"
+                                ).authenticated()
+
+// Update existing customer's profile/address
+                                .requestMatchers(
+                                        HttpMethod.PUT,
+                                        "/api/customer/profile"
+                                ).authenticated()
+
+// =========================
+// CHECKOUT
+// =========================
+
+// Delivery availability is public
+                                .requestMatchers(
+                                        HttpMethod.POST,
+                                        "/api/checkout/check-delivery"
+                                ).permitAll()
+
+// Checkout summary requires login
+                                .requestMatchers(
+                                        HttpMethod.POST,
+                                        "/api/checkout/summary"
+                                ).authenticated()
+
+// =========================
+// ADMIN APIs
+// =========================
+
+                                .requestMatchers(
+                                        "/api/admin/**"
+                                ).hasRole("ADMIN")
+
+// =========================
+// ADMIN CUSTOMER MANAGEMENT
+// =========================
+
+                                .requestMatchers(
+                                        HttpMethod.GET,
+                                        "/api/customer"
+                                ).hasRole("ADMIN")
+
+                                .requestMatchers(
+                                        HttpMethod.POST,
+                                        "/api/customer"
+                                ).hasRole("ADMIN")
+
+// =========================
+// EVERYTHING ELSE
+// =========================
+
+                                .anyRequest().authenticated()
                 )
 
                 .addFilterBefore(
@@ -93,6 +198,7 @@ public class SecurityConfig {
                         "POST",
                         "PUT",
                         "DELETE",
+                        "PATCH",
                         "OPTIONS"
                 )
         );

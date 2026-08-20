@@ -47,16 +47,21 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderResponseDTO createOrder(OrderRequestDTO request) {
 
-        CustomerEntity customer = customerRepository.findById(request.getCustomerId())
-                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
+        CustomerEntity customer =
+                customerRepository.findById(request.getCustomerId())
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "Customer not found"
+                                ));
 
-        Optional<OrderEntity> existingOrder = orderRepository
-                .findFirstByCustomerIdAndPaymentStatusOrderByCreatedAtDesc(
-                        customer.getId(),
-                        PaymentStatus.PENDING
-                );
+        Optional<OrderEntity> existingOrder =
+                orderRepository
+                        .findFirstByCustomerIdAndPaymentStatusOrderByCreatedAtDesc(
+                                customer.getId(),
+                                PaymentStatus.PENDING
+                        );
 
-        // Calculate the order (stock validation, pricing, totals)
+        // Calculate the order
         OrderCalculationResult calculationResult =
                 orderCalculationService.calculateCheckout(
                         new CheckoutRequestDTO(
@@ -83,22 +88,33 @@ public class OrderServiceImpl implements OrderService {
 
             order = existingOrder.get();
 
+            // Clear old Razorpay payment details
+            // because this is a new payment attempt
+            order.setRazorpayOrderId(null);
+            order.setRazorpayPaymentId(null);
+
             // Remove old order items
-            orderItemRepository.deleteAll(order.getOrderItems());
+            orderItemRepository.deleteAll(
+                    order.getOrderItems()
+            );
+
             order.getOrderItems().clear();
 
             // Update latest order details
-            order.setTotalAmount(calculationResult.getGrandTotal());
+            order.setTotalAmount(
+                    calculationResult.getGrandTotal()
+            );
+
             order.setDeliveryAddress(
                     customer.getDoorNo()
                             + ", "
                             + customer.getAddressLine1()
-                            + (customer.getAddressLine2() != null &&
-                            !customer.getAddressLine2().isBlank()
+                            + (customer.getAddressLine2() != null
+                            && !customer.getAddressLine2().isBlank()
                             ? ", " + customer.getAddressLine2()
                             : "")
-                            + (customer.getLandmark() != null &&
-                            !customer.getLandmark().isBlank()
+                            + (customer.getLandmark() != null
+                            && !customer.getLandmark().isBlank()
                             ? ", Near " + customer.getLandmark()
                             : "")
                             + ", "
@@ -108,7 +124,11 @@ public class OrderServiceImpl implements OrderService {
                             + " - "
                             + customer.getPincode()
             );
-            order.setPaymentMethod(request.getPaymentMethod());
+
+            order.setPaymentMethod(
+                    request.getPaymentMethod()
+            );
+
             order.setDeliveryType(deliveryType);
 
         } else {
@@ -116,19 +136,28 @@ public class OrderServiceImpl implements OrderService {
             order = new OrderEntity();
 
             order.setCustomer(customer);
-            order.setOrderStatus(OrderStatus.PENDING_PAYMENT);
-            order.setPaymentStatus(PaymentStatus.PENDING);
+
+            order.setOrderStatus(
+                    OrderStatus.PENDING_PAYMENT
+            );
+
+            order.setPaymentStatus(
+                    PaymentStatus.PENDING
+            );
+
             order.setDeliveryAddress(
                     customer.getDoorNo()
                             + ", "
                             + customer.getAddressLine1()
-                            + (customer.getAddressLine2() != null &&
-                            !customer.getAddressLine2().isBlank()
-                            ? ", " + customer.getAddressLine2()
+                            + (customer.getAddressLine2() != null
+                            && !customer.getAddressLine2().isBlank()
+                            ? ", "
+                            + customer.getAddressLine2()
                             : "")
-                            + (customer.getLandmark() != null &&
-                            !customer.getLandmark().isBlank()
-                            ? ", Near " + customer.getLandmark()
+                            + (customer.getLandmark() != null
+                            && !customer.getLandmark().isBlank()
+                            ? ", Near "
+                            + customer.getLandmark()
                             : "")
                             + ", "
                             + customer.getCity()
@@ -137,8 +166,15 @@ public class OrderServiceImpl implements OrderService {
                             + " - "
                             + customer.getPincode()
             );
-            order.setTotalAmount(calculationResult.getGrandTotal());
-            order.setPaymentMethod(request.getPaymentMethod());
+
+            order.setTotalAmount(
+                    calculationResult.getGrandTotal()
+            );
+
+            order.setPaymentMethod(
+                    request.getPaymentMethod()
+            );
+
             order.setDeliveryType(deliveryType);
 
             order = orderRepository.save(order);
@@ -147,21 +183,37 @@ public class OrderServiceImpl implements OrderService {
         order = orderRepository.save(order);
 
         // Save Order Items
-        for (CalculatedOrderItem calculatedItem : calculationResult.getItems()) {
+        for (CalculatedOrderItem calculatedItem :
+                calculationResult.getItems()) {
 
-            OrderItemEntity orderItem = new OrderItemEntity();
+            OrderItemEntity orderItem =
+                    new OrderItemEntity();
 
             orderItem.setOrder(order);
-            orderItem.setProduct(calculatedItem.getProduct());
-            orderItem.setWeight(calculatedItem.getWeight());
-            orderItem.setQuantity(calculatedItem.getQuantity());
-            orderItem.setPricePerUnit(calculatedItem.getPricePerUnit());
-            orderItem.setTotalPrice(calculatedItem.getItemTotal());
+
+            orderItem.setProduct(
+                    calculatedItem.getProduct()
+            );
+
+            orderItem.setWeight(
+                    calculatedItem.getWeight()
+            );
+
+            orderItem.setQuantity(
+                    calculatedItem.getQuantity()
+            );
+
+            orderItem.setPricePerUnit(
+                    calculatedItem.getPricePerUnit()
+            );
+
+            orderItem.setTotalPrice(
+                    calculatedItem.getItemTotal()
+            );
 
             orderItemRepository.save(orderItem);
 
             order.getOrderItems().add(orderItem);
-
         }
 
         return mapToResponse(order);
@@ -197,29 +249,62 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public OrderResponseDTO confirmOrder(Long orderId){
-        OrderEntity order  = orderRepository.findById(orderId)
-                .orElseThrow(() ->new ResourceNotFoundException("order Not Found"));
+    public OrderResponseDTO confirmOrder(Long orderId) {
 
-        if (order.getPaymentStatus() == PaymentStatus.PAID) {return mapToResponse(order);}
+        OrderEntity order = orderRepository.findById(orderId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Order not found"));
+
+        // Already paid → idempotent response
+        if (order.getPaymentStatus() == PaymentStatus.PAID) {
+            return mapToResponse(order);
+        }
+
+        // Cancelled orders cannot become paid
+        if (order.getOrderStatus() == OrderStatus.CANCELLED) {
+            throw new BusinessException(
+                    "Cancelled order cannot be confirmed"
+            );
+        }
 
         order.setPaymentStatus(PaymentStatus.PAID);
         order.setOrderStatus(OrderStatus.PREPARING);
 
-        for(OrderItemEntity orderItem : order.getOrderItems()){
-            ProductEntity product =orderItem.getProduct();
-            BigDecimal orderedWeight = WeightConverter.toKg(orderItem.getWeight());
-            BigDecimal stockTOReduce = orderedWeight.multiply(BigDecimal.valueOf(orderItem.getQuantity()));
-            BigDecimal updatedStock  = product.getCurrentStockKg().subtract(stockTOReduce);
+        for (OrderItemEntity orderItem : order.getOrderItems()) {
+
+            ProductEntity product =
+                    productRepository.findByIdForUpdate(
+                            orderItem.getProduct().getId()
+                    ).orElseThrow(() ->
+                            new ResourceNotFoundException(
+                                    "Product not found"
+                            ));
+
+            BigDecimal orderedWeight =
+                    WeightConverter.toKg(orderItem.getWeight());
+
+            BigDecimal stockToReduce =
+                    orderedWeight.multiply(
+                            BigDecimal.valueOf(orderItem.getQuantity())
+                    );
+
+            BigDecimal updatedStock =
+                    product.getCurrentStockKg()
+                            .subtract(stockToReduce);
+
             if (updatedStock.compareTo(BigDecimal.ZERO) < 0) {
                 throw new BusinessException(
                         product.getName() + " is out of stock."
                 );
             }
+
             product.setCurrentStockKg(updatedStock);
+
             productRepository.save(product);
         }
+
         orderRepository.save(order);
+
         return mapToResponse(order);
     }
 
@@ -285,6 +370,20 @@ public class OrderServiceImpl implements OrderService {
                     "You are not allowed to access this order"
             );
         }
+
+        return mapToResponse(order);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public OrderResponseDTO getOrderByIdInternal(Long orderId) {
+
+        OrderEntity order =
+                orderRepository.findById(orderId)
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "Order not found"
+                                ));
 
         return mapToResponse(order);
     }

@@ -6,6 +6,8 @@ import styles from "./Checkout.module.css";
 import { ROUTES } from "../../constants/routes";
 
 import { useAuthContext } from "../../auth/context/AuthContext";
+import { useAccountModal } from "../../context/AccountModalContext";
+
 import { useCart } from "../../context/CartContext";
 
 import { useCheckout } from "../../hooks/useCheckout";
@@ -18,57 +20,131 @@ import CheckoutItems from "../../components/checkout/CheckoutItems";
 import DeliveryStatusCard from "../../components/checkout/DeliveryStatusCard";
 import PaymentMethodCard from "../../components/checkout/PaymentMethodCard";
 import CheckoutSummaryCard from "../../components/checkout/CheckoutSummaryCard";
-import { PendingAction } from "../../constants/PendingAction";
-import { useAccountModal } from "../../context/AccountModalContext";
+import GoogleLoginFallback from "../../auth/components/GoogleLoginFallback";
+
 
 function Checkout() {
 
     const navigate = useNavigate();
 
-    const { customer } = useAuthContext();
-    const {
-        openModal,
-        setPendingAction
-    } = useAccountModal();
-    const [showPhoneConfirmation, setShowPhoneConfirmation] = useState(false);
-
-    const { cartItems, clearCart } = useCart();
 
     const {
-
-        summary,
-
-        deliveryStatus,
-
-        loading,
-
-        getCheckoutSummary,
-
-        checkDelivery,
-
-    } = useCheckout();
-
-    const {
-
-        createOrder,
-
-        loading: orderLoading,
-
-    } = useOrder();
-
-    const {
-
-        verifyPayment,
-
-    } = usePayment();
+        customer,
+        isLoggedIn,
+        isGoogleUser
+    } = useAuthContext();
 
     const [
+        showGoogleLogin,
+        setShowGoogleLogin
+    ] = useState(false);
 
+    console.log("AUTH:", {
+        isLoggedIn,
+        isGoogleUser,
+        customer
+    });
+
+
+    const {
+        openModal
+    } = useAccountModal();
+
+
+    const {
+        cartItems,
+        clearCart
+    } = useCart();
+
+
+    const {
+        summary,
+        deliveryStatus,
+        loading,
+        getCheckoutSummary,
+        checkDelivery
+    } = useCheckout();
+
+
+    const {
+        createOrder,
+        loading: orderLoading
+    } = useOrder();
+
+
+    const {
+        verifyPayment
+    } = usePayment();
+
+
+    const [
         paymentMethod,
-
-        setPaymentMethod,
-
+        setPaymentMethod
     ] = useState<"COD" | "ONLINE">("ONLINE");
+
+
+    /*
+     * ========================================
+     * NEW GOOGLE USER
+     * ========================================
+     *
+     * Google authentication succeeded,
+     * but Arusuvai customer profile does
+     * not exist yet.
+     *
+     * Open the existing phone/profile flow.
+     */
+
+    useEffect(() => {
+
+        /*
+         * Completely logged-out user.
+         *
+         * Checkout must never open the
+         * phone/profile modal directly.
+         */
+    
+        if (
+            !isLoggedIn &&
+            !isGoogleUser
+        ) {
+    
+            setShowGoogleLogin(true);
+    
+            return;
+    
+        }
+    
+    
+        /*
+         * Google authentication succeeded,
+         * but profile is incomplete.
+         *
+         * Now the phone/profile modal is allowed.
+         */
+    
+        if (
+            isLoggedIn &&
+            isGoogleUser &&
+            !customer
+        ) {
+    
+            openModal();
+    
+        }
+    
+    }, [
+        isLoggedIn,
+        isGoogleUser,
+        customer
+    ]);
+
+
+    /*
+     * ========================================
+     * LOAD CHECKOUT DATA
+     * ========================================
+     */
 
     useEffect(() => {
 
@@ -78,195 +154,358 @@ function Checkout() {
 
         }
 
+
         getCheckoutSummary({
 
-            customerId: customer.id,
+            customerId:
+                customer.id,
 
-            items: cartItems,
+            items:
+                cartItems
 
         });
+
 
         checkDelivery({
 
-            latitude: customer.latitude,
+            latitude:
+                customer.latitude,
 
-            longitude: customer.longitude,
+            longitude:
+                customer.longitude
 
         });
 
-    }, [customer]);
+    }, [
+        customer,
+        cartItems
+    ]);
+
+
+    /*
+     * ========================================
+     * COD
+     * ========================================
+     */
 
     useEffect(() => {
 
         if (
-
             deliveryStatus?.codAvailable
-
         ) {
 
-            setPaymentMethod("COD");
+            setPaymentMethod(
+                "COD"
+            );
 
         }
 
-    }, [deliveryStatus]);
+    }, [
+        deliveryStatus
+    ]);
 
 
-    const handlePlaceOrder = () => {
-        setShowPhoneConfirmation(true);
-    };
+    /*
+     * ========================================
+     * PLACE ORDER
+     * ========================================
+     */
 
-    const handleConfirmPhone = async () => {
+    const handlePlaceOrder =
+        async () => {
 
-        setShowPhoneConfirmation(false);
-    
-        const response = await createOrder({
-            customerId: customer!.id,
-            paymentMethod,
-            items: cartItems,
-        });
-    
-        if (!response.paymentRequired) {
-            clearCart();
-            navigate(ROUTES.ORDERS);
-            return;
-        }
-    
-        openRazorpay(
-            response.payment!,
-            async paymentResponse => {
-    
-                await verifyPayment({
-                    orderId: response.payment!.orderId,
-                    razorpayOrderId:
-                        paymentResponse.razorpay_order_id,
-                    razorpayPaymentId:
-                        paymentResponse.razorpay_payment_id,
-                    razorpaySignature:
-                        paymentResponse.razorpay_signature,
-                });
-    
-                clearCart();
-                navigate(ROUTES.ORDERS);
+            if (!customer) {
+
+                return;
+
             }
+
+
+            const response =
+                await createOrder({
+
+                    customerId:
+                        customer.id,
+
+                    paymentMethod,
+
+                    items:
+                        cartItems
+
+                });
+
+
+            /*
+             * COD
+             */
+
+            if (
+                !response.paymentRequired
+            ) {
+
+                clearCart();
+
+                navigate(
+                    ROUTES.ORDERS
+                );
+
+                return;
+
+            }
+
+
+            /*
+             * ONLINE PAYMENT
+             */
+
+            openRazorpay(
+
+                response.payment!,
+
+                async paymentResponse => {
+
+                    await verifyPayment({
+
+                        orderId:
+                            response.payment!.orderId,
+
+                        razorpayOrderId:
+                            paymentResponse.razorpay_order_id,
+
+                        razorpayPaymentId:
+                            paymentResponse.razorpay_payment_id,
+
+                        razorpaySignature:
+                            paymentResponse.razorpay_signature
+
+                    });
+
+
+                    clearCart();
+
+                    navigate(
+                        ROUTES.ORDERS
+                    );
+
+                }
+
+            );
+
+        };
+
+
+    /*
+     * ========================================
+     * WAITING FOR GOOGLE PROFILE COMPLETION
+     * ========================================
+     *
+     * Don't show checkout data yet.
+     *
+     * AccountModal will handle the
+     * phone/profile completion.
+     */
+
+    if (
+        isGoogleUser &&
+        !customer
+    ) {
+
+        return (
+
+            <section
+                className={
+                    styles.page
+                }
+            />
+
         );
-    };
+
+    }
+
+
+    /*
+     * ========================================
+     * SAFETY
+     * ========================================
+     *
+     * If there is no authenticated customer,
+     * don't allow checkout.
+     */
+
+    if (!customer) {
+
+        return (
+
+            <section
+                className={
+                    styles.page
+                }
+            />
+
+        );
+
+    }
+
+    if (
+        showGoogleLogin &&
+        !isLoggedIn
+    ) {
+    
+        return (
+    
+            <GoogleLoginFallback
+    
+                onSuccess={() => {
+    
+                    setShowGoogleLogin(false);
+    
+                }}
+    
+                onClose={() => {
+    
+                    setShowGoogleLogin(false);
+    
+                }}
+    
+                onError={message => {
+    
+                    console.error(
+                        "Google login:",
+                        message
+                    );
+    
+                }}
+    
+            />
+    
+        );
+    
+    }
+
 
     if (loading) {
 
-        return <>Loading...</>;
+        return (
+            <>Loading...</>
+        );
 
     }
 
-    if (!summary || !deliveryStatus) {
 
-        return <>No Checkout Data</>;
+    if (
+        !summary ||
+        !deliveryStatus
+    ) {
+
+        return (
+            <>No Checkout Data</>
+        );
 
     }
+
 
     return (
 
-        <section className={styles.page}>
+        <section
+            className={
+                styles.page
+            }
+        >
 
-            <div className={styles.container}>
+            <div
+                className={
+                    styles.container
+                }
+            >
 
-                <div className={styles.left}>
+                <div
+                    className={
+                        styles.left
+                    }
+                >
 
                     <CheckoutItems
-
-                        items={summary.items}
-
+                        items={
+                            summary.items
+                        }
                     />
+
 
                     <DeliveryStatusCard
 
-                        distance={deliveryStatus.distance}
+                        distance={
+                            deliveryStatus.distance
+                        }
 
-                        message={deliveryStatus.message}
+                        message={
+                            deliveryStatus.message
+                        }
 
-                        codAvailable={deliveryStatus.codAvailable}
+                        codAvailable={
+                            deliveryStatus.codAvailable
+                        }
 
                     />
+
 
                     <PaymentMethodCard
 
-                        value={paymentMethod}
+                        value={
+                            paymentMethod
+                        }
 
-                        codAvailable={deliveryStatus.codAvailable}
+                        codAvailable={
+                            deliveryStatus.codAvailable
+                        }
 
-                        onChange={setPaymentMethod}
+                        onChange={
+                            setPaymentMethod
+                        }
 
                     />
 
                 </div>
 
-                <div className={styles.right}>
+
+                <div
+                    className={
+                        styles.right
+                    }
+                >
 
                     <CheckoutSummaryCard
 
-                        subtotal={summary.subtotal}
+                        subtotal={
+                            summary.subtotal
+                        }
 
-                        deliveryCharge={summary.deliveryCharge}
+                        deliveryCharge={
+                            summary.deliveryCharge
+                        }
 
-                        grandTotal={summary.grandTotal}
+                        grandTotal={
+                            summary.grandTotal
+                        }
 
-                        loading={orderLoading}
+                        loading={
+                            orderLoading
+                        }
 
-                        onPlaceOrder={handlePlaceOrder}
+                        onPlaceOrder={
+                            handlePlaceOrder
+                        }
 
                     />
 
                 </div>
 
             </div>
-
-            {showPhoneConfirmation && (
-    <div className={styles.confirmOverlay}>
-        <div className={styles.confirmModal}>
-
-            <h3>Confirm Phone Number</h3>
-
-            <p>
-                Is this phone number correct?
-            </p>
-
-            <strong>
-                📱 {customer?.phoneNumber}
-            </strong>
-
-            <p className={styles.confirmInfo}>
-                Your order updates will be sent to this number.
-            </p>
-
-            <div className={styles.confirmActions}>
-
-                <button
-                    type="button"
-                    onClick={() => {
-                        setShowPhoneConfirmation(false);
-                        setPendingAction(PendingAction.CHECKOUT);
-                        openModal();
-                    }}
-                >
-                    Change Number
-                </button>
-
-                <button
-                    type="button"
-                    onClick={handleConfirmPhone}
-                >
-                    Yes, Continue to Payment
-                </button>
-
-            </div>
-
-        </div>
-    </div>
-)}
 
         </section>
 
     );
 
 }
+
 
 export default Checkout;

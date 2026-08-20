@@ -12,21 +12,28 @@ import {
 } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
+import GoogleLoginFallback from "../../auth/components/GoogleLoginFallback";
 
 function Navbar() {
 
     const { cartCount } = useCart();
     const { customer, logout } = useAuthContext();
-    const { openModal } = useAccountModal();
-    const navigate = useNavigate();
+    const {
+        openModal,
+        closeModal
+    } = useAccountModal();
+        const navigate = useNavigate();
 
 
 
     const [cartUpdated, setCartUpdated] = useState(false);
+
+    const [showGoogleLogin, setShowGoogleLogin] =
+        useState(false);
     const [showMenu, setShowMenu] = useState(false);
 
     const desktopDropdownRef =
-    useRef<HTMLDivElement>(null);
+        useRef<HTMLDivElement>(null);
 
 const mobileDropdownRef =
     useRef<HTMLDivElement>(null);
@@ -34,13 +41,18 @@ const mobileDropdownRef =
     const handleLogout = () => {
 
         setShowMenu(false);
-
+    
+        closeModal();
+    
         logout(() => {
-            navigate(ROUTES.HOME);
+    
+            navigate(
+                ROUTES.HOME
+            );
+    
         });
-
+    
     };
-
     const previousCartCount = useRef(cartCount);
 
     useEffect(() => {
@@ -118,6 +130,51 @@ const mobileDropdownRef =
     }, []);
 
     return (
+       <> 
+        {showGoogleLogin && (
+
+            <div
+                style={{
+                    position: "fixed",
+                    inset: 0,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    background: "rgba(0, 0, 0, 0.6)",
+                    zIndex: 2000
+                }}
+            >
+        
+                <div
+                    style={{
+                        background: "white",
+                        padding: "30px",
+                        borderRadius: "12px"
+                    }}
+                >
+        
+                    <GoogleLoginFallback
+        
+                        onSuccess={() =>
+                            setShowGoogleLogin(false)
+                        }
+        
+                        onError={message => {
+        
+                            console.error(
+                                "Google login:",
+                                message
+                            );
+        
+                        }}
+        
+                    />
+        
+                </div>
+        
+            </div>
+        
+        )}
 
         <header className={styles.navbar}>
 
@@ -230,13 +287,14 @@ const mobileDropdownRef =
 
                             ) : (
 
-                                <button
-                                    className={`${styles.accountButton} ${styles.loggedOut}`}
-                                    onClick={openModal}
-                                >
-                                    Login
-                                </button>
-
+                            <button
+                                className={`${styles.accountButton} ${styles.loggedOut}`}
+                                onClick={() =>
+                                    setShowGoogleLogin(true)
+                                }
+                            >
+                                Login
+                            </button>
                             )}
 
                         </li>
@@ -308,14 +366,14 @@ const mobileDropdownRef =
                             }
                         >
 
-                            <button
-                                className={
-                                    styles.mobileLogin
-                                }
-                                onClick={openModal}
-                            >
-                                Login
-                            </button>
+                        <button
+                            className={styles.mobileLogin}
+                            onClick={() =>
+                                setShowGoogleLogin(true)
+                            }
+                        >
+                            Login
+                        </button>
 
                         </div>
 
@@ -351,6 +409,7 @@ const mobileDropdownRef =
             </nav>
 
         </header>
+        </>
 
     );
 

@@ -41,4 +41,8 @@ public class CustomerRequestDTO {
     @NotBlank
     private String pincode;
 
+    private Double latitude;
+
+    private Double longitude;
+
 }

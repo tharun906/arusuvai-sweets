@@ -1,13 +1,30 @@
 import { useState } from "react";
+
 import styles from "./AccountModal.module.css";
 
 import { useAuth } from "../hooks/useAuth";
 import { useAuthContext } from "../context/AuthContext";
 import { useAccountModal } from "../../context/AccountModalContext";
+
 import { useNavigate } from "react-router-dom";
-import { PendingAction } from "../../constants/PendingAction";
-import { ROUTES } from "../../constants/routes";
-import { completeCustomerProfile } from "../../services/customerService";
+
+import {
+    PendingAction
+} from "../../constants/PendingAction";
+
+import {
+    ROUTES
+} from "../../constants/routes";
+
+import {
+    completeCustomerProfile,
+    updateCustomerProfile
+} from "../../services/customerService";
+
+import type {
+    LoginResponse
+} from "../models/LoginResponse";
+
 
 interface AccountModalProps {
 
@@ -17,125 +34,227 @@ interface AccountModalProps {
 
 }
 
+
 function AccountModal({
-
     open,
-
     onClose
-
 }: AccountModalProps) {
 
-    // -----------------------------
-    // Login States
-    // -----------------------------
 
-    const [phoneNumber, setPhoneNumber] = useState("");
+    /*
+     * =========================
+     * PHONE
+     * =========================
+     */
 
-
-    const [showRegistration, setShowRegistration] =
-        useState(false);
-
-    // -----------------------------
-    // Registration States
-    // -----------------------------
-
-    const [name, setName] = useState("");
-
-    const [email, setEmail] = useState("");
-
-    const [doorNo, setDoorNo] =
-    useState("");
-
-const [addressLine1, setAddressLine1] =
-    useState("");
-
-const [addressLine2, setAddressLine2] =
-    useState("");
-
-const [landmark, setLandmark] =
-    useState("");
-
-const [city, setCity] =
-    useState("");
-
-const [state, setState] =
-    useState("");
-
-const [pincode, setPincode] =
-    useState("");
-
-    const [latitude, setLatitude] =
-        useState<number>();
-
-    const [longitude, setLongitude] =
-        useState<number>();
-
-
-    // -----------------------------
-    // Validation States
-    // -----------------------------
-
-    const [phoneError, setPhoneError] = useState("");
-
-
-    const [nameError, setNameError] = useState("");
-
-    const [emailError, setEmailError] =
-    useState("");
-
-    const [doorNoError, setDoorNoError] =
-    useState("");
-
-const [addressLine1Error, setAddressLine1Error] =
-    useState("");
-
-const [cityError, setCityError] =
-    useState("");
-
-const [stateError, setStateError] =
-    useState("");
-
-const [pincodeError, setPincodeError] =
-    useState("");
-
-    const [locationError, setLocationError] = useState("");
-
-    // -----------------------------
-    // Location States
-    // -----------------------------
-
-    const [capturingLocation, setCapturingLocation] =
-        useState(false);
-
-    const [locationCaptured, setLocationCaptured] =
-        useState(false);
-
-    const [locationMessage, setLocationMessage] =
+    const [phoneNumber, setPhoneNumber] =
         useState("");
 
-    // -----------------------------</span>
-    // Hooks
-    // -----------------------------
 
-    const { checkPhone, register, loading } = useAuth();
+    /*
+     * =========================
+     * MODAL STEPS
+     * =========================
+     *
+     * PHONE
+     * PROFILE
+     */
+
+    const [showRegistration,
+        setShowRegistration] =
+        useState(false);
+
+
+    /*
+     * =========================
+     * EXISTING CUSTOMER
+     * =========================
+     */
+
+    const [
+        existingCustomer,
+        setExistingCustomer
+    ] =
+        useState<LoginResponse | null>(null);
+
+
+    /*
+     * Existing customer initially
+     * sees the saved address box.
+     *
+     * Clicking Change Address
+     * reveals the editable fields.
+     */
+
+    const [
+        editingAddress,
+        setEditingAddress
+    ] =
+        useState(false);
+
+
+    /*
+     * =========================
+     * CUSTOMER DETAILS
+     * =========================
+     */
+
+    const [name, setName] =
+        useState("");
+
+    const [email, setEmail] =
+        useState("");
+
+
+    /*
+     * =========================
+     * ADDRESS
+     * =========================
+     */
+
+    const [doorNo, setDoorNo] =
+        useState("");
+
+    const [addressLine1,
+        setAddressLine1] =
+        useState("");
+
+    const [addressLine2,
+        setAddressLine2] =
+        useState("");
+
+    const [landmark, setLandmark] =
+        useState("");
+
+    const [city, setCity] =
+        useState("");
+
+    const [state, setState] =
+        useState("");
+
+    const [pincode, setPincode] =
+        useState("");
+
+
+    /*
+     * =========================
+     * LOCATION
+     * =========================
+     */
+
+    const [latitude, setLatitude] =
+        useState<number | null>(null);
+
+    const [longitude, setLongitude] =
+        useState<number | null>(null);
+
+
+    /*
+     * =========================
+     * VALIDATION ERRORS
+     * =========================
+     */
+
+    const [phoneError,
+        setPhoneError] =
+        useState("");
+
+    const [nameError,
+        setNameError] =
+        useState("");
+
+    const [emailError,
+        setEmailError] =
+        useState("");
+
+    const [doorNoError,
+        setDoorNoError] =
+        useState("");
+
+    const [
+        addressLine1Error,
+        setAddressLine1Error
+    ] =
+        useState("");
+
+    const [cityError,
+        setCityError] =
+        useState("");
+
+    const [stateError,
+        setStateError] =
+        useState("");
+
+    const [pincodeError,
+        setPincodeError] =
+        useState("");
+
+    const [locationError,
+        setLocationError] =
+        useState("");
+
+
+    /*
+     * =========================
+     * LOCATION UI
+     * =========================
+     */
+
+    const [
+        capturingLocation,
+        setCapturingLocation
+    ] =
+        useState(false);
+
+    const [
+        locationCaptured,
+        setLocationCaptured
+    ] =
+        useState(false);
+
+    const [
+        locationMessage,
+        setLocationMessage
+    ] =
+        useState("");
+
+
+    /*
+     * =========================
+     * HOOKS
+     * =========================
+     */
+
+    const {
+        checkPhone,
+        loading
+    } = useAuth();
 
 
     const {
         login,
+        isLoggedIn,
         isGoogleUser
     } = useAuthContext();
 
+
     const {
-    
         pendingAction,
-    
         setPendingAction,
-    
         closeModal
-    
-    } = useAccountModal();
-    
-    const navigate = useNavigate();
+    } =
+        useAccountModal();
+
+
+    const navigate =
+        useNavigate();
+
+
+    /*
+     * =========================
+     * CLOSED
+     * =========================
+     */
 
     if (!open) {
 
@@ -143,51 +262,59 @@ const [pincodeError, setPincodeError] =
 
     }
 
-    // ==========================================
-    // Send OTP
-    // ==========================================
+
+    /*
+     * =========================
+     * RESET MODAL
+     * =========================
+     */
+
     const resetModal = () => {
 
         setPhoneNumber("");
     
         setShowRegistration(false);
     
+        setExistingCustomer(null);
+    
+        setEditingAddress(false);
+    
         setName("");
     
         setEmail("");
-
+    
         setDoorNo("");
-
+    
         setAddressLine1("");
-
+    
         setAddressLine2("");
-
+    
         setLandmark("");
-
+    
         setCity("");
-
+    
         setState("");
-
+    
         setPincode("");
     
-        setLatitude(undefined);
+        setLatitude(null);
     
-        setLongitude(undefined);
+        setLongitude(null);
     
         setPhoneError("");
     
         setNameError("");
-
+    
         setEmailError("");
     
         setDoorNoError("");
-
+    
         setAddressLine1Error("");
-
+    
         setCityError("");
-
+    
         setStateError("");
-
+    
         setPincodeError("");
     
         setLocationError("");
@@ -197,136 +324,476 @@ const [pincodeError, setPincodeError] =
         setLocationCaptured(false);
     
         setLocationMessage("");
-    
     };
+
+    /*
+     * =========================
+     * CLOSE MODAL
+     * =========================
+     */
 
     const handleClose = () => {
 
         resetModal();
-    
+
         closeModal();
-    
+
+        onClose();
+
     };
+        /*
+     * =========================
+     * CONTINUE PENDING ACTION
+     * =========================
+     *
+     * AccountModal is mainly used
+     * before entering Checkout or
+     * Orders.
+     *
+     * Place Order does NOT open
+     * this modal anymore.
+     */
 
+        const continuePendingAction = () => {
 
-    const continuePendingAction = () => {
-
-        switch (pendingAction) {
+            switch (pendingAction) {
     
-            case PendingAction.CHECKOUT:
+                case PendingAction.CHECKOUT:
     
-                navigate(ROUTES.CHECKOUT);
+                    navigate(
+                        ROUTES.CHECKOUT
+                    );
     
-                break;
+                    break;
     
-            case PendingAction.ORDERS:
     
-                navigate(ROUTES.ORDERS);
+                case PendingAction.ORDERS:
     
-                break;
+                    navigate(
+                        ROUTES.ORDERS
+                    );
     
-            default:
+                    break;
     
-                break;
     
-        }
+                default:
     
-        setPendingAction(PendingAction.NONE);
+                    break;
+            }
     
-        closeModal();
     
-    };
-
-    const handleContinue = async () => {
-        setPhoneError("");
+            setPendingAction(
+                PendingAction.NONE
+            );
     
-        if (!/^[6-9]\d{9}$/.test(phoneNumber)) {
-            setPhoneError("Enter a valid 10-digit mobile number.");
-            return;
-        }
+            closeModal();
     
-        const response = await checkPhone({ phoneNumber });
+        };
     
-        if (!response.success) {
-            alert(response.message);
-            return;
-        }
     
-        if (response.existingCustomer) {
-            login(response.customer!,response.token!);
-            resetModal();
-            if (response.customer?.role === "ADMIN") {
-                navigate(ROUTES.ADMIN_DASHBOARD);
+        /*
+         * =========================
+         * VERIFY PHONE
+         * =========================
+         */
+    
+        const handleContinue = async () => {
+    
+            setPhoneError("");
+    
+    
+            /*
+             * Validate phone number
+             */
+    
+            if (
+                !/^[6-9]\d{9}$/.test(
+                    phoneNumber
+                )
+            ) {
+    
+                setPhoneError(
+                    "Enter a valid 10-digit mobile number."
+                );
+    
                 return;
             }
-            continuePendingAction();
-            return;
-        }
     
-        setShowRegistration(true);
-    };
-
-    // ==========================================
-    // Capture Current Location
-    // ==========================================
-
-    const handleCurrentLocation = () => {
-
-        setCapturingLocation(true);
-
-        setLocationMessage(
-            "Please wait... Capturing your current location. This may take a few seconds."
-        );
-
-        navigator.geolocation.getCurrentPosition(
-
-            (position) => {
-
-                setLatitude(position.coords.latitude);
-
-                setLongitude(position.coords.longitude);
-
-                setCapturingLocation(false);
-
-                setLocationCaptured(true);
-
-                setLocationError("");
-
-                setLocationMessage("");
-
-            },
-
-            () => {
-
-                setCapturingLocation(false);
-
-                setLocationCaptured(false);
-
-                setLocationMessage("");
-
-                setLocationError(
-                    "Unable to capture your current location."
+    
+            try {
+    
+                const response =
+                    await checkPhone({
+                        phoneNumber
+                    });
+    
+    
+                    if (!response.success) {
+                        setPhoneError(
+                            response.message ||
+                            "This phone number is not associated with your account."
+                        );
+                        return;
+                    }
+    
+    
+                /*
+                 * =========================
+                 * EXISTING CUSTOMER
+                 * =========================
+                 */
+    
+                if (
+                    response.existingCustomer &&
+                    response.customer
+                ) {
+    
+                    const customer =
+                        response.customer;
+    
+    
+                    /*
+                     * Authenticate the existing
+                     * customer using the JWT
+                     * returned by checkPhone().
+                     */
+    
+                    login(
+                        customer,
+                        response.token!
+                    );
+    
+    
+                    /*
+                     * Store existing customer.
+                     */
+    
+                    setExistingCustomer(
+                        customer
+                    );
+    
+    
+                    /*
+                     * =========================
+                     * PREFILL DETAILS
+                     * =========================
+                     */
+    
+                    setName(
+                        customer.name
+                    );
+    
+                    setEmail(
+                        customer.email ?? ""
+                    );
+    
+    
+                    /*
+                     * Address
+                     */
+    
+                    setDoorNo(
+                        customer.doorNo ?? ""
+                    );
+    
+                    setAddressLine1(
+                        customer.addressLine1 ?? ""
+                    );
+    
+                    setAddressLine2(
+                        customer.addressLine2 ?? ""
+                    );
+    
+                    setLandmark(
+                        customer.landmark ?? ""
+                    );
+    
+                    setCity(
+                        customer.city ?? ""
+                    );
+    
+                    setState(
+                        customer.state ?? ""
+                    );
+    
+                    setPincode(
+                        customer.pincode ?? ""
+                    );
+    
+    
+                    /*
+                     * Location
+                     */
+    
+                    setLatitude(
+                        customer.latitude ?? null
+                    );
+    
+                    setLongitude(
+                        customer.longitude ?? null
+                    );
+    
+    
+                    setLocationCaptured(
+                        customer.latitude != null &&
+                        customer.longitude != null
+                    );
+    
+    
+                    /*
+                     * Existing customer initially
+                     * sees the saved address box.
+                     *
+                     * Address fields are hidden
+                     * until Change Address is clicked.
+                     */
+    
+                    setEditingAddress(
+                        false
+                    );
+    
+                    setShowRegistration(
+                        true
+                    );
+    
+                    return;
+                }
+    
+    
+                /*
+                 * =========================
+                 * NEW CUSTOMER
+                 * =========================
+                 *
+                 * No customer exists with
+                 * this phone number.
+                 *
+                 * Show a completely empty
+                 * registration form.
+                 */
+    
+                setExistingCustomer(
+                    null
                 );
-
-            },
-
-            {
-                enableHighAccuracy: true,
-                timeout: 10000,
-                maximumAge: 0
+    
+                setEditingAddress(
+                    true
+                );
+    
+    
+                setName("");
+    
+                setEmail("");
+    
+    
+                setDoorNo("");
+    
+                setAddressLine1("");
+    
+                setAddressLine2("");
+    
+                setLandmark("");
+    
+                setCity("");
+    
+                setState("");
+    
+                setPincode("");
+    
+    
+                setLatitude(null);
+    
+                setLongitude(null);
+    
+    
+                setLocationCaptured(
+                    false
+                );
+    
+    
+                setShowRegistration(
+                    true
+                );
+    
+            } catch (error: any) {
+    
+                setPhoneError(
+                    error?.response?.data?.message ||
+                    "Unable to verify phone number."
+                );
+    
             }
-
-        );
-
-    };
-
-    // ==========================================
-    // Register Customer
-    // ==========================================
+    
+        };
+    
+    
+        /*
+         * =========================
+         * CURRENT LOCATION
+         * =========================
+         */
+    
+        const handleCurrentLocation = () => {
+    
+            /*
+             * Browser does not support
+             * geolocation.
+             */
+    
+            if (!navigator.geolocation) {
+    
+                setLocationError(
+                    "Your browser does not support location services."
+                );
+    
+                return;
+            }
+    
+    
+            setCapturingLocation(
+                true
+            );
+    
+            setLocationCaptured(
+                false
+            );
+    
+            setLocationMessage(
+                "Please wait... Capturing your current location. This may take a few seconds."
+            );
+    
+    
+            navigator.geolocation.getCurrentPosition(
+    
+                position => {
+    
+                    setLatitude(
+                        position.coords.latitude
+                    );
+    
+                    setLongitude(
+                        position.coords.longitude
+                    );
+    
+    
+                    setCapturingLocation(
+                        false
+                    );
+    
+                    setLocationCaptured(
+                        true
+                    );
+    
+                    setLocationError("");
+    
+                    setLocationMessage("");
+    
+                },
+    
+    
+                error => {
+    
+                    setCapturingLocation(
+                        false
+                    );
+    
+                    setLocationCaptured(
+                        false
+                    );
+    
+                    setLocationMessage("");
+    
+    
+                    switch (
+                        error.code
+                    ) {
+    
+                        case error.PERMISSION_DENIED:
+    
+                            setLocationError(
+                                "Location permission was denied. Please allow location access."
+                            );
+    
+                            break;
+    
+    
+                        case error.POSITION_UNAVAILABLE:
+    
+                            setLocationError(
+                                "Your current location could not be determined."
+                            );
+    
+                            break;
+    
+    
+                        case error.TIMEOUT:
+    
+                            setLocationError(
+                                "Location request timed out. Please try again."
+                            );
+    
+                            break;
+    
+    
+                        default:
+    
+                            setLocationError(
+                                "Unable to get your current location."
+                            );
+    
+                    }
+    
+                },
+    
+    
+                {
+                    enableHighAccuracy: true,
+    
+                    timeout: 10000,
+    
+                    maximumAge: 0
+                }
+    
+            );
+    
+        };
+    /*
+     * =========================
+     * SAVE / SUBMIT PROFILE
+     * =========================
+     *
+     * New customer:
+     *
+     *     Register
+     *         ↓
+     *     JWT created
+     *         ↓
+     *     Continue pending action
+     *
+     *
+     * Existing customer:
+     *
+     *     If address was changed:
+     *
+     *         Submit
+     *             ↓
+     *         Return to saved address box
+     *
+     *
+     *     If saved address is displayed:
+     *
+     *         Save
+     *             ↓
+     *         Update backend
+     *             ↓
+     *         Continue pending action
+     */
 
     const handleRegister = async () => {
 
-        // Clear previous validation messages
+        /*
+         * Clear previous validation errors.
+         */
 
         setNameError("");
 
@@ -344,173 +811,404 @@ const [pincodeError, setPincodeError] =
 
         setLocationError("");
 
+
         let hasError = false;
+
+
+        /*
+         * =========================
+         * NAME
+         * =========================
+         */
 
         if (!name.trim()) {
 
-            setNameError("Name is required.");
-
-            hasError = true;
-
-        }
-
-        if (email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-
-            setEmailError( "Please enter a valid email address." );
-            
-            hasError = true;
-        }
-
-        if (!doorNo.trim()) {
-
-            setDoorNoError("Door No is required.");
-
-            hasError = true;
-
-        }
-
-        if (!addressLine1.trim()) {
-
-            setAddressLine1Error("Address Line 1 is required.");
-
-            hasError = true;
-
-        }
-
-        if (!city.trim()) {
-
-            setCityError("City is required.");
-
-            hasError = true;
-
-        }
-
-        if (!state.trim()) {
-
-            setStateError("State is required.");
-
-            hasError = true;
-
-        }
-
-        if (!/^\d{6}$/.test(pincode)) {
-
-            setPincodeError("Enter a valid 6-digit pincode.");
-
-            hasError = true;
-
-        }
-
-        if (
-
-            latitude === undefined ||
-
-            longitude === undefined
-
-        ) {
-
-            setLocationError(
-
-                "Please capture your current location."
-
+            setNameError(
+                "Name is required."
             );
 
             hasError = true;
-
         }
+
+
+        /*
+         * =========================
+         * EMAIL
+         * =========================
+         */
+
+        if (
+            email.trim() &&
+            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+                email
+            )
+        ) {
+
+            setEmailError(
+                "Please enter a valid email address."
+            );
+
+            hasError = true;
+        }
+
+
+        /*
+         * =========================
+         * ADDRESS
+         * =========================
+         */
+
+        if (!doorNo.trim()) {
+
+            setDoorNoError(
+                "Door No is required."
+            );
+
+            hasError = true;
+        }
+
+
+        if (!addressLine1.trim()) {
+
+            setAddressLine1Error(
+                "Address Line 1 is required."
+            );
+
+            hasError = true;
+        }
+
+
+        if (!city.trim()) {
+
+            setCityError(
+                "City is required."
+            );
+
+            hasError = true;
+        }
+
+
+        if (!state.trim()) {
+
+            setStateError(
+                "State is required."
+            );
+
+            hasError = true;
+        }
+
+
+        if (
+            !/^\d{6}$/.test(
+                pincode
+            )
+        ) {
+
+            setPincodeError(
+                "Enter a valid 6-digit pincode."
+            );
+
+            hasError = true;
+        }
+
+
+        /*
+         * =========================
+         * LOCATION
+         * =========================
+         */
+
+        if (
+            latitude === null ||
+            longitude === null
+        ) {
+
+            setLocationError(
+                "Please capture your current location."
+            );
+
+            hasError = true;
+        }
+
+
+        /*
+         * Stop if validation failed.
+         */
 
         if (hasError) {
 
             return;
-
         }
 
-        if (hasError) {
 
-            return;
+        try {
+
+            /*
+             * =========================
+             * EXISTING CUSTOMER
+             * =========================
+             *
+             * At this point the user has
+             * already clicked Change Address
+             * and submitted the new address.
+             *
+             * We DO NOT save to backend yet.
+             *
+             * Instead:
+             *
+             * editable fields
+             *        ↓
+             *     Submit
+             *        ↓
+             * saved address box
+             *
+             * The actual backend update happens
+             * only when the user clicks Save
+             * from the saved address box.
+             */
+
+            if (
+                existingCustomer &&
+                editingAddress
+            ) {
+            
+                /*
+                 * Update the displayed customer locally.
+                 *
+                 * We do NOT call the backend here.
+                 *
+                 * Submit only prepares the new address
+                 * for the final Save step.
+                 */
+            
+                setExistingCustomer(previous => {
+            
+                    if (!previous) {
+            
+                        return previous;
+            
+                    }
+            
+                    return {
+            
+                        ...previous,
+            
+                        name,
+            
+                        email,
+            
+                        doorNo,
+            
+                        addressLine1,
+            
+                        addressLine2,
+            
+                        landmark,
+            
+                        city,
+            
+                        state,
+            
+                        pincode,
+            
+                        latitude,
+            
+                        longitude
+            
+                    };
+            
+                });
+            
+            
+                /*
+                 * Return to the saved-address box.
+                 */
+            
+                setEditingAddress(false);
+            
+                return;
+            }
+
+
+            /*
+             * =========================
+             * EXISTING CUSTOMER SAVE
+             * =========================
+             *
+             * This is the final Save from
+             * the saved-address screen.
+             */
+
+            if (existingCustomer) {
+
+                await updateCustomerProfile({
+
+                    name,
+
+                    phoneNumber,
+
+                    email,
+
+                    doorNo,
+
+                    addressLine1,
+
+                    addressLine2,
+
+                    landmark,
+
+                    city,
+
+                    state,
+
+                    pincode,
+
+                    latitude,
+
+                    longitude
+
+                });
+
+
+                /*
+                 * Address update succeeded.
+                 */
+
+                resetModal();
+
+                continuePendingAction();
+
+                return;
+            }
+
+
+            /*
+             * =========================
+             * NEW CUSTOMER
+             * =========================
+             */
+
+            const response =
+                await completeCustomerProfile({
+
+                    phoneNumber,
+
+                    name,
+
+                    email,
+
+                    doorNo,
+
+                    addressLine1,
+
+                    addressLine2,
+
+                    landmark,
+
+                    city,
+
+                    state,
+
+                    pincode,
+
+                    latitude,
+
+                    longitude
+
+                });
+
+
+            /*
+             * Backend must return
+             * customer + final JWT.
+             */
+
+            if (
+                !response.success ||
+                !response.customer ||
+                !response.token
+            ) {
+
+                alert(
+                    response.message
+                );
+
+                return;
+            }
+
+
+            /*
+             * Store authenticated
+             * customer and JWT.
+             */
+
+            login(
+                response.customer,
+                response.token
+            );
+
+
+            /*
+             * Registration completed.
+             */
+
+            resetModal();
+
+            continuePendingAction();
+
+        } catch (error: any) {
+
+            alert(
+                error?.response?.data?.message ||
+                error?.message ||
+                "Unable to save customer details."
+            );
 
         }
-
-        // Call Backend
-
-        const response = isGoogleUser
-        ? await completeCustomerProfile({
-            phoneNumber,
-            name,
-            email,
-            doorNo,
-            addressLine1,
-            addressLine2,
-            landmark,
-            city,
-            state,
-            pincode,
-            latitude,
-            longitude
-        })
-        : await register({
-            phoneNumber,
-            name,
-            email,
-            doorNo,
-            addressLine1,
-            addressLine2,
-            landmark,
-            city,
-            state,
-            pincode,
-            latitude,
-            longitude
-        });
-
-        if (!response.success) {
-
-            alert(response.message);
-
-            return;
-
-        }
-
-        // Auto Login
-        login(response.customer!, response.token!);
-
-        resetModal();
-
-        continuePendingAction();
 
     };
+        /*
+     * =========================
+     * RENDER
+     * =========================
+     */
 
-    return (
+        return (
 
-        <div className={styles.overlay}>
+            <div className={styles.overlay}>
     
-            <div className={styles.modal}>
+                <div className={styles.modal}>
     
-                <h2 className={styles.title}>
     
-                    Login / Register
+                    {/* =========================
+                        TITLE
+                    ========================= */}
     
-                </h2>
+                    <h2 className={styles.title}>
     
-                {
+                        Login / Register
     
-                    // ==========================================
-                    // Screen 1 : Phone Number
-                    // ==========================================
+                    </h2>
     
-                    !showRegistration ? (
+    
+                    {/* =========================
+                        PHONE STEP
+                    ========================= */}
+    
+                    {!showRegistration ? (
     
                         <>
     
                             <input
-    
                                 className={styles.input}
     
                                 value={phoneNumber}
     
-                                onChange={(e) => {
+                                onChange={event => {
     
-                                    setPhoneNumber(e.target.value);
+                                    setPhoneNumber(
+                                        event.target.value
+                                    );
     
                                     setPhoneError("");
     
@@ -522,9 +1220,14 @@ const [pincodeError, setPincodeError] =
     
                             />
     
+    
                             {phoneError && (
     
-                                <p className={styles.errorText}>
+                                <p
+                                    className={
+                                        styles.errorText
+                                    }
+                                >
     
                                     {phoneError}
     
@@ -532,19 +1235,35 @@ const [pincodeError, setPincodeError] =
     
                             )}
     
-                            <p className={styles.infoText}>
     
-                                ⚠️ Please make sure this number is correct.
+                            <p
+                                className={
+                                    styles.infoText
+                                }
+                            >
+    
+                                ⚠️ Please make sure this
+                                number is correct.
+    
                                 <br />
-                                We'll use it for your order updates.
+    
+                                We'll use it for your
+                                order updates.
     
                             </p>
     
+    
                             <button
     
-                                className={styles.primaryButton}
+                                type="button"
     
-                                onClick={handleContinue}
+                                className={
+                                    styles.primaryButton
+                                }
+    
+                                onClick={
+                                    handleContinue
+                                }
     
                                 disabled={loading}
     
@@ -564,374 +1283,739 @@ const [pincodeError, setPincodeError] =
     
                         </>
     
-                    )
-
-                    // ==========================================
-                    // Screen 3 : Registration
-                    // ==========================================
-
-                    : (
-
+                    ) : (
+    
+                        /* =========================
+                           PROFILE STEP
+                        ========================= */
+    
                         <>
-
-                            <p className={styles.infoText}>
-
-                                Phone number confirmed successfully.
-
-                                <br />
-
-                                Complete your profile to continue.
-
+    
+    
+                            <p
+                                className={
+                                    styles.infoText
+                                }
+                            >
+    
+                                {
+    
+                                    existingCustomer
+    
+                                        ? "Your details are already saved. Review them and update your delivery details if needed."
+    
+                                        : "Phone number confirmed successfully. Complete your profile to continue."
+    
+                                }
+    
                             </p>
-
+    
+    
+                            {/* =========================
+                                NAME
+                            ========================= */}
+    
                             <input
-
-                                className={styles.input}
-
+    
+                                className={
+                                    styles.input
+                                }
+    
                                 value={name}
-
-                                onChange={(e) => {
-
-                                    setName(e.target.value);
-
+    
+                                onChange={event => {
+    
+                                    setName(
+                                        event.target.value
+                                    );
+    
                                     setNameError("");
-
+    
                                 }}
-
+    
                                 placeholder="Full Name"
-
+    
                             />
-
+    
+    
                             {nameError && (
-
-                                <p className={styles.errorText}>
-
+    
+                                <p
+                                    className={
+                                        styles.errorText
+                                    }
+                                >
+    
                                     {nameError}
-
+    
                                 </p>
-
+    
                             )}
-
+    
+    
+                            {/* =========================
+                                EMAIL
+                            ========================= */}
+    
                             <input
-
-                                className={styles.input}
-
+    
+                                className={
+                                    styles.input
+                                }
+    
                                 value={email}
-
-                                onChange={(e) => {
-
-                                    setEmail(e.target.value);
-                                
+    
+                                onChange={event => {
+    
+                                    setEmail(
+                                        event.target.value
+                                    );
+    
                                     setEmailError("");
-
+    
                                 }}
-
+    
                                 placeholder="Email (Optional)"
-
+    
                             />
+    
+    
+                            {emailError && (
+    
+                                <p
+                                    className={
+                                        styles.errorText
+                                    }
+                                >
+    
+                                    {emailError}
+    
+                                </p>
+    
+                            )}
+    
+    
+                            {/* =========================
+                                EXISTING CUSTOMER
+                                SAVED ADDRESS
+                            ========================= */}
+    
                             {
-
-                                emailError && (
-
-                                    <p className={styles.errorText}>
-
-                                        {emailError}
-
-                                    </p>
-
-                                )
-
-                                }
-
-                            <input
-
-                                className={styles.input}
-
-                                value={doorNo}
-
-                                onChange={(e) => {
-
-                                    setDoorNo(e.target.value);
-
-                                    setDoorNoError("");
-
-                                }}
-
-                                placeholder="Door / Flat No"
-
-                            />
-
-                            {doorNoError && (
-
-                                <p className={styles.errorText}>
-
-                                    {doorNoError}
-
-                                </p>
-
-                            )}
-
-                            <input
-
-                                className={styles.input}
-
-                                value={addressLine1}
-
-                                onChange={(e) => {
-
-                                    setAddressLine1(e.target.value);
-
-                                    setAddressLine1Error("");
-
-                                }}
-
-                                placeholder="Address Line 1"
-
-                            />
-
-                            {addressLine1Error && (
-
-                                <p className={styles.errorText}>
-
-                                    {addressLine1Error}
-
-                                </p>
-
-                            )}
-
-                            <input
-
-                                className={styles.input}
-
-                                value={addressLine2}
-
-                                onChange={(e) =>
-
-                                    setAddressLine2(e.target.value)
-
-                                }
-
-                                placeholder="Address Line 2 (Optional)"
-
-                            />
-
-                            <input
-
-                                className={styles.input}
-
-                                value={landmark}
-
-                                onChange={(e) =>
-
-                                    setLandmark(e.target.value)
-
-                                }
-
-                                placeholder="Landmark (Optional)"
-
-                            />
-
-                            <input
-
-                                className={styles.input}
-
-                                value={city}
-
-                                onChange={(e) => {
-
-                                    setCity(e.target.value);
-
-                                    setCityError("");
-
-                                }}
-
-                                placeholder="City"
-
-                            />
-
-                            {cityError && (
-
-                                <p className={styles.errorText}>
-
-                                    {cityError}
-
-                                </p>
-
-                            )}
-
-                            <input
-
-                                className={styles.input}
-
-                                value={state}
-
-                                onChange={(e) => {
-
-                                    setState(e.target.value);
-
-                                    setStateError("");
-
-                                }}
-
-                                placeholder="State"
-
-                            />
-
-                            {stateError && (
-
-                                <p className={styles.errorText}>
-
-                                    {stateError}
-
-                                </p>
-
-                            )}
-
-                            <input
-
-                                className={styles.input}
-
-                                value={pincode}
-
-                                onChange={(e) => {
-
-                                    setPincode(e.target.value);
-
-                                    setPincodeError("");
-
-                                }}
-
-                                placeholder="Pincode"
-
-                            />
-
-                            {pincodeError && (
-
-                                <p className={styles.errorText}>
-
-                                    {pincodeError}
-
-                                </p>
-
-                            )}
-
-                            <button
-
-                                className={styles.primaryButton}
-
-                                onClick={handleCurrentLocation}
-
-                                disabled={
-                                    capturingLocation ||
-                                    locationCaptured
-                                }
-
-                            >
-
-                                {
-
-                                    locationCaptured
-
-                                        ? "✅ Location Captured"
-
-                                        : capturingLocation
-
-                                            ? "📍 Capturing Location..."
-
-                                            : "📍 Use Current Location"
-
-                                }
-
-                            </button>
-
-                            {
-
-                                locationMessage && (
-
-                                    <p className={styles.infoText}>
-
-                                        {locationMessage}
-
-                                    </p>
-
-                                )
-
+    
+                                existingCustomer &&
+                                !editingAddress
+    
+                                    ? (
+    
+                                        <>
+    
+                                            <div
+                                                className={
+                                                    styles.savedAddress
+                                                }
+                                            >
+    
+                                                <p
+                                                    className={
+                                                        styles.savedAddressTitle
+                                                    }
+                                                >
+    
+                                                    Saved Delivery
+                                                    Address
+    
+                                                </p>
+    
+    
+                                                <div>
+    
+                                                    {existingCustomer.doorNo}
+    
+                                                    {", "}
+    
+                                                    {
+                                                        existingCustomer
+                                                            .addressLine1
+                                                    }
+    
+    
+                                                    {
+                                                        existingCustomer
+                                                            .addressLine2 &&
+                                                        `, ${existingCustomer.addressLine2}`
+                                                    }
+    
+    
+                                                    {
+                                                        existingCustomer
+                                                            .landmark &&
+                                                        `, Near ${existingCustomer.landmark}`
+                                                    }
+    
+    
+                                                    {
+                                                        existingCustomer
+                                                            .city &&
+                                                        `, ${existingCustomer.city}`
+                                                    }
+    
+    
+                                                    {
+                                                        existingCustomer
+                                                            .state &&
+                                                        `, ${existingCustomer.state}`
+                                                    }
+    
+    
+                                                    {
+                                                        existingCustomer
+                                                            .pincode &&
+                                                        ` - ${existingCustomer.pincode}`
+                                                    }
+    
+                                                </div>
+    
+                                            </div>
+    
+    
+                                            {/* =========================
+                                                CHANGE ADDRESS
+                                            ========================= */}
+    
+                                            <button
+    
+                                                type="button"
+    
+                                                className={
+                                                    styles.secondaryButton
+                                                }
+    
+                                                onClick={() =>
+                                                    setEditingAddress(
+                                                        true
+                                                    )
+                                                }
+    
+                                            >
+    
+                                                ✏️ Change Address
+    
+                                            </button>
+    
+    
+                                            {/* =========================
+                                                FINAL SAVE
+                                            ========================= */}
+    
+                                            <button
+    
+                                                type="button"
+    
+                                                className={
+                                                    styles.primaryButton
+                                                }
+    
+                                                onClick={
+                                                    handleRegister
+                                                }
+    
+                                                disabled={
+                                                    loading
+                                                }
+    
+                                            >
+    
+                                                {
+    
+                                                    loading
+    
+                                                        ? "Saving..."
+    
+                                                        : "Save"
+    
+                                                }
+    
+                                            </button>
+    
+                                        </>
+    
+                                    )
+    
+                                    : (
+    
+                                        /* =========================
+                                           ADDRESS EDIT / NEW CUSTOMER
+                                        ========================= */
+    
+                                        <>
+    
+                                            {/* Door No */}
+    
+                                            <input
+    
+                                                className={
+                                                    styles.input
+                                                }
+    
+                                                value={
+                                                    doorNo
+                                                }
+    
+                                                onChange={
+                                                    event => {
+    
+                                                        setDoorNo(
+                                                            event.target.value
+                                                        );
+    
+                                                        setDoorNoError(
+                                                            ""
+                                                        );
+    
+                                                    }
+                                                }
+    
+                                                placeholder={
+                                                    "Door / Flat No"
+                                                }
+    
+                                            />
+    
+    
+                                            {doorNoError && (
+    
+                                                <p
+                                                    className={
+                                                        styles.errorText
+                                                    }
+                                                >
+    
+                                                    {
+                                                        doorNoError
+                                                    }
+    
+                                                </p>
+    
+                                            )}
+    
+    
+                                            {/* Address Line 1 */}
+    
+                                            <input
+    
+                                                className={
+                                                    styles.input
+                                                }
+    
+                                                value={
+                                                    addressLine1
+                                                }
+    
+                                                onChange={
+                                                    event => {
+    
+                                                        setAddressLine1(
+                                                            event.target.value
+                                                        );
+    
+                                                        setAddressLine1Error(
+                                                            ""
+                                                        );
+    
+                                                    }
+                                                }
+    
+                                                placeholder={
+                                                    "Address Line 1"
+                                                }
+    
+                                            />
+    
+    
+                                            {addressLine1Error && (
+    
+                                                <p
+                                                    className={
+                                                        styles.errorText
+                                                    }
+                                                >
+    
+                                                    {
+                                                        addressLine1Error
+                                                    }
+    
+                                                </p>
+    
+                                            )}
+    
+    
+                                            {/* Address Line 2 */}
+    
+                                            <input
+    
+                                                className={
+                                                    styles.input
+                                                }
+    
+                                                value={
+                                                    addressLine2
+                                                }
+    
+                                                onChange={
+                                                    event =>
+                                                        setAddressLine2(
+                                                            event.target.value
+                                                        )
+                                                }
+    
+                                                placeholder={
+                                                    "Address Line 2 (Optional)"
+                                                }
+    
+                                            />
+    
+    
+                                            {/* Landmark */}
+    
+                                            <input
+    
+                                                className={
+                                                    styles.input
+                                                }
+    
+                                                value={
+                                                    landmark
+                                                }
+    
+                                                onChange={
+                                                    event =>
+                                                        setLandmark(
+                                                            event.target.value
+                                                        )
+                                                }
+    
+                                                placeholder={
+                                                    "Landmark (Optional)"
+                                                }
+    
+                                            />
+    
+    
+                                            {/* City */}
+    
+                                            <input
+    
+                                                className={
+                                                    styles.input
+                                                }
+    
+                                                value={
+                                                    city
+                                                }
+    
+                                                onChange={
+                                                    event => {
+    
+                                                        setCity(
+                                                            event.target.value
+                                                        );
+    
+                                                        setCityError(
+                                                            ""
+                                                        );
+    
+                                                    }
+                                                }
+    
+                                                placeholder={
+                                                    "City"
+                                                }
+    
+                                            />
+    
+    
+                                            {cityError && (
+    
+                                                <p
+                                                    className={
+                                                        styles.errorText
+                                                    }
+                                                >
+    
+                                                    {
+                                                        cityError
+                                                    }
+    
+                                                </p>
+    
+                                            )}
+    
+    
+                                            {/* State */}
+    
+                                            <input
+    
+                                                className={
+                                                    styles.input
+                                                }
+    
+                                                value={
+                                                    state
+                                                }
+    
+                                                onChange={
+                                                    event => {
+    
+                                                        setState(
+                                                            event.target.value
+                                                        );
+    
+                                                        setStateError(
+                                                            ""
+                                                        );
+    
+                                                    }
+                                                }
+    
+                                                placeholder={
+                                                    "State"
+                                                }
+    
+                                            />
+    
+    
+                                            {stateError && (
+    
+                                                <p
+                                                    className={
+                                                        styles.errorText
+                                                    }
+                                                >
+    
+                                                    {
+                                                        stateError
+                                                    }
+    
+                                                </p>
+    
+                                            )}
+    
+    
+                                            {/* Pincode */}
+    
+                                            <input
+    
+                                                className={
+                                                    styles.input
+                                                }
+    
+                                                value={
+                                                    pincode
+                                                }
+    
+                                                onChange={
+                                                    event => {
+    
+                                                        setPincode(
+                                                            event.target.value
+                                                        );
+    
+                                                        setPincodeError(
+                                                            ""
+                                                        );
+    
+                                                    }
+                                                }
+    
+                                                placeholder={
+                                                    "Pincode"
+                                                }
+    
+                                            />
+    
+    
+                                            {pincodeError && (
+    
+                                                <p
+                                                    className={
+                                                        styles.errorText
+                                                    }
+                                                >
+    
+                                                    {
+                                                        pincodeError
+                                                    }
+    
+                                                </p>
+    
+                                            )}
+    
+    
+                                            {/* =========================
+                                                LOCATION
+                                            ========================= */}
+    
+                                            <button
+    
+                                                type="button"
+    
+                                                className={
+                                                    styles.primaryButton
+                                                }
+    
+                                                onClick={
+                                                    handleCurrentLocation
+                                                }
+    
+                                                disabled={
+                                                    capturingLocation
+                                                }
+    
+                                            >
+    
+                                                {
+    
+                                                    locationCaptured
+    
+                                                        ? "✅ Location Captured"
+    
+                                                        : capturingLocation
+    
+                                                            ? "📍 Capturing Location..."
+    
+                                                            : "📍 Use Current Location"
+    
+                                                }
+    
+                                            </button>
+    
+    
+                                            {locationMessage && (
+    
+                                                <p
+                                                    className={
+                                                        styles.infoText
+                                                    }
+                                                >
+    
+                                                    {
+                                                        locationMessage
+                                                    }
+    
+                                                </p>
+    
+                                            )}
+    
+    
+                                            {locationCaptured && (
+    
+                                                <p
+                                                    className={
+                                                        styles.successText
+                                                    }
+                                                >
+    
+                                                    ✅ Location captured
+                                                    successfully.
+    
+                                                </p>
+    
+                                            )}
+    
+    
+                                            {locationError && (
+    
+                                                <p
+                                                    className={
+                                                        styles.errorText
+                                                    }
+                                                >
+    
+                                                    {
+                                                        locationError
+                                                    }
+    
+                                                </p>
+    
+                                            )}
+    
+    
+                                            {/* =========================
+                                                SUBMIT / REGISTER
+                                            ========================= */}
+    
+                                            <button
+    
+                                                type="button"
+    
+                                                className={
+                                                    styles.primaryButton
+                                                }
+    
+                                                onClick={
+                                                    handleRegister
+                                                }
+    
+                                                disabled={
+                                                    loading
+                                                }
+    
+                                            >
+    
+                                                {
+    
+                                                    loading
+    
+                                                        ? "Saving..."
+    
+                                                        : existingCustomer
+    
+                                                            ? "Submit"
+    
+                                                            : "Register"
+    
+                                                }
+    
+                                            </button>
+    
+                                        </>
+    
+                                    )
+    
                             }
-
-                            {
-
-                                locationCaptured && (
-
-                                    <p className={styles.successText}>
-
-                                        ✅ Location captured successfully.
-
-                                    </p>
-
-                                )
-
-                            }
-
-                            {
-
-                                locationError && (
-
-                                    <p className={styles.errorText}>
-
-                                        {locationError}
-
-                                    </p>
-
-                                )
-
-                            }
-
-                            <button
-
-                                className={styles.primaryButton}
-
-                                onClick={handleRegister}
-
-                                disabled={loading}
-
-                            >
-
-                                {
-
-                                    loading
-
-                                        ? "Registering..."
-
-                                        : "Register"
-
-                                }
-
-                            </button>
-
+    
                         </>
-
-                    )
-
-                }
-
-<button
-
-    className={styles.closeButton}
-
-    onClick={handleClose}
-
->
-
-    Close
-
-</button>
-
+    
+                    )}
+    
+    
+                    {/* =========================
+                        CLOSE
+                    ========================= */}
+    
+                    <button
+    
+                        type="button"
+    
+                        className={
+                            styles.closeButton
+                        }
+    
+                        onClick={
+                            handleClose
+                        }
+    
+                    >
+    
+                        Close
+    
+                    </button>
+    
+                </div>
+    
             </div>
-
-        </div>
-
-    );
-
-}
-
-export default AccountModal;
+        );
+    }
+    
+    
+    export default AccountModal;

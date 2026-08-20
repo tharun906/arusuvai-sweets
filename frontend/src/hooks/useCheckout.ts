@@ -58,21 +58,14 @@ export function useCheckout() {
         } finally {
 
             setLoading(false);
-
         }
-
     };
 
     return {
-
         summary,
-
         deliveryStatus,
-
         loading,
-
         getCheckoutSummary,
-
         checkDelivery
 
     };

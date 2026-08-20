@@ -22,14 +22,10 @@ export function useOrder() {
             setLoading(false);
 
         }
-
     };
 
     return {
-
         createOrder,
         loading
-
     };
-
 }

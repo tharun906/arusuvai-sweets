@@ -1,19 +1,23 @@
+import { useState } from "react";
 import styles from "./cart.module.css";
 
 import { useNavigate } from "react-router-dom";
 
 import { ROUTES } from "../../constants/routes";
-import { PendingAction } from "../../constants/PendingAction";
 
 import { useCart } from "../../context/CartContext";
 import { useProducts } from "../../hooks/useProducts";
 
 import { useAuthContext } from "../../auth/context/AuthContext";
-import { useAccountModal } from "../../context/AccountModalContext";
+
+import GoogleLoginFallback from "../../auth/components/GoogleLoginFallback";
 
 import EmptyCart from "../../components/cart/EmptyCart";
 import CartItem from "../../components/cart/CartItem";
 import CartSummary from "../../components/cart/CartSummary";
+import { useAccountModal } from "../../context/AccountModalContext";
+import { PendingAction } from "../../constants/PendingAction";
+
 
 function Cart() {
 
@@ -30,6 +34,11 @@ function Cart() {
     } = useCart();
 
     const {
+        setPendingAction
+    } = useAccountModal();
+
+
+    const {
 
         products,
 
@@ -37,21 +46,22 @@ function Cart() {
 
     } = useProducts();
 
+
     const {
 
         isLoggedIn,
 
     } = useAuthContext();
 
-    const {
-
-        openModal,
-
-        setPendingAction,
-
-    } = useAccountModal();
 
     const navigate = useNavigate();
+
+
+    const [
+        showGoogleLogin,
+        setShowGoogleLogin
+    ] = useState(false);
+
 
     if (loading) {
 
@@ -59,11 +69,13 @@ function Cart() {
 
     }
 
+
     if (cartItems.length === 0) {
 
         return <EmptyCart />;
 
     }
+
 
     const grandTotal = cartItems.reduce(
 
@@ -75,11 +87,13 @@ function Cart() {
 
             );
 
+
             if (!product) {
 
                 return total;
 
             }
+
 
             const price =
 
@@ -93,6 +107,7 @@ function Cart() {
 
                         : product.price1kg;
 
+
             return total + price * item.quantity;
 
         },
@@ -101,29 +116,69 @@ function Cart() {
 
     );
 
+
     const handleCheckout = () => {
 
-        if (!isLoggedIn) {
-
-            setPendingAction(
-
-                PendingAction.CHECKOUT
-
-            );
-
-            openModal();
-
+        console.log("CART CHECKOUT", {
+            isLoggedIn
+        });
+    
+        if (isLoggedIn) {
+    
+            navigate(ROUTES.CHECKOUT);
+    
             return;
-
         }
+    
+        setPendingAction(
+            PendingAction.CHECKOUT
+        );
+    
+        setShowGoogleLogin(true);
+    };
 
-        navigate(
 
-            ROUTES.CHECKOUT
+    /*
+     * Google login fallback
+     */
+
+    if (showGoogleLogin) {
+
+        return (
+
+            <GoogleLoginFallback
+
+                onSuccess={() => {
+
+                    setShowGoogleLogin(false);
+
+                    navigate(
+                        ROUTES.CHECKOUT
+                    );
+
+                }}
+
+                onClose={() => {
+
+                    setShowGoogleLogin(false);
+
+                }}
+
+                onError={message => {
+
+                    console.error(
+                        "Google login:",
+                        message
+                    );
+
+                }}
+
+            />
 
         );
 
-    };
+    }
+
 
     return (
 
@@ -137,17 +192,20 @@ function Cart() {
 
                         cartItems.map(item => {
 
-                            const product = products.find(
+                            const product =
+                                products.find(
+                                    p =>
+                                        p.id ===
+                                        item.productId
+                                );
 
-                                p => p.id === item.productId
-
-                            );
 
                             if (!product) {
 
                                 return null;
 
                             }
+
 
                             const price =
 
@@ -161,58 +219,59 @@ function Cart() {
 
                                         : product.price1kg;
 
+
                             return (
 
                                 <CartItem
 
-                                    key={`${item.productId}-${item.weight}`}
+                                    key={
+                                        `${item.productId}-${item.weight}`
+                                    }
 
-                                    imageUrl={product.imageUrl}
+                                    imageUrl={
+                                        product.imageUrl
+                                    }
 
-                                    productName={product.name}
+                                    productName={
+                                        product.name
+                                    }
 
-                                    weight={item.weight}
+                                    weight={
+                                        item.weight
+                                    }
 
-                                    price={price}
+                                    price={
+                                        price
+                                    }
 
-                                    quantity={item.quantity}
+                                    quantity={
+                                        item.quantity
+                                    }
 
-                                    subtotal={price * item.quantity}
+                                    subtotal={
+                                        price *
+                                        item.quantity
+                                    }
 
                                     onIncrease={() =>
-
                                         increaseQuantity(
-
                                             item.productId,
-
                                             item.weight
-
                                         )
-
                                     }
 
                                     onDecrease={() =>
-
                                         decreaseQuantity(
-
                                             item.productId,
-
                                             item.weight
-
                                         )
-
                                     }
 
                                     onRemove={() =>
-
                                         removeFromCart(
-
                                             item.productId,
-
                                             item.weight
-
                                         )
-
                                     }
 
                                 />
@@ -225,11 +284,16 @@ function Cart() {
 
                 </div>
 
+
                 <CartSummary
 
-                    total={grandTotal}
+                    total={
+                        grandTotal
+                    }
 
-                    onCheckout={handleCheckout}
+                    onCheckout={
+                        handleCheckout
+                    }
 
                 />
 
@@ -240,5 +304,6 @@ function Cart() {
     );
 
 }
+
 
 export default Cart;

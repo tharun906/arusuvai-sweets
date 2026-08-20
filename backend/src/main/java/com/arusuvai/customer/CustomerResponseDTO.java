@@ -29,4 +29,7 @@ public class CustomerResponseDTO {
 
     private String pincode;
 
+    private Double latitude;
+
+    private Double longitude;
 }

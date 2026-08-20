@@ -26,8 +26,10 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderCreationResponseDTO> createOrder(@Valid @RequestBody OrderRequestDTO request) {
+    public ResponseEntity<OrderCreationResponseDTO> createOrder(@Valid @RequestBody OrderRequestDTO request, Authentication authentication) {
 
+        Long customerId = Long.parseLong(authentication.getName());
+        request.setCustomerId(customerId);
         OrderResponseDTO order = orderService.createOrder(request);
 
         if (request.getPaymentMethod() == PaymentMethod.COD) {

@@ -1,147 +1,5 @@
-src
-│
-├── assets
-│   ├── images
-│   ├── icons
-│   └── logo
-│
-├── components
-│   ├── common
-│   ├── home
-│   ├── category
-│   ├── product
-│   ├── cart
-│   ├── checkout
-│   ├── customer
-│   ├── order
-│   └── admin
-│
-├── context
-│
-├── hooks
-│
-├── layouts
-│
-├── pages
-│   ├── customer
-│   └── admin
-│
-├── routes
-│
-├── services
-│
-├── styles
-│
-├── types
-│
-├── utils
-│
-├── App.tsx
-└── main.tsx
 
 
-frontend
-│
-├── public
-├── src
-│
-├── assets
-├── components
-├── context
-├── hooks
-├── layouts
-├── pages
-├── routes
-├── services
-├── styles
-├── types
-├── utils
-│
-├── App.tsx
-└── main.tsx
-
-
-
-
----------------------------------------------------------
-                    Navbar
----------------------------------------------------------
-
-        Hero Banner
-"Traditional Taste, Made Fresh Every Day"
-
-        [ Shop Now ]
-
----------------------------------------------------------
-
-           Shop by Category
-
-[ All ] [ Sweets ] [ Savouries ] [ Gift Boxes ]
-
----------------------------------------------------------
-
-             Our Products
-
-+-------------+   +-------------+   +-------------+
-| Image       |   | Image       |   | Image       |
-| Mysore Pak  |   | Laddu       |   | Mixture     |
-| ₹180/250g   |   | ₹160/250g   |   | ₹140/250g   |
-| Add to Cart |   | Add to Cart |   | Add to Cart |
-+-------------+   +-------------+   +-------------+
-
----------------------------------------------------------
-
-About Arusuvai
-
----------------------------------------------------------
-
-Contact
-
----------------------------------------------------------
-
-Footer
-
-
-
-
-Commit it as:
-
-git add .
-git commit -m "Feature Pack 1 - Home Page Foundation Completed"
-git push
-
-This commit includes:
-
-✅ Project architecture
-✅ Routing
-✅ Layout
-✅ Navbar & Footer
-✅ Hero & Feature sections
-✅ Category API integration
-✅ Product API integration
-✅ Product cards
-✅ Category filtering
-✅ Weight selection
-✅ Quantity selector
-✅ Add To Cart (UI logic)
-
-
-
-git commit -m "Feature Pack 2 - Cart Module Completed"
-What this commit includes
-✅ CartContext
-✅ Global Cart State
-✅ Add To Cart
-✅ Merge Cart Items
-✅ Navbar Cart Badge
-✅ Cart Page
-✅ Increase Quantity
-✅ Decrease Quantity
-✅ Remove Item
-✅ Product Details
-✅ Subtotal
-✅ Grand Total
-✅ Proceed To Checkout Button (UI)
 
 
 //WANT TO DO 
@@ -200,46 +58,6 @@ Later, before production, we'll add protected routes. It only takes about 15–2
 
 
 
-COD / ONLINE STRUCTURE
-
-
-React
-
-↓
-
-Place Order
-
-↓
-
-COD ?
-
-     │
- ┌───┴────┐
- │        │
-Yes       No
- │        │
- ▼        ▼
-Create    Create
-Order     Order
- │        │
- ▼        ▼
-Orders   Payment API
- Page        │
-             ▼
-         Razorpay
-             │
-             ▼
-         Verify Payment
-             │
-             ▼
-         Orders Page
-
-
-
-
-
-
-
 
 optimization
 Small improvement for the next step
@@ -268,36 +86,40 @@ In the next step, we'll make the dropdown intelligent so it only shows valid nex
 
 
 
-Instead of styling pages one by one, we'll create reusable components.
-
-components/common
-
-├── Button ✅
-├── Input ⭐
-├── Card ⭐
-├── Badge ⭐
-├── Modal ⭐
-├── Drawer ⭐
-├── Loading ⭐
-├── Toast ⭐
-├── EmptyState
-└── ConfirmDialog ⭐
 
 
-update to date 
-✅ Navbar
-✅ Hero Banner
-✅ Feature Highlights
-✅ Category Section
-✅ Product Section
-✅ Product Card V1
-✅ Cart
-✅ Checkout
 
-⬜ Orders
-⬜ Order Details
-⬜ Profile
-⬜ Login/Register
-⬜ Footer
-⬜ Admin Dashboard
-⬜ Final Premium UI Polish
+
+
+
+
+
+
+
+
+
+
+
+Google Tap-in
+    ↓
+Browse
+    ↓
+Checkout
+    ↓
+Phone Number
+    ↓
+┌─────────────────────────────┐
+│ Existing Google customer?   │
+└─────────────────────────────┘
+       ↓ YES                 ↓ NO
+   Existing profile       New profile
+       ↓                      ↓
+   Prefilled form         Registration form
+       ↓                      ↓
+   Edit if needed         Enter details
+       ↓                      ↓
+   Save & Pay             Save & Pay
+       ↓                      ↓
+          Continue Checkout
+                 ↓
+               Pay

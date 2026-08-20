@@ -17,6 +17,7 @@ import com.arusuvai.security.GoogleTokenVerifierService;
 import com.arusuvai.security.JwtService;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -88,18 +89,133 @@ public class AuthService {
 
     }
 
-    public AuthResponse checkPhone(PhoneLoginRequest request) {
+    public AuthResponse checkPhone(
+            PhoneLoginRequest request,
+            Authentication authentication
+    ) {
 
-        Optional<CustomerEntity> customer = customerRepository.findByPhoneNumber(request.getPhoneNumber());
+        /*
+         * ========================================
+         * GOOGLE USER
+         * ========================================
+         */
+
+        if (
+                authentication != null &&
+                        authentication.isAuthenticated() &&
+                        authentication.getAuthorities().isEmpty()
+        ) {
+
+            String googleSubject =
+                    authentication.getName();
+
+
+            Optional<CustomerIdentityEntity> identity =
+                    customerIdentityRepository
+                            .findByProviderAndProviderSubject(
+                                    "GOOGLE",
+                                    googleSubject
+                            );
+
+
+            /*
+             * Google identity exists and already
+             * has an Arusuvai customer.
+             */
+
+            if (identity.isPresent() &&
+                    identity.get().getCustomer() != null) {
+
+                CustomerEntity customer =
+                        identity.get().getCustomer();
+
+
+                /*
+                 * The entered phone MUST belong
+                 * to this Google customer's account.
+                 */
+
+                if (!customer.getPhoneNumber()
+                        .equals(request.getPhoneNumber())) {
+
+                    return new AuthResponse(
+                            false,
+                            "This phone number is not associated with your account.",
+                            false,
+                            null,
+                            null
+                    );
+                }
+
+
+                LoginResponse loginResponse =
+                        authMapper.toLoginResponse(
+                                customer
+                        );
+
+
+                String token =
+                        jwtService.generateToken(
+                                customer.getId(),
+                                customer.getRole().name()
+                        );
+
+
+                return new AuthResponse(
+                        true,
+                        "Login Successful",
+                        true,
+                        loginResponse,
+                        token
+                );
+            }
+
+
+            /*
+             * Brand-new Google user.
+             *
+             * No Arusuvai customer exists yet.
+             *
+             * Any valid new phone can continue
+             * to profile completion.
+             */
+
+            return new AuthResponse(
+                    true,
+                    "Complete Register",
+                    false,
+                    null,
+                    null
+            );
+        }
+
+
+        /*
+         * ========================================
+         * NORMAL PHONE LOGIN
+         * ========================================
+         */
+
+        Optional<CustomerEntity> customer =
+                customerRepository.findByPhoneNumber(
+                        request.getPhoneNumber()
+                );
+
 
         if (customer.isPresent()) {
 
-            LoginResponse loginResponse = authMapper.toLoginResponse(customer.get());
+            LoginResponse loginResponse =
+                    authMapper.toLoginResponse(
+                            customer.get()
+                    );
 
-            String token = jwtService.generateToken(
-                    customer.get().getId(),
-                    customer.get().getRole().name()
-            );
+
+            String token =
+                    jwtService.generateToken(
+                            customer.get().getId(),
+                            customer.get().getRole().name()
+                    );
+
 
             return new AuthResponse(
                     true,
@@ -109,6 +225,11 @@ public class AuthService {
                     token
             );
         }
+
+
+        /*
+         * New normal customer.
+         */
 
         return new AuthResponse(
                 true,

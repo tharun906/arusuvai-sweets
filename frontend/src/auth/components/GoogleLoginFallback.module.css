@@ -1,0 +1,192 @@
+/* ========================================
+   Overlay
+======================================== */
+
+.overlay {
+    position: fixed;
+
+    inset: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(4, 20, 15, .78);
+
+    backdrop-filter: blur(8px);
+
+    z-index: 2000;
+}
+
+
+/* ========================================
+   Modal
+======================================== */
+
+.modal {
+    position: relative;
+
+    width: 400px;
+
+    max-width: 100%;
+
+    padding: 34px 30px 30px;
+
+    box-sizing: border-box;
+
+    background: var(--surface-color);
+
+    border: 1px solid var(--border-soft);
+
+    border-radius: var(--radius-lg);
+
+    box-shadow:
+        0 24px 60px rgba(0, 0, 0, .45);
+}
+
+
+/* ========================================
+   Close
+======================================== */
+
+.closeButton {
+    position: absolute;
+
+    top: 10px;
+
+    right: 12px;
+
+    width: 32px;
+
+    height: 32px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 0;
+
+    border: none;
+
+    background: transparent;
+
+    color: var(--text-dim);
+
+    font-size: 1.6rem;
+
+    font-weight: 400;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition: var(--transition);
+}
+
+.closeButton:hover {
+    color: var(--gold-color);
+
+    transform: scale(1.08);
+}
+
+
+/* ========================================
+   Content
+======================================== */
+
+.content {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    text-align: center;
+}
+
+
+/* ========================================
+   Title
+======================================== */
+
+.title {
+    margin: 0 0 10px;
+
+    color: var(--text-primary);
+
+    font-family: "Playfair Display", serif;
+
+    font-size: 1.5rem;
+
+    font-weight: 600;
+}
+
+
+/* ========================================
+   Description
+======================================== */
+
+.description {
+    max-width: 310px;
+
+    margin: 0 0 24px;
+
+    color: var(--text-dim);
+
+    font-size: .8rem;
+
+    line-height: 1.6;
+}
+
+
+/* ========================================
+   Google Button
+======================================== */
+
+.googleButton {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 100%;
+
+    min-height: 42px;
+}
+
+
+/* ========================================
+   Mobile
+======================================== */
+
+@media (max-width: 600px) {
+
+    .overlay {
+        padding: 14px;
+    }
+
+    .modal {
+        width: 100%;
+
+        padding: 32px 22px 24px;
+
+        border-radius: var(--radius-md);
+    }
+
+    .title {
+        font-size: 1.3rem;
+    }
+
+    .description {
+        font-size: .76rem;
+
+        margin-bottom: 20px;
+    }
+}

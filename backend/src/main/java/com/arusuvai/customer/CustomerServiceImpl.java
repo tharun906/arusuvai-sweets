@@ -8,6 +8,7 @@ import com.arusuvai.exception.ResourceNotFoundException;
 import com.arusuvai.product.ProductEntity;
 import com.arusuvai.security.JwtService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -43,6 +44,8 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setCity(request.getCity());
         customer.setState(request.getState());
         customer.setPincode(request.getPincode());
+        customer.setLatitude(request.getLatitude());
+        customer.setLongitude(request.getLongitude());
 
         CustomerEntity saved = customerRepository.save(customer);
         return mapToResponse(saved);
@@ -82,6 +85,8 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setCity(request.getCity());
         customer.setState(request.getState());
         customer.setPincode(request.getPincode());
+        customer.setLatitude(request.getLatitude());
+        customer.setLongitude(request.getLongitude());
 
         CustomerEntity updated = customerRepository.save(customer);
         return mapToResponse(updated);
@@ -100,7 +105,9 @@ public class CustomerServiceImpl implements CustomerService {
                 customer.getLandmark(),
                 customer.getCity(),
                 customer.getState(),
-                customer.getPincode()
+                customer.getPincode(),
+                customer.getLatitude(),
+                customer.getLongitude()
         );
     }
 
@@ -127,6 +134,13 @@ public class CustomerServiceImpl implements CustomerService {
                     "Customer profile already completed"
             );
         }
+        customerRepository.findByPhoneNumber(
+                request.getPhoneNumber()
+        ).ifPresent(existingCustomer -> {
+            throw new BusinessException(
+                    "This phone number is already registered"
+            );
+        });
 
         CustomerEntity customer = new CustomerEntity();
 
@@ -140,6 +154,8 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setCity(request.getCity());
         customer.setState(request.getState());
         customer.setPincode(request.getPincode());
+        customer.setLatitude(request.getLatitude());
+        customer.setLongitude(request.getLongitude());
         customer.setRole(Role.CUSTOMER);
         customer.setActive(true);
 
@@ -181,5 +197,85 @@ public class CustomerServiceImpl implements CustomerService {
                 loginResponse,
                 token
         );
+    }
+
+    @Override
+    public CustomerResponseDTO verifyPhone(
+            String googleSubject,
+            String phoneNumber
+    ) {
+
+        CustomerIdentityEntity identity =
+                customerIdentityRepository
+                        .findByProviderAndProviderSubject(
+                                "GOOGLE",
+                                googleSubject
+                        )
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "Google identity not found"
+                                )
+                        );
+
+        CustomerEntity customer = identity.getCustomer();
+
+        if (customer == null) {
+            throw new ResourceNotFoundException(
+                    "Customer profile not completed"
+            );
+        }
+
+        if (!customer.getPhoneNumber().equals(phoneNumber)) {
+            throw new BusinessException(
+                    "Phone number does not match your account"
+            );
+        }
+
+        return mapToResponse(customer);
+    }
+
+    @Override
+    @Transactional
+    public CustomerResponseDTO updateMyProfile(
+            String googleSubject,
+            CustomerRequestDTO request
+    ) {
+
+        CustomerIdentityEntity identity =
+                customerIdentityRepository
+                        .findByProviderAndProviderSubject(
+                                "GOOGLE",
+                                googleSubject
+                        )
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "Google identity not found"
+                                )
+                        );
+
+        CustomerEntity customer = identity.getCustomer();
+
+        if (customer == null) {
+            throw new ResourceNotFoundException(
+                    "Customer profile not completed"
+            );
+        }
+
+        customer.setName(request.getName());
+        customer.setEmail(request.getEmail());
+        customer.setDoorNo(request.getDoorNo());
+        customer.setAddressLine1(request.getAddressLine1());
+        customer.setAddressLine2(request.getAddressLine2());
+        customer.setLandmark(request.getLandmark());
+        customer.setCity(request.getCity());
+        customer.setState(request.getState());
+        customer.setPincode(request.getPincode());
+        customer.setLatitude(request.getLatitude());
+        customer.setLongitude(request.getLongitude());
+
+        CustomerEntity updated =
+                customerRepository.save(customer);
+
+        return mapToResponse(updated);
     }
 }

@@ -1,8 +1,8 @@
 export interface RegisterRequest {
 
-    phoneNumber: string;
-
     name: string;
+
+    phoneNumber: string;
 
     email: string;
 
@@ -20,8 +20,7 @@ export interface RegisterRequest {
 
     pincode: string;
 
-    latitude?: number;
+    latitude: number | null;
 
-    longitude?: number;
-
+    longitude: number | null;
 }

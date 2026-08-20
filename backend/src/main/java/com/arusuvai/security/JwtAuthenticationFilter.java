@@ -5,17 +5,14 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.stereotype.Component;
-import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.stereotype.Component;
 import org.springframework.security.core.context.SecurityContextHolder;
-
-import java.util.List;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-
+import java.util.List;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -33,11 +30,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-        System.out.println("JWT FILTER CALLED");
-
         String authHeader =
                 request.getHeader("Authorization");
 
+        // No JWT → continue normally.
+        // Public endpoints can continue.
         if (authHeader == null ||
                 !authHeader.startsWith("Bearer ")) {
 
@@ -45,7 +42,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String jwt = authHeader.substring(7);
+        String jwt = authHeader.substring(7).trim();
+
+        if (jwt.isBlank()) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         try {
 
@@ -53,11 +55,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     jwtService.extractAllClaims(jwt);
 
             /*
-             * Google authenticated user
+             * GOOGLE USER
              *
-             * This token belongs to a Google user
-             * who has not completed the Arusuvai
-             * customer profile yet.
+             * This token represents a Google-authenticated
+             * user whose Arusuvai customer profile is not
+             * completed yet.
              */
             String provider =
                     claims.get("provider", String.class);
@@ -67,9 +69,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 String googleSubject =
                         claims.getSubject();
 
-                System.out.println(
-                        "Google Subject: " + googleSubject
-                );
+                if (googleSubject == null ||
+                        googleSubject.isBlank()) {
+
+                    throw new IllegalArgumentException(
+                            "Google subject missing"
+                    );
+                }
 
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(
@@ -87,7 +93,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
 
             /*
-             * Normal Arusuvai customer
+             * NORMAL ARUSUVAI CUSTOMER / ADMIN
              */
             String customerId =
                     claims.getSubject();
@@ -95,13 +101,39 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String role =
                     claims.get("role", String.class);
 
-            System.out.println(
-                    "Customer ID: " + customerId
-            );
+            if (customerId == null ||
+                    customerId.isBlank()) {
 
-            System.out.println(
-                    "Role: " + role
-            );
+                throw new IllegalArgumentException(
+                        "Customer ID missing"
+                );
+            }
+
+            if (role == null ||
+                    role.isBlank()) {
+
+                throw new IllegalArgumentException(
+                        "Role missing"
+                );
+            }
+
+            /*
+             * Validate that customerId is actually a number.
+             * Our normal JWT subject contains the customer ID.
+             */
+            Long.parseLong(customerId);
+
+            /*
+             * Only roles supported by our application
+             * are allowed.
+             */
+            if (!role.equals("CUSTOMER") &&
+                    !role.equals("ADMIN")) {
+
+                throw new IllegalArgumentException(
+                        "Invalid role"
+                );
+            }
 
             SimpleGrantedAuthority authority =
                     new SimpleGrantedAuthority(
@@ -121,7 +153,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         } catch (Exception e) {
 
-            System.out.println("Invalid JWT");
+            // Never authenticate an invalid JWT.
+            SecurityContextHolder
+                    .clearContext();
+
+            System.out.println(
+                    "Invalid JWT: " + e.getMessage()
+            );
         }
 
         filterChain.doFilter(request, response);

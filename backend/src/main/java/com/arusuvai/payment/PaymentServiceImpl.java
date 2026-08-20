@@ -78,7 +78,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public OrderResponseDTO verifyPayment(PaymentVerifyRequestDTO request) {
+    public OrderResponseDTO verifyPayment(PaymentVerifyRequestDTO request, Long customerId) {
 
         JSONObject attributes = new JSONObject();
 
@@ -87,57 +87,90 @@ public class PaymentServiceImpl implements PaymentService {
         attributes.put("razorpay_signature", request.getRazorpaySignature());
 
         try {
-//            Received Order ID
-//                    +
-//             Received Payment ID
-//                     │
-//                     ▼
-//            Generate a NEW signature
-//            using YOUR keySecret
-//                     │
-//                     ▼
-//            generatedSignature
 
-            //compares the regenerated signature with the received Razorpay signature.
             boolean isValid = Utils.verifyPaymentSignature(attributes, razorpayProperties.getKeySecret());
-            if (!isValid) {throw new BusinessException("Invalid Payment Signature");}
 
-            OrderEntity order = orderRepository.findById(request.getOrderId())
-                    .orElseThrow(() ->
-                            new ResourceNotFoundException("Order not found"));
-
-            if (!request.getRazorpayOrderId().equals(order.getRazorpayOrderId())) {
-                throw new BusinessException("Razorpay Order does not match our Order");
+            if (!isValid) {
+                throw new BusinessException(
+                        "Invalid Payment Signature"
+                );
             }
 
-            order.setRazorpayPaymentId(request.getRazorpayPaymentId());
+            OrderEntity order =
+                    orderRepository.findById(request.getOrderId())
+                            .orElseThrow(() ->
+                                    new ResourceNotFoundException(
+                                            "Order not found"
+                                    )
+                            );
+
+            // 🔐 Ownership check
+            if (!order.getCustomer().getId().equals(customerId)) {
+                throw new BusinessException(
+                        "You are not allowed to verify this order"
+                );
+            }
+
+            if (!request.getRazorpayOrderId()
+                    .equals(order.getRazorpayOrderId())) {
+
+                throw new BusinessException(
+                        "Razorpay Order does not match our Order"
+                );
+            }
+
+            order.setRazorpayPaymentId(
+                    request.getRazorpayPaymentId()
+            );
+
             orderRepository.save(order);
 
-            return orderService.confirmOrder(request.getOrderId());
+            return orderService.confirmOrder(
+                    request.getOrderId()
+            );
 
         } catch (RazorpayException e) {
-            throw new RuntimeException("Payment Verification Failed", e);
+
+            throw new RuntimeException(
+                    "Payment Verification Failed",
+                    e
+            );
         }
     }
 
     @Override
     @Transactional
-    public OrderResponseDTO markPaymentFailed(Long orderId) {
-        OrderEntity order = orderRepository.findById(orderId)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Order not found"));
+    public OrderResponseDTO markPaymentFailed(
+            Long orderId,
+            Long customerId
+    ) {
+
+        OrderEntity order =
+                orderRepository.findById(orderId)
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "Order not found"
+                                ));
+
+        // 🔐 Ownership check
+        if (!order.getCustomer().getId().equals(customerId)) {
+            throw new BusinessException(
+                    "You are not allowed to modify this order"
+            );
+        }
 
         // Already successfully paid.
         // Never turn a paid order into FAILED.
         if (order.getPaymentStatus() == PaymentStatus.PAID) {
-            return orderService.getOrderById(orderId);
+            return orderService.getOrderByIdInternal(orderId);
         }
 
         order.setPaymentStatus(PaymentStatus.FAILED);
         order.setOrderStatus(OrderStatus.CANCELLED);
+
         orderRepository.save(order);
 
-        return orderService.getOrderById(orderId);
+        return orderService.getOrderByIdInternal(orderId);
     }
 
     @Override

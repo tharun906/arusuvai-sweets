@@ -1,39 +1,82 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
 import { useOrders } from "../../hooks/useOrders";
 import "../../styles/Orders.css";
+
 import OrderCard from "../../components/orders/OrderCard";
-import { useAccountModal } from "../../context/AccountModalContext";
+
 import { useAuthContext } from "../../auth/context/AuthContext";
-import { PendingAction } from "../../constants/PendingAction";
+import GoogleLoginFallback from "../../auth/components/GoogleLoginFallback";
+
 
 function Orders() {
 
-    const { orders, loading, loadOrders } = useOrders();
-    const { isLoggedIn, customer } = useAuthContext();
-    const { openModal,  setPendingAction} = useAccountModal();
+    const {
+        orders,
+        loading,
+        loadOrders
+    } = useOrders();
 
 
-useEffect(() => {
+    const {
+        isLoggedIn
+    } = useAuthContext();
 
-    if (!isLoggedIn) {
 
-        setPendingAction(
-            PendingAction.ORDERS
+    const [
+        showGoogleLogin,
+        setShowGoogleLogin
+    ] = useState(false);
+
+
+    useEffect(() => {
+
+        if (!isLoggedIn) {
+
+            setShowGoogleLogin(true);
+
+            return;
+        }
+
+
+        loadOrders();
+
+    }, [isLoggedIn]);
+
+
+    if (showGoogleLogin && !isLoggedIn) {
+
+        return (
+
+            <GoogleLoginFallback
+
+                onSuccess={() => {
+
+                    setShowGoogleLogin(false);
+
+                }}
+
+                onClose={() => {
+
+                    setShowGoogleLogin(false);
+
+                }}
+
+                onError={message => {
+
+                    console.error(
+                        "Google login:",
+                        message
+                    );
+
+                }}
+
+            />
+
         );
 
-        openModal();
-
-        return;
-
     }
 
-    if (customer) {
-
-        loadOrders(customer.id);
-
-    }
-
-}, [isLoggedIn, customer]);
 
     if (loading) {
 
@@ -41,13 +84,15 @@ useEffect(() => {
 
             <div className="orders-loading">
 
-                <h2>Loading your orders...</h2>
+                <h2>
+                    Loading your orders...
+                </h2>
 
             </div>
 
         );
-
     }
+
 
     if (orders.length === 0) {
 
@@ -55,33 +100,38 @@ useEffect(() => {
 
             <div className="orders-empty">
 
-                <h2>📦 No Orders Yet</h2>
+                <h2>
+                    📦 No Orders Yet
+                </h2>
 
                 <p>
-                    Looks like you haven't placed any orders yet.
+                    Looks like you haven't
+                    placed any orders yet.
                 </p>
 
             </div>
 
         );
-
     }
+
 
     return (
 
         <div className="orders-page">
 
             <h1 className="orders-title">
-
                 My Orders
-
             </h1>
 
-            {orders.map((order) => (
+
+            {orders.map(order => (
 
                 <OrderCard
+
                     key={order.orderId}
+
                     order={order}
+
                 />
 
             ))}
@@ -89,7 +139,7 @@ useEffect(() => {
         </div>
 
     );
-
 }
+
 
 export default Orders;

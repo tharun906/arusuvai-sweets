@@ -6,7 +6,6 @@ import {
 } from "react";
 
 import {
-    PendingAction,
     type PendingActionType
 } from "../constants/PendingAction";
 
@@ -23,7 +22,6 @@ interface AccountModalContextType {
     setPendingAction: (
         action: PendingActionType
     ) => void;
-
 }
 
 const AccountModalContext =
@@ -38,17 +36,14 @@ interface AccountModalProviderProps {
 }
 
 export function AccountModalProvider({
-
     children
-
 }: AccountModalProviderProps) {
 
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] =
+        useState(false);
 
     const [pendingAction, setPendingAction] =
-        useState<PendingActionType>(
-            PendingAction.NONE
-        );
+        useState<PendingActionType>("NONE");
 
     const openModal = () => {
 
@@ -85,14 +80,13 @@ export function AccountModalProvider({
             {children}
 
         </AccountModalContext.Provider>
-
     );
-
 }
 
 export function useAccountModal() {
 
-    const context = useContext(AccountModalContext);
+    const context =
+        useContext(AccountModalContext);
 
     if (!context) {
 
@@ -103,5 +97,4 @@ export function useAccountModal() {
     }
 
     return context;
-
 }

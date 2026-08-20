@@ -10,6 +10,7 @@ import com.arusuvai.auth.dto.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,12 +25,19 @@ public class AuthController {
 
     @PostMapping("/check-phone")
     public ResponseEntity<AuthResponse> checkPhone(
-            @Valid @RequestBody PhoneLoginRequest request) {
+            @Valid @RequestBody PhoneLoginRequest request,
+            Authentication authentication) {
 
-        AuthResponse response = authService.checkPhone(request);
+        AuthResponse response =
+                authService.checkPhone(
+                        request,
+                        authentication
+                );
 
         return ResponseEntity.ok(response);
     }
+
+
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> registerCustomer(@Valid @RequestBody RegisterCustomerRequest request
     ) {

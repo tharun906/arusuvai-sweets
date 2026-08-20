@@ -2,6 +2,7 @@ package com.arusuvai.checkout;
 
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,8 +20,16 @@ public class CheckoutController {
         this.deliveryService = deliveryService;
     }
 
+//    @PostMapping("/summary")
+//    public ResponseEntity<CheckoutSummaryDTO> getSummary(@RequestBody @Valid CheckoutRequestDTO request) {
+//        return ResponseEntity.ok(checkoutService.getCheckoutSummary(request));
+//    }
+
     @PostMapping("/summary")
-    public ResponseEntity<CheckoutSummaryDTO> getSummary(@RequestBody @Valid CheckoutRequestDTO request) {
+    public ResponseEntity<CheckoutSummaryDTO> getSummary(@RequestBody @Valid CheckoutRequestDTO request, Authentication authentication) {
+        Long customerId = Long.parseLong(authentication.getName());
+        request.setCustomerId(customerId);
+
         return ResponseEntity.ok(checkoutService.getCheckoutSummary(request));
     }
 

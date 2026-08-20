@@ -10,25 +10,22 @@ export const orderService = {
         request: OrderRequest
     ): Promise<OrderCreationResponse> => {
 
-        const response = await api.post<OrderCreationResponse>(
-            API_ENDPOINTS.ORDERS,
-            request
-        );
+        const response =
+            await api.post<OrderCreationResponse>(
+                API_ENDPOINTS.ORDERS,
+                request
+            );
 
         return response.data;
-
     },
 
-    getOrders: async (
-        customerId: number
-    ): Promise<Order[]> => {
+    getOrders: async (): Promise<Order[]> => {
 
-        const response = await api.get<Order[]>(
-            `${API_ENDPOINTS.ORDERS}/customer/${customerId}`
-        );
+        const response =
+            await api.get<Order[]>(
+                `${API_ENDPOINTS.ORDERS}/customer`
+            );
 
         return response.data;
-
     }
-
 };
