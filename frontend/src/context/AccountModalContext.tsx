@@ -22,6 +22,17 @@ interface AccountModalContextType {
     setPendingAction: (
         action: PendingActionType
     ) => void;
+
+    /*
+     * Indicates that the phone/profile flow
+     * has been successfully completed for
+     * the current checkout.
+     */
+    phoneVerified: boolean;
+
+    setPhoneVerified: (
+        value: boolean
+    ) => void;
 }
 
 const AccountModalContext =
@@ -44,6 +55,9 @@ export function AccountModalProvider({
 
     const [pendingAction, setPendingAction] =
         useState<PendingActionType>("NONE");
+
+    const [phoneVerified, setPhoneVerified] =
+        useState(false);
 
     const openModal = () => {
 
@@ -71,7 +85,11 @@ export function AccountModalProvider({
 
                 pendingAction,
 
-                setPendingAction
+                setPendingAction,
+
+                phoneVerified,
+
+                setPhoneVerified
 
             }}
 

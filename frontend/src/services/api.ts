@@ -9,10 +9,21 @@ const api = axios.create({
 
 api.interceptors.request.use((config) => {
 
-    const token = localStorage.getItem("token");
+    const token =
+        localStorage.getItem("token");
 
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+    /*
+     * Use the normal customer JWT only when
+     * the request does not already provide
+     * its own Authorization header.
+     */
+    if (
+        token &&
+        !config.headers.Authorization
+    ) {
+
+        config.headers.Authorization =
+            `Bearer ${token}`;
     }
 
     return config;

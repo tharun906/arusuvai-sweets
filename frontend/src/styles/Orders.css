@@ -90,6 +90,149 @@
 
 }
 
+/* ========================================
+   Locked Orders
+======================================== */
+
+.orders-locked-content {
+
+    position: relative;
+
+    min-height: 420px;
+
+    overflow: hidden;
+
+}
+
+
+.orders-preview {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 20px;
+
+    filter: blur(2px);
+
+    opacity: .45;
+
+}
+
+
+.orders-preview-card {
+
+    padding: 24px;
+
+    border-radius: 16px;
+
+    background: var(--surface-primary);
+
+    border: 1px solid var(--border-color);
+
+}
+
+
+.orders-preview-line {
+
+    height: 12px;
+
+    width: 70%;
+
+    margin-bottom: 12px;
+
+    border-radius: 8px;
+
+    background: var(--text-primary);
+
+    opacity: .25;
+
+}
+
+
+.orders-preview-line.large {
+
+    width: 45%;
+
+}
+
+
+.orders-preview-line.short {
+
+    width: 25%;
+
+    margin-bottom: 0;
+
+}
+
+
+/* ========================================
+   Login Overlay
+======================================== */
+
+.orders-locked-overlay {
+
+    position: absolute;
+
+    z-index: 2;
+
+    top: 50%;
+
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    width: min(90%, 420px);
+
+    padding: 32px;
+
+    text-align: center;
+
+    border-radius: 20px;
+
+    background: var(--surface-primary);
+
+    box-shadow: 0 12px 40px rgba(0, 0, 0, .15);
+
+}
+
+
+.orders-lock-icon {
+
+    font-size: 2rem;
+
+    margin-bottom: 12px;
+
+}
+
+
+.orders-locked-overlay h2 {
+
+    margin: 0 0 10px;
+
+    color: var(--text-primary);
+
+    font-family: "Playfair Display", serif;
+
+    font-size: 1.5rem;
+
+}
+
+
+.orders-locked-overlay p {
+
+    margin: 0;
+
+    color: var(--text-primary);
+
+    font-size: .9rem;
+
+    line-height: 1.6;
+
+    opacity: .75;
+
+}
+
 
 .orders-empty h2 {
 

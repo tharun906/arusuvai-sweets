@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
-
     @PostMapping("/check-phone")
     public ResponseEntity<AuthResponse> checkPhone(
             @Valid @RequestBody PhoneLoginRequest request,

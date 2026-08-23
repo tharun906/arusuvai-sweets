@@ -1,6 +1,5 @@
 package com.arusuvai.auth.dto.service;
 
-
 import com.arusuvai.auth.dto.GoogleLoginRequest;
 import com.arusuvai.auth.dto.PhoneLoginRequest;
 import com.arusuvai.auth.dto.RegisterCustomerRequest;
@@ -31,31 +30,17 @@ public class AuthService {
     private final GoogleTokenVerifierService googleTokenVerifierService;
     private final CustomerIdentityRepository customerIdentityRepository;
 
-
-
     public AuthResponse registerCustomer(RegisterCustomerRequest request) {
-
-        Optional<CustomerEntity> existingCustomer =
-                customerRepository.findByPhoneNumber(request.getPhoneNumber());
+        Optional<CustomerEntity> existingCustomer = customerRepository.findByPhoneNumber(request.getPhoneNumber());
 
         if (existingCustomer.isPresent()) {
             LoginResponse loginResponse = authMapper.toLoginResponse(existingCustomer.get());
-            String token = jwtService.generateToken(
-                    existingCustomer.get().getId(),
-                    existingCustomer.get().getRole().name()
-            );
+            String token = jwtService.generateToken(existingCustomer.get().getId(), existingCustomer.get().getRole().name());
 
-            return new AuthResponse(
-                    false,
-                    "Customer already exists",
-                    true,
-                    loginResponse,
-                    token
-            );
+            return new AuthResponse(false, "Customer already exists", true, loginResponse, token);
         }
 
         CustomerEntity customer = new CustomerEntity();
-
         customer.setName(request.getName());
         customer.setPhoneNumber(request.getPhoneNumber());
         customer.setEmail(request.getEmail());
@@ -74,218 +59,138 @@ public class AuthService {
         customerRepository.save(customer);
 
         LoginResponse loginResponse = authMapper.toLoginResponse(customer);
-        String token = jwtService.generateToken(
-                customer.getId(),
-                customer.getRole().name()
-        );
+        String token = jwtService.generateToken(customer.getId(), customer.getRole().name());
 
-        return new AuthResponse(
-                true,
-                "Registration Successful",
-                true,
-                loginResponse,
-                token
-        );
-
+        return new AuthResponse(true, "Registration Successful", true, loginResponse, token);
     }
 
-    public AuthResponse checkPhone(
-            PhoneLoginRequest request,
-            Authentication authentication
-    ) {
+    public AuthResponse checkPhone(PhoneLoginRequest request, Authentication authentication) {
+        System.out.println("CHECK PHONE AUTH = " + authentication);
+        System.out.println("CHECK PHONE NAME = " + (authentication != null ? authentication.getName() : "NULL"));
+        System.out.println("CHECK PHONE AUTHORITIES = " + (authentication != null ? authentication.getAuthorities() : "NULL"));
+
+        Optional<CustomerEntity> customer = customerRepository.findByPhoneNumber(request.getPhoneNumber());
+
+        boolean googleAuthenticated = authentication != null
+                && authentication.isAuthenticated()
+                && authentication.getAuthorities().isEmpty()
+                && authentication.getName() != null;
+
+        System.out.println("GOOGLE AUTHENTICATED = " + googleAuthenticated);
 
         /*
          * ========================================
-         * GOOGLE USER
+         * GOOGLE AUTHENTICATED USER
          * ========================================
          */
+        if (googleAuthenticated) {
+            String googleSubject = authentication.getName();
 
-        if (
-                authentication != null &&
-                        authentication.isAuthenticated() &&
-                        authentication.getAuthorities().isEmpty()
-        ) {
-
-            String googleSubject =
-                    authentication.getName();
-
-
-            Optional<CustomerIdentityEntity> identity =
-                    customerIdentityRepository
-                            .findByProviderAndProviderSubject(
-                                    "GOOGLE",
-                                    googleSubject
-                            );
-
+            Optional<CustomerIdentityEntity> googleIdentity =
+                    customerIdentityRepository.findByProviderAndProviderSubject("GOOGLE", googleSubject);
 
             /*
-             * Google identity exists and already
-             * has an Arusuvai customer.
+             * No customer exists with this phone.
+             *
+             * This is a new Google customer.
              */
-
-            if (identity.isPresent() &&
-                    identity.get().getCustomer() != null) {
-
-                CustomerEntity customer =
-                        identity.get().getCustomer();
-
-
-                /*
-                 * The entered phone MUST belong
-                 * to this Google customer's account.
-                 */
-
-                if (!customer.getPhoneNumber()
-                        .equals(request.getPhoneNumber())) {
-
-                    return new AuthResponse(
-                            false,
-                            "This phone number is not associated with your account.",
-                            false,
-                            null,
-                            null
-                    );
-                }
-
-
-                LoginResponse loginResponse =
-                        authMapper.toLoginResponse(
-                                customer
-                        );
-
-
-                String token =
-                        jwtService.generateToken(
-                                customer.getId(),
-                                customer.getRole().name()
-                        );
-
-
+            if (customer.isEmpty()) {
                 return new AuthResponse(
                         true,
-                        "Login Successful",
-                        true,
-                        loginResponse,
-                        token
+                        "Complete Register",
+                        false,
+                        null,
+                        null,
+                        jwtService.generateGoogleToken(googleSubject)
                 );
             }
 
+            CustomerEntity phoneCustomer = customer.get();
 
             /*
-             * Brand-new Google user.
+             * Phone belongs to an existing customer.
              *
-             * No Arusuvai customer exists yet.
-             *
-             * Any valid new phone can continue
-             * to profile completion.
+             * Verify that this Google identity is
+             * actually linked to that customer.
              */
+            if (googleIdentity.isEmpty()
+                    || googleIdentity.get().getCustomer() == null
+                    || !googleIdentity.get().getCustomer().getId().equals(phoneCustomer.getId())) {
 
-            return new AuthResponse(
-                    true,
-                    "Complete Register",
-                    false,
-                    null,
-                    null
-            );
-        }
-
-
-        /*
-         * ========================================
-         * NORMAL PHONE LOGIN
-         * ========================================
-         */
-
-        Optional<CustomerEntity> customer =
-                customerRepository.findByPhoneNumber(
-                        request.getPhoneNumber()
+                return new AuthResponse(
+                        false,
+                        "This phone number is not associated with your Google account.",
+                        false,
+                        null,
+                        null,
+                        null
                 );
+            }
 
-
-        if (customer.isPresent()) {
-
-            LoginResponse loginResponse =
-                    authMapper.toLoginResponse(
-                            customer.get()
-                    );
-
-
-            String token =
-                    jwtService.generateToken(
-                            customer.get().getId(),
-                            customer.get().getRole().name()
-                    );
-
+            /*
+             * Correct Google account + correct phone.
+             */
+            LoginResponse loginResponse = authMapper.toLoginResponse(phoneCustomer);
+            String token = jwtService.generateToken(phoneCustomer.getId(), phoneCustomer.getRole().name());
 
             return new AuthResponse(
                     true,
                     "Login Successful",
                     true,
                     loginResponse,
-                    token
+                    token,
+                    jwtService.generateGoogleToken(googleSubject)
             );
         }
 
-
         /*
-         * New normal customer.
+         * ========================================
+         * NORMAL PHONE LOGIN
+         * ========================================
          */
+        if (customer.isPresent()) {
+            LoginResponse loginResponse = authMapper.toLoginResponse(customer.get());
+            String token = jwtService.generateToken(customer.get().getId(), customer.get().getRole().name());
 
-        return new AuthResponse(
-                true,
-                "Complete Register",
-                false,
-                null,
-                null
-        );
+            return new AuthResponse(true, "Login Successful", true, loginResponse, token);
+        }
+
+        return new AuthResponse(true, "Complete Register", false, null, null);
     }
 
     public AuthResponse googleLogin(GoogleLoginRequest request) {
-
-        GoogleIdToken.Payload payload =
-                googleTokenVerifierService.verify(request.getCredential());
-
+        GoogleIdToken.Payload payload = googleTokenVerifierService.verify(request.getCredential());
         String googleSubject = payload.getSubject();
         String email = payload.getEmail();
         String name = (String) payload.get("name");
 
         Optional<CustomerIdentityEntity> existingIdentity =
-                customerIdentityRepository
-                        .findByProviderAndProviderSubject(
-                                "GOOGLE",
-                                googleSubject
-                        );
+                customerIdentityRepository.findByProviderAndProviderSubject("GOOGLE", googleSubject);
 
         CustomerIdentityEntity identity;
 
         if (existingIdentity.isPresent()) {
-
             identity = existingIdentity.get();
-
         } else {
-
             identity = new CustomerIdentityEntity();
-
             identity.setProvider("GOOGLE");
             identity.setProviderSubject(googleSubject);
-
             customerIdentityRepository.save(identity);
         }
 
         // Google authentication succeeded,
         // but the Arusuvai customer profile may not exist yet.
         if (identity.getCustomer() == null) {
+            String token = jwtService.generateGoogleToken(googleSubject);
 
-        String token =
-                jwtService.generateGoogleToken(googleSubject);
-
-        return new AuthResponse(
-                true,
-                "Google login successful. Complete your profile before checkout.",
-                false,
-                null,
-                token
-        );
+            return new AuthResponse(
+                    true,
+                    "Google login successful. Complete your profile before checkout.",
+                    false,
+                    null,
+                    token,
+                    token
+            );
         }
 
         CustomerEntity customer = identity.getCustomer();
@@ -294,20 +199,17 @@ public class AuthService {
             throw new BusinessException("Customer account is inactive");
         }
 
-        LoginResponse loginResponse =
-                authMapper.toLoginResponse(customer);
-
-        String token = jwtService.generateToken(
-                customer.getId(),
-                customer.getRole().name()
-        );
+        LoginResponse loginResponse = authMapper.toLoginResponse(customer);
+        String token = jwtService.generateToken(customer.getId(), customer.getRole().name());
+        String googleVerificationToken = jwtService.generateGoogleToken(googleSubject);
 
         return new AuthResponse(
                 true,
                 "Login Successful",
                 true,
                 loginResponse,
-                token
+                token,
+                googleVerificationToken
         );
     }
 
@@ -355,7 +257,4 @@ public class AuthService {
 //                null
 //        );
 //    }
-
-
-
 }

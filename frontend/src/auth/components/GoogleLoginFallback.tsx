@@ -3,16 +3,22 @@ import { GoogleLogin } from "@react-oauth/google";
 import { authService } from "../services/authService";
 import { useAuthContext } from "../context/AuthContext";
 
+import type { LoginResponse } from "../models/LoginResponse";
+
 import styles from "./GoogleLoginFallback.module.css";
 
 
 interface GoogleLoginFallbackProps {
 
-    onSuccess?: () => void;
+    onSuccess?: (
+        customer?: LoginResponse
+    ) => void;
 
     onClose?: () => void;
 
-    onError?: (message: string) => void;
+    onError?: (
+        message: string
+    ) => void;
 
 }
 
@@ -22,7 +28,6 @@ function GoogleLoginFallback({
     onClose,
     onError
 }: GoogleLoginFallbackProps) {
-
 
     const {
         login,
@@ -58,6 +63,10 @@ function GoogleLoginFallback({
 
                 });
 
+                console.log("GOOGLE LOGIN RESPONSE:", response);
+console.log("GOOGLE CUSTOMER:", response.customer);
+console.log("GOOGLE ROLE:", response.customer?.role);
+
 
             if (
                 !response.success ||
@@ -75,18 +84,58 @@ function GoogleLoginFallback({
 
             /*
              * ========================================
-             * EXISTING CUSTOMER
+             * EXISTING CUSTOMER / ADMIN
              * ========================================
+             *
+             * Google account is already linked
+             * to an Arusuvai customer.
+             *
+             * The customer.role tells us whether
+             * this account is:
+             *
+             * CUSTOMER
+             * ADMIN
              */
 
-            if (response.customer) {
+            if (
+                response.customer
+            ) {
 
                 login(
                     response.customer,
                     response.token
                 );
 
-                onSuccess?.();
+
+                /*
+                 * Store the temporary Google
+                 * verification token.
+                 */
+
+                if (
+                    response.googleVerificationToken
+                ) {
+
+                    localStorage.setItem(
+                        "googleVerificationToken",
+                        response.googleVerificationToken
+                    );
+
+                }
+
+
+                /*
+                 * Return the authenticated
+                 * customer/admin to the caller.
+                 *
+                 * Navbar can now check:
+                 *
+                 * customer.role === "ADMIN"
+                 */
+
+                onSuccess?.(
+                    response.customer
+                );
 
                 return;
             }
@@ -101,11 +150,11 @@ function GoogleLoginFallback({
              * but the Arusuvai customer profile
              * does not exist yet.
              *
-             * AuthContext will now set:
+             * This always enters the CUSTOMER
+             * registration flow.
              *
-             * isLoggedIn = true
-             * isGoogleUser = true
-             * customer = null
+             * A new registration can never
+             * create an ADMIN account.
              */
 
             setGoogleAuthentication(
@@ -113,9 +162,43 @@ function GoogleLoginFallback({
             );
 
 
+            /*
+             * Store the Google verification token.
+             */
+
+            if (
+                response.googleVerificationToken
+            ) {
+
+                localStorage.setItem(
+                    "googleVerificationToken",
+                    response.googleVerificationToken
+                );
+
+            } else {
+
+                localStorage.setItem(
+                    "googleVerificationToken",
+                    response.token
+                );
+
+            }
+
+
+            /*
+             * No existing customer exists,
+             * so don't pass a customer object.
+             *
+             * The caller will continue with
+             * the normal new-customer flow.
+             */
+
             onSuccess?.();
 
-        } catch (error: any) {
+
+        } catch (
+            error: any
+        ) {
 
             console.error(
                 "Google login failed:",
@@ -135,16 +218,26 @@ function GoogleLoginFallback({
 
     return (
 
-        <div className={styles.overlay}>
+        <div
+            className={
+                styles.overlay
+            }
+        >
 
-            <div className={styles.modal}>
+            <div
+                className={
+                    styles.modal
+                }
+            >
 
                 <button
                     type="button"
                     className={
                         styles.closeButton
                     }
-                    onClick={onClose}
+                    onClick={
+                        onClose
+                    }
                     aria-label="Close"
                 >
                     ×
