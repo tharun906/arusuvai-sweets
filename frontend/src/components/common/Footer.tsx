@@ -42,9 +42,9 @@ function Footer() {
 
                     <h3>Contact</h3>
 
-                    <p>Dharapuram, Tamil Nadu</p>
+                    <p>Kumarananthapuram, Tiruppur, Tamil Nadu</p>
 
-                    <p>+91 9876543210</p>
+                    <p>+91 94431 78984</p>
 
                     <p>support@arusuvaisweets.com</p>
 

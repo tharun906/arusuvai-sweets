@@ -1,127 +1,232 @@
-import {createContext,useContext,useMemo,useState,type ReactNode} from "react";
-import type { CartItem, ProductWeight } from "../types/CartItem";
+import {
+    createContext,
+    useContext,
+    useMemo,
+    useState,
+    type ReactNode,
+} from "react";
+
+import type {
+    CartItem,
+    ProductWeight,
+} from "../types/CartItem";
 
 interface CartContextType {
+
     cartItems: CartItem[];
-    increaseQuantity: (productId: number, weight: ProductWeight) => void;
-    decreaseQuantity: (productId: number, weight: ProductWeight) => void;
-    removeFromCart: (productId: number, weight: ProductWeight) => void;
+
+    increaseQuantity: (
+        item: CartItem
+    ) => void;
+
+    decreaseQuantity: (
+        item: CartItem
+    ) => void;
+
+    removeFromCart: (
+        item: CartItem
+    ) => void;
+
     clearCart: () => void;
-    addToCart: (item: CartItem) => void;
+
+    addToCart: (
+        item: CartItem
+    ) => void;
+
     cartCount: number;
 }
 
-const CartContext = createContext<CartContextType | undefined>(undefined);
+const CartContext =
+    createContext<CartContextType | undefined>(
+        undefined
+    );
 
 interface CartProviderProps {
     children: ReactNode;
 }
 
-export function CartProvider({ children }: CartProviderProps) {
+export function CartProvider({
+    children,
+}: CartProviderProps) {
 
-    const [cartItems, setCartItems] = useState<CartItem[]>([]);
+    const [
+        cartItems,
+        setCartItems,
+    ] = useState<CartItem[]>([]);
+
+
+    const isSameItem = (
+        first: CartItem,
+        second: CartItem
+    ): boolean => {
+
+        if (
+            first.itemType !==
+            second.itemType
+        ) {
+            return false;
+        }
+
+        if (
+            first.itemType === "PRODUCT" &&
+            second.itemType === "PRODUCT"
+        ) {
+            return (
+                first.productId ===
+                    second.productId &&
+                first.weight ===
+                    second.weight
+            );
+        }
+
+        if (
+            first.itemType === "SWEET_BOX" &&
+            second.itemType === "SWEET_BOX"
+        ) {
+            return (
+                first.sweetBoxId ===
+                second.sweetBoxId
+            );
+        }
+
+        return false;
+    };
+
 
     const increaseQuantity = (
-        productId: number,
-        weight: ProductWeight
+        item: CartItem
     ) => {
-    
-        setCartItems((previousItems) =>
-            previousItems.map((item) =>
-                item.productId === productId &&
-                item.weight === weight
-                    ? {
-                          ...item,
-                          quantity: item.quantity + 1,
-                      }
-                    : item
-            )
+
+        setCartItems(
+            previousItems =>
+                previousItems.map(
+                    cartItem =>
+                        isSameItem(
+                            cartItem,
+                            item
+                        )
+                            ? {
+                                  ...cartItem,
+                                  quantity:
+                                      cartItem.quantity +
+                                      1,
+                              }
+                            : cartItem
+                )
         );
-    
     };
 
 
     const decreaseQuantity = (
-        productId: number,
-        weight: ProductWeight
+        item: CartItem
     ) => {
-    
-        setCartItems((previousItems) =>
-            previousItems
-                .map((item) =>
-                    item.productId === productId &&
-                    item.weight === weight
-                        ? {
-                              ...item,
-                              quantity: item.quantity - 1,
-                          }
-                        : item
-                )
-                .filter((item) => item.quantity > 0)
+
+        setCartItems(
+            previousItems =>
+                previousItems
+                    .map(cartItem =>
+                        isSameItem(
+                            cartItem,
+                            item
+                        )
+                            ? {
+                                  ...cartItem,
+                                  quantity:
+                                      cartItem.quantity -
+                                      1,
+                              }
+                            : cartItem
+                    )
+                    .filter(
+                        cartItem =>
+                            cartItem.quantity >
+                            0
+                    )
         );
-    
     };
 
+
     const removeFromCart = (
-        productId: number,
-        weight: ProductWeight
+        item: CartItem
     ) => {
-    
-        setCartItems((previousItems) =>
-            previousItems.filter(
-                (item) =>
-                    !(
-                        item.productId === productId &&
-                        item.weight === weight
-                    )
-            )
+
+        setCartItems(
+            previousItems =>
+                previousItems.filter(
+                    cartItem =>
+                        !isSameItem(
+                            cartItem,
+                            item
+                        )
+                )
         );
-    
     };
+
 
     const clearCart = () => {
 
         setCartItems([]);
-    
+
     };
 
-    const addToCart = (item: CartItem) => {
 
-        setCartItems((previousItems) => {
+    const addToCart = (
+        item: CartItem
+    ) => {
 
-            const existingItem = previousItems.find(
-                (cartItem) =>
-                    cartItem.productId === item.productId &&
-                    cartItem.weight === item.weight
-            );
+        setCartItems(
+            previousItems => {
 
-            if (existingItem) {
+                const existingItem =
+                    previousItems.find(
+                        cartItem =>
+                            isSameItem(
+                                cartItem,
+                                item
+                            )
+                    );
 
-                return previousItems.map((cartItem) =>
+                if (existingItem) {
 
-                    cartItem.productId === item.productId &&
-                    cartItem.weight === item.weight
-                        ? {
-                              ...cartItem,
-                              quantity:
-                                  cartItem.quantity + item.quantity,
-                          }
-                        : cartItem
-                );
+                    return previousItems.map(
+                        cartItem =>
+                            isSameItem(
+                                cartItem,
+                                item
+                            )
+                                ? {
+                                      ...cartItem,
+                                      quantity:
+                                          cartItem.quantity +
+                                          item.quantity,
+                                  }
+                                : cartItem
+                    );
+                }
+
+                return [
+                    ...previousItems,
+                    item,
+                ];
             }
-
-            return [...previousItems, item];
-        });
+        );
     };
 
-    const cartCount = useMemo(() => {
 
-        return cartItems.reduce(
-            (total, item) => total + item.quantity,
-            0
-        );
+    const cartCount = useMemo(
+        () =>
+            cartItems.reduce(
+                (
+                    total,
+                    item
+                ) =>
+                    total +
+                    item.quantity,
+                0
+            ),
+        [cartItems]
+    );
 
-    }, [cartItems]);
 
     return (
 
@@ -142,9 +247,11 @@ export function CartProvider({ children }: CartProviderProps) {
     );
 }
 
+
 export function useCart() {
 
-    const context = useContext(CartContext);
+    const context =
+        useContext(CartContext);
 
     if (!context) {
 

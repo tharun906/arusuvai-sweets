@@ -1,63 +1,385 @@
+/* =========================================================
+   SWEET TYPE CHOICE
+========================================================= */
+
+.choiceSection {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 35px 24px 10px;
+}
+
+.choiceHeading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 22px;
+    text-align: center;
+}
+
+.choiceHeading span {
+    color: #faca16;
+    font-size: 1.2rem;
+}
+
+.choiceHeading h2 {
+    margin: 0;
+    color: #fff;
+    font-family: Georgia, serif;
+    font-size: 1.8rem;
+}
+
+.choiceGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+}
+
+
+/* =========================================================
+   CHOICE CARDS
+========================================================= */
+
+.choiceCard {
+    display: flex;
+    align-items: center;
+    min-height: 230px;
+    padding: 18px;
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f7edcf,
+            #eee4c7
+        );
+
+    overflow: hidden;
+
+    border: 2px solid transparent;
+
+    transition: 0.25s ease;
+}
+
+.choiceCard:first-child {
+    border-color: #faca16;
+}
+
+.choiceCard:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.18);
+}
+
+
+/* =========================================================
+   CHOICE CARD IMAGE
+========================================================= */
+
+.choiceImage {
+    width: 48%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.choiceImage img {
+    width: 100%;
+    max-width: 260px;
+    height: 190px;
+
+    object-fit: contain;
+}
+
+
+/* =========================================================
+   CHOICE CARD CONTENT
+========================================================= */
+
+.choiceContent {
+    flex: 1;
+    text-align: center;
+    color: #12382b;
+}
+
+.choiceContent h3 {
+    margin: 0 0 8px;
+
+    font-family: Georgia, serif;
+    font-size: 1.45rem;
+}
+
+.choiceContent p {
+    margin: 0 auto 12px;
+
+    max-width: 260px;
+
+    line-height: 1.5;
+
+    font-family: Georgia, serif;
+    font-size: 0.9rem;
+}
+
+
+/* =========================================================
+   WEIGHT HINTS
+========================================================= */
+
+.weightHints {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.weightHints span {
+    padding: 5px 10px;
+
+    border-radius: 20px;
+
+    background: rgba(18, 56, 43, 0.08);
+
+    font-size: 0.78rem;
+}
+
+
+/* =========================================================
+   CHOICE BUTTON
+========================================================= */
+
+.choiceContent button {
+    min-width: 180px;
+
+    padding: 10px 18px;
+
+    border: none;
+    border-radius: 9px;
+
+    background: #063c2b;
+
+    color: #faca16;
+
+    font-family: Georgia, serif;
+
+    font-size: 0.95rem;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.choiceContent button span {
+    margin-left: 10px;
+    color: #faca16;
+}
+
+.choiceContent button:hover {
+    transform: translateY(-2px);
+
+    background: #092f24;
+}
+
+
+/* =========================================================
+   INDIVIDUAL PRODUCTS SECTION
+========================================================= */
+
+.productsSection {
+    scroll-margin-top: 90px;
+}
+
+
+/* =========================================================
+   PRODUCT CATEGORIES
+========================================================= */
+
+.categories {
+    display: flex;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 12px;
+
+    margin-bottom: 40px;
+}
+
+
+/* =========================================================
+   PRODUCT GRID
+========================================================= */
+
 .grid {
     max-width: 1400px;
+
     margin: 0 auto;
 
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
     gap: 24px;
 
     justify-content: center;
+
     align-items: start;
 
     padding: 0 24px;
 }
 
-/* Tablet / smaller desktop */
+
+/* =========================================================
+   TABLET / SMALLER DESKTOP
+========================================================= */
+
 @media (max-width: 1200px) {
 
     .grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+
         gap: 22px;
     }
 
 }
 
-/* Tablet */
+
+/* =========================================================
+   TABLET
+========================================================= */
+
 @media (max-width: 900px) {
 
     .grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
         gap: 20px;
     }
 
 }
 
-/* Mobile */
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
 @media (max-width: 768px) {
 
+    .choiceSection {
+        padding: 25px 12px 5px;
+    }
+
+
+    /* Choice heading */
+
+    .choiceHeading {
+        gap: 8px;
+        margin-bottom: 15px;
+    }
+
+    .choiceHeading h2 {
+        font-size: 1.3rem;
+    }
+
+    .choiceHeading span {
+        font-size: 0.9rem;
+    }
+
+
+    /* Choice cards */
+
+    .choiceGrid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .choiceCard {
+        min-height: 175px;
+
+        padding: 10px;
+
+        border-radius: 15px;
+    }
+
+
+    /* Choice image */
+
+    .choiceImage {
+        width: 43%;
+    }
+
+    .choiceImage img {
+        height: 145px;
+    }
+
+
+    /* Choice content */
+
+    .choiceContent h3 {
+        font-size: 1.15rem;
+    }
+
+    .choiceContent p {
+        font-size: 0.78rem;
+        line-height: 1.35;
+    }
+
+
+    /* Weight hints */
+
+    .weightHints {
+        gap: 4px;
+    }
+
+    .weightHints span {
+        padding: 4px 7px;
+        font-size: 0.68rem;
+    }
+
+
+    /* Button */
+
+    .choiceContent button {
+        min-width: 135px;
+
+        padding: 8px 10px;
+
+        font-size: 0.78rem;
+    }
+
+
+    /* Product grid */
+
     .grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
         gap: 14px;
     }
 
 }
 
-/* Small mobile */
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
 @media (max-width: 480px) {
 
     .grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
         gap: 10px;
+
         padding: 0 14px;
     }
-    
 
-}
-
-.categories {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-bottom: 40px;
 }

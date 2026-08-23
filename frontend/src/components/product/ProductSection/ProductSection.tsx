@@ -1,11 +1,14 @@
 import Section from "../../common/Section";
 import ProductCard from "./ProductCard/ProductCard";
+import SweetBoxSection from "../SweetBoxSection/SweetBoxSection";
 
 import styles from "./ProductSection.module.css";
 
 import type { Product } from "../../../types/Product";
 import type { Category } from "../../../types/category";
+
 import Chip from "../../common/Chip";
+
 
 interface ProductSectionProps {
 
@@ -19,63 +22,118 @@ interface ProductSectionProps {
 
 }
 
+
 function ProductSection({
+
     products,
     categories,
     selectedCategoryId,
     onCategorySelect,
+
 }: ProductSectionProps) {
+
 
     return (
 
-<div id="products">
-        <Section
-            title="Our Products"
-            subtitle="Freshly prepared traditional sweets crafted with authentic recipes and premium ingredients."
-        >
+        <>
 
-            <div className={styles.categories}>
+            {/* =========================
+                DEFAULT SWEET BOXES
+            ========================= */}
 
-                <Chip
-                    active={selectedCategoryId === null}
-                    onClick={() => onCategorySelect(null)}
+            <SweetBoxSection />
+
+
+            {/* =========================
+                BUILD YOUR OWN BOX
+            ========================= */}
+
+            <div
+                id="products"
+                className={styles.productsSection}
+            >
+
+                <Section
+
+                    title="Build Your Own Box"
+
+                    subtitle="Choose your favourite traditional sweets and create your own combination."
+
                 >
-                    All
-                </Chip>
 
-                {categories.map((category) => (
+                    {/* Categories */}
 
-                    <Chip
-                        key={category.id}
-                        active={selectedCategoryId === category.id}
-                        onClick={() =>
-                            onCategorySelect(category.id)
-                        }
-                    >
-                        {category.name}
-                    </Chip>
+                    <div className={styles.categories}>
 
-                ))}
+                        <Chip
+
+                            active={
+                                selectedCategoryId === null
+                            }
+
+                            onClick={() =>
+                                onCategorySelect(null)
+                            }
+
+                        >
+                            All
+
+                        </Chip>
+
+
+                        {categories.map(category => (
+
+                            <Chip
+
+                                key={category.id}
+
+                                active={
+                                    selectedCategoryId ===
+                                    category.id
+                                }
+
+                                onClick={() =>
+                                    onCategorySelect(
+                                        category.id
+                                    )
+                                }
+
+                            >
+
+                                {category.name}
+
+                            </Chip>
+
+                        ))}
+
+                    </div>
+
+
+                    {/* Products */}
+
+                    <div className={styles.grid}>
+
+                        {products.map(product => (
+
+                            <ProductCard
+
+                                key={product.id}
+
+                                product={product}
+
+                            />
+
+                        ))}
+
+                    </div>
+
+                </Section>
 
             </div>
 
-            <div className={styles.grid}>
+        </>
 
-                {products.map((product) => (
-
-                    <ProductCard
-                        key={product.id}
-                        product={product}
-                    />
-
-                ))}
-
-            </div>
-
-        </Section>
-    </div>
     );
-
 }
 
 export default ProductSection;

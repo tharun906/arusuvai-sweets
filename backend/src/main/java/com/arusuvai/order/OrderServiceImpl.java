@@ -8,6 +8,7 @@ import com.arusuvai.exception.BusinessException;
 import com.arusuvai.exception.ResourceNotFoundException;
 import com.arusuvai.product.ProductEntity;
 import com.arusuvai.product.ProductRepository;
+import com.arusuvai.sweetbox.SweetBoxRepository;
 import com.arusuvai.util.WeightConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,21 +27,24 @@ public class OrderServiceImpl implements OrderService {
     private final OrderCalculationService orderCalculationService;
     private final ProductRepository productRepository;
     private final DeliveryService deliveryService;
+    private final SweetBoxRepository sweetBoxRepository;
 
     public OrderServiceImpl(
             OrderRepository orderRepository,
             OrderItemRepository orderItemRepository,
+            ProductRepository productRepository,
             CustomerRepository customerRepository,
             OrderCalculationService orderCalculationService,
-            ProductRepository productRepository,
-            DeliveryService deliveryService) {
-
+            DeliveryService deliveryService,
+            SweetBoxRepository sweetBoxRepository
+    ) {
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
+        this.productRepository = productRepository;
         this.customerRepository = customerRepository;
         this.orderCalculationService = orderCalculationService;
-        this.productRepository=productRepository;
-        this.deliveryService=deliveryService;
+        this.deliveryService = deliveryService;
+        this.sweetBoxRepository = sweetBoxRepository;
     }
 
     @Transactional
@@ -191,8 +195,16 @@ public class OrderServiceImpl implements OrderService {
 
             orderItem.setOrder(order);
 
+            orderItem.setItemType(
+                    calculatedItem.getItemType()
+            );
+
             orderItem.setProduct(
                     calculatedItem.getProduct()
+            );
+
+            orderItem.setSweetBox(
+                    calculatedItem.getSweetBox()
             );
 
             orderItem.setWeight(
@@ -223,14 +235,35 @@ public class OrderServiceImpl implements OrderService {
 
         List<OrderItemResponseDTO> items = order.getOrderItems()
                 .stream()
-                .map(item -> new OrderItemResponseDTO(
-                        item.getProduct().getId(),
-                        item.getProduct().getName(),
-                        item.getWeight(),
-                        item.getQuantity(),
-                        item.getPricePerUnit(),
-                        item.getTotalPrice()
-                ))
+                .map(item -> {
+
+                    if (item.getItemType() == OrderItemType.PRODUCT) {
+
+                        return new OrderItemResponseDTO(
+                                OrderItemType.PRODUCT,
+                                item.getProduct().getId(),
+                                item.getProduct().getName(),
+                                null,
+                                null,
+                                item.getWeight(),
+                                item.getQuantity(),
+                                item.getPricePerUnit(),
+                                item.getTotalPrice()
+                        );
+                    }
+
+                    return new OrderItemResponseDTO(
+                            OrderItemType.SWEET_BOX,
+                            null,
+                            null,
+                            item.getSweetBox().getId(),
+                            item.getSweetBox().getName(),
+                            item.getWeight(),
+                            item.getQuantity(),
+                            item.getPricePerUnit(),
+                            item.getTotalPrice()
+                    );
+                })
                 .toList();
 
         return new OrderResponseDTO(
@@ -246,7 +279,6 @@ public class OrderServiceImpl implements OrderService {
                 items
         );
     }
-
     @Override
     @Transactional
     public OrderResponseDTO confirmOrder(Long orderId) {
@@ -272,6 +304,18 @@ public class OrderServiceImpl implements OrderService {
 
         for (OrderItemEntity orderItem : order.getOrderItems()) {
 
+            // ========================================
+            // SWEET BOX
+            // ========================================
+            if (orderItem.getItemType() == OrderItemType.SWEET_BOX) {
+
+                // Sweet boxes have no stock tracking.
+                continue;
+            }
+
+            // ========================================
+            // INDIVIDUAL PRODUCT
+            // ========================================
             ProductEntity product =
                     productRepository.findByIdForUpdate(
                             orderItem.getProduct().getId()
@@ -281,11 +325,15 @@ public class OrderServiceImpl implements OrderService {
                             ));
 
             BigDecimal orderedWeight =
-                    WeightConverter.toKg(orderItem.getWeight());
+                    WeightConverter.toKg(
+                            orderItem.getWeight()
+                    );
 
             BigDecimal stockToReduce =
                     orderedWeight.multiply(
-                            BigDecimal.valueOf(orderItem.getQuantity())
+                            BigDecimal.valueOf(
+                                    orderItem.getQuantity()
+                            )
                     );
 
             BigDecimal updatedStock =
@@ -302,7 +350,6 @@ public class OrderServiceImpl implements OrderService {
 
             productRepository.save(product);
         }
-
         orderRepository.save(order);
 
         return mapToResponse(order);
@@ -342,7 +389,11 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
 
         List<OrderEntity> orders =
-                orderRepository.findByCustomerIdOrderByCreatedAtDesc(customerId);
+                orderRepository
+                        .findByCustomerIdAndOrderStatusNotOrderByCreatedAtDesc(
+                                customerId,
+                                OrderStatus.PENDING_PAYMENT
+                        );
 
         return orders.stream()
                 .map(this::mapToResponse)

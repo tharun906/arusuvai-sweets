@@ -9,10 +9,12 @@ import lombok.Setter;
 public class OrderItemRequestDTO {
 
     @NotNull
+    private OrderItemType itemType;
+
     private Long productId;
 
-    @NotBlank
-    @Pattern(regexp = "250g|500g|1kg")
+    private Long sweetBoxId;
+
     private String weight;
 
     @NotNull

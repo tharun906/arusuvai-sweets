@@ -9,9 +9,13 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class OrderItemResponseDTO {
 
-    private Long productId;
+    private OrderItemType itemType;
 
+    private Long productId;
     private String productName;
+
+    private Long sweetBoxId;
+    private String sweetBoxName;
 
     private String weight;
 

@@ -5,8 +5,11 @@ import com.arusuvai.customer.CustomerRepository;
 import com.arusuvai.exception.BusinessException;
 import com.arusuvai.exception.ResourceNotFoundException;
 import com.arusuvai.order.OrderItemRequestDTO;
+import com.arusuvai.order.OrderItemType;
 import com.arusuvai.product.ProductEntity;
 import com.arusuvai.product.ProductRepository;
+import com.arusuvai.sweetbox.SweetBoxEntity;
+import com.arusuvai.sweetbox.SweetBoxRepository;
 import com.arusuvai.util.WeightConverter;
 import org.springframework.stereotype.Service;
 
@@ -39,13 +42,16 @@ import java.util.List;
 public class OrderCalculationServiceImpl  implements OrderCalculationService{
     private final CustomerRepository customerRepository;
     private final ProductRepository productRepository;
+    private final SweetBoxRepository sweetBoxRepository;
 
     public OrderCalculationServiceImpl(
             CustomerRepository customerRepository,
-            ProductRepository productRepository) {
+            ProductRepository productRepository,
+            SweetBoxRepository sweetBoxRepository) {
 
         this.customerRepository = customerRepository;
         this.productRepository = productRepository;
+        this.sweetBoxRepository = sweetBoxRepository;
     }
 
 //    OrderCalculationService
@@ -69,49 +75,170 @@ public class OrderCalculationServiceImpl  implements OrderCalculationService{
 
         for (OrderItemRequestDTO itemRequest : request.getItems()) {
 
-            ProductEntity product = productRepository.findById(itemRequest.getProductId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
-
-            //old
-//            BigDecimal requestedWeight = switch (itemRequest.getWeight()) {
-//                case "250g" -> new BigDecimal("0.25");
-//                case "500g" -> new BigDecimal("0.50");
-//                case "1kg" -> BigDecimal.ONE;
-//                default -> throw new RuntimeException("Invalid weight");
-//            };
-            //optimize
-            BigDecimal  requestedWeight = WeightConverter.toKg(itemRequest.getWeight());
-
-            //one sweet how much they rdered quantity
-            BigDecimal requiredStock =
-                    requestedWeight.multiply(BigDecimal.valueOf(itemRequest.getQuantity()));
-
-            //validate Stock
-            if (product.getCurrentStockKg().compareTo(requiredStock) < 0) {
-                throw new BusinessException(product.getName() + " does not have enough stock.");
-            }
-
-            BigDecimal pricePerUnit = switch (itemRequest.getWeight()) {
-                case "250g" -> product.getPrice250g();
-                case "500g" -> product.getPrice500g();
-                case "1kg" -> product.getPrice1kg();
-                default -> throw new BusinessException("Invalid weight");
-            };
-
-            BigDecimal itemTotal =
-                    pricePerUnit.multiply(BigDecimal.valueOf(itemRequest.getQuantity()));
-
             CalculatedOrderItem item = new CalculatedOrderItem();
 
-            item.setProduct(product);
-            item.setWeight(itemRequest.getWeight());
-            item.setQuantity(itemRequest.getQuantity());
-            item.setPricePerUnit(pricePerUnit);
-            item.setItemTotal(itemTotal);
+            // ========================================
+            // INDIVIDUAL PRODUCT
+            // ========================================
+            if (itemRequest.getItemType() == OrderItemType.PRODUCT) {
+
+                if (itemRequest.getProductId() == null) {
+                    throw new BusinessException(
+                            "Product ID is required"
+                    );
+                }
+
+                if (itemRequest.getSweetBoxId() != null) {
+                    throw new BusinessException(
+                            "Product order cannot contain a sweet box ID"
+                    );
+                }
+
+                if (itemRequest.getWeight() == null
+                        || itemRequest.getWeight().isBlank()) {
+                    throw new BusinessException(
+                            "Weight is required"
+                    );
+                }
+
+                ProductEntity product =
+                        productRepository.findById(
+                                itemRequest.getProductId()
+                        ).orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "Product not found"
+                                ));
+
+                BigDecimal requestedWeight =
+                        WeightConverter.toKg(
+                                itemRequest.getWeight()
+                        );
+
+                BigDecimal requiredStock =
+                        requestedWeight.multiply(
+                                BigDecimal.valueOf(
+                                        itemRequest.getQuantity()
+                                )
+                        );
+
+                if (product.getCurrentStockKg()
+                        .compareTo(requiredStock) < 0) {
+
+                    throw new BusinessException(
+                            product.getName()
+                                    + " does not have enough stock."
+                    );
+                }
+
+                BigDecimal pricePerUnit =
+                        switch (itemRequest.getWeight()) {
+
+                            case "250g" -> product.getPrice250g();
+
+                            case "500g" -> product.getPrice500g();
+
+                            case "1kg" -> product.getPrice1kg();
+
+                            default ->
+                                    throw new BusinessException(
+                                            "Invalid weight"
+                                    );
+                        };
+
+                BigDecimal itemTotal =
+                        pricePerUnit.multiply(
+                                BigDecimal.valueOf(
+                                        itemRequest.getQuantity()
+                                )
+                        );
+
+                item.setItemType(OrderItemType.PRODUCT);
+                item.setProduct(product);
+                item.setSweetBox(null);
+                item.setWeight(itemRequest.getWeight());
+                item.setQuantity(itemRequest.getQuantity());
+                item.setPricePerUnit(pricePerUnit);
+                item.setItemTotal(itemTotal);
+            }
+
+            // ========================================
+            // SWEET BOX
+            // ========================================
+            else if (itemRequest.getItemType()
+                    == OrderItemType.SWEET_BOX) {
+
+                if (itemRequest.getSweetBoxId() == null) {
+                    throw new BusinessException(
+                            "Sweet box ID is required"
+                    );
+                }
+
+                if (itemRequest.getProductId() != null) {
+                    throw new BusinessException(
+                            "Sweet box order cannot contain a product ID"
+                    );
+                }
+
+                if (itemRequest.getWeight() != null) {
+                    throw new BusinessException(
+                            "Weight should not be provided for a sweet box"
+                    );
+                }
+
+                if (itemRequest.getQuantity() > 10) {
+                    throw new BusinessException(
+                            "Maximum 10 boxes can be purchased per order"
+                    );
+                }
+
+                SweetBoxEntity sweetBox =
+                        sweetBoxRepository.findById(
+                                itemRequest.getSweetBoxId()
+                        ).orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "Sweet box not found"
+                                ));
+
+                if (!sweetBox.isActive()) {
+                    throw new BusinessException(
+                            "This sweet box is currently unavailable"
+                    );
+                }
+
+                BigDecimal pricePerUnit =
+                        sweetBox.getPrice();
+
+                BigDecimal itemTotal =
+                        pricePerUnit.multiply(
+                                BigDecimal.valueOf(
+                                        itemRequest.getQuantity()
+                                )
+                        );
+
+                item.setItemType(OrderItemType.SWEET_BOX);
+                item.setProduct(null);
+                item.setSweetBox(sweetBox);
+                item.setWeight(sweetBox.getTotalWeight());
+                item.setQuantity(itemRequest.getQuantity());
+                item.setPricePerUnit(pricePerUnit);
+                item.setItemTotal(itemTotal);
+            }
+
+            // ========================================
+            // INVALID TYPE
+            // ========================================
+            else {
+
+                throw new BusinessException(
+                        "Invalid order item type"
+                );
+            }
 
             calculatedItems.add(item);
 
-            grandTotal = grandTotal.add(itemTotal);
+            grandTotal = grandTotal.add(
+                    item.getItemTotal()
+            );
         }
 
         OrderCalculationResult result = new OrderCalculationResult();

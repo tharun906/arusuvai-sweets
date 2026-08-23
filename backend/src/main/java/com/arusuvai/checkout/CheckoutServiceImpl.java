@@ -21,15 +21,55 @@ public class CheckoutServiceImpl implements CheckoutService {
         List<CheckoutItemDTO> checkoutItems = new ArrayList<>();
 
         //for each product we are giving the dto field
-        for (CalculatedOrderItem calculatedItem : calculationResult.getItems()) {
+        for (CalculatedOrderItem calculatedItem :
+                calculationResult.getItems()) {
 
-            CheckoutItemDTO item = new CheckoutItemDTO();
+            CheckoutItemDTO item =
+                    new CheckoutItemDTO();
 
-            item.setProductId(calculatedItem.getProduct().getId());
-            item.setProductName(calculatedItem.getProduct().getName());
-            item.setQuantity(calculatedItem.getQuantity());
-            item.setUnitPrice(calculatedItem.getPricePerUnit());
-            item.setTotalPrice(calculatedItem.getItemTotal());
+            item.setItemType(
+                    calculatedItem.getItemType()
+            );
+
+            item.setProductId(
+                    calculatedItem.getProduct() != null
+                            ? calculatedItem.getProduct().getId()
+                            : null
+            );
+
+            item.setProductName(
+                    calculatedItem.getProduct() != null
+                            ? calculatedItem.getProduct().getName()
+                            : null
+            );
+
+            item.setSweetBoxId(
+                    calculatedItem.getSweetBox() != null
+                            ? calculatedItem.getSweetBox().getId()
+                            : null
+            );
+
+            item.setSweetBoxName(
+                    calculatedItem.getSweetBox() != null
+                            ? calculatedItem.getSweetBox().getName()
+                            : null
+            );
+
+            item.setWeight(
+                    calculatedItem.getWeight()
+            );
+
+            item.setQuantity(
+                    calculatedItem.getQuantity()
+            );
+
+            item.setUnitPrice(
+                    calculatedItem.getPricePerUnit()
+            );
+
+            item.setTotalPrice(
+                    calculatedItem.getItemTotal()
+            );
 
             checkoutItems.add(item);
         }

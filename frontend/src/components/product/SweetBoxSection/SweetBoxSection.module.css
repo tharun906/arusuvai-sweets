@@ -1,0 +1,545 @@
+.section {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 50px 24px 20px;
+
+    color: #fff;
+}
+
+
+/* =========================
+   HEADING
+========================= */
+
+.heading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.heading h2 {
+    margin: 0;
+
+    font-family: Georgia, serif;
+    font-size: 2rem;
+    font-weight: 700;
+
+    color: #fff;
+}
+
+.heading p {
+    margin: 5px 0 0;
+
+    font-family: Georgia, serif;
+    font-size: 0.95rem;
+
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.headingDecoration {
+    color: #faca16;
+    font-size: 1.3rem;
+}
+
+
+/* =========================
+   BOX SELECTORS
+========================= */
+
+.boxSelectors {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    max-width: 1100px;
+    margin: 0 auto 12px;
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+
+    overflow: hidden;
+}
+
+.selector,
+.selected {
+    min-height: 70px;
+
+    border: none;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+
+    background: rgba(0, 35, 25, 0.55);
+
+    color: #fff;
+
+    cursor: pointer;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 4px;
+
+    font-family: Georgia, serif;
+
+    transition: 0.25s ease;
+}
+
+.selector:last-child,
+.selected:last-child {
+    border-right: none;
+}
+
+.selector span,
+.selected span {
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.selector small,
+.selected small {
+    font-size: 0.9rem;
+}
+
+.selector:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.selected {
+    color: #faca16;
+
+    border: 2px solid #faca16;
+
+    background: rgba(0, 35, 25, 0.75);
+}
+
+
+/* =========================
+   MAIN BOX
+========================= */
+
+.boxContent {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    align-items: center;
+
+    min-height: 430px;
+
+    padding: 25px 35px;
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(25, 67, 53, 0.78),
+            rgba(8, 42, 32, 0.88)
+        );
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.18);
+}
+
+
+/* =========================
+   IMAGE
+========================= */
+
+.imageContainer {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 350px;
+}
+
+.image {
+    width: 100%;
+    max-width: 560px;
+    max-height: 380px;
+
+    object-fit: contain;
+
+    filter:
+        drop-shadow(
+            0 18px 20px rgba(0, 0, 0, 0.28)
+        );
+
+    transition: 0.3s ease;
+}
+
+
+/* =========================
+   DETAILS
+========================= */
+
+.details {
+    padding: 15px 20px;
+}
+
+.details h3 {
+    margin: 0 0 8px;
+
+    font-family: Georgia, serif;
+
+    font-size: 1.8rem;
+
+    color: #fff;
+}
+
+.description {
+    margin: 0 0 18px;
+
+    color: rgba(255, 255, 255, 0.78);
+
+    font-family: Georgia, serif;
+
+    line-height: 1.5;
+}
+
+
+/* =========================
+   WEIGHT + PRICE
+========================= */
+
+.highlights {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+    margin-bottom: 18px;
+}
+
+.highlight {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 14px 8px;
+}
+
+.highlight + .highlight {
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.icon {
+    color: #faca16;
+    font-size: 1.5rem;
+}
+
+.highlight small {
+    display: block;
+
+    color: rgba(255, 255, 255, 0.7);
+
+    font-size: 0.75rem;
+}
+
+.highlight strong {
+    display: block;
+
+    margin-top: 2px;
+
+    color: #faca16;
+
+    font-family: Georgia, serif;
+
+    font-size: 1.35rem;
+}
+
+
+/* =========================
+   CONTENTS
+========================= */
+
+.contents h4 {
+    margin: 0 0 8px;
+
+    color: #fff;
+
+    font-family: Georgia, serif;
+
+    font-size: 1.05rem;
+}
+
+.item {
+    display: flex;
+    justify-content: space-between;
+
+    padding: 7px 0;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+
+    color: rgba(255, 255, 255, 0.9);
+
+    font-size: 0.9rem;
+}
+
+.item span:last-child {
+    color: #fff;
+    font-weight: 600;
+}
+
+.more {
+    margin: 8px 0 0;
+
+    color: rgba(255, 255, 255, 0.7);
+
+    font-size: 0.85rem;
+}
+
+
+/* =========================
+   BOTTOM ACTIONS
+========================= */
+
+.bottomActions {
+    display: flex;
+    align-items: center;
+
+    gap: 20px;
+
+    margin-top: 22px;
+}
+
+.quantity {
+    display: grid;
+    grid-template-columns: 48px 55px 48px;
+
+    height: 50px;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+
+    border-radius: 9px;
+
+    overflow: hidden;
+}
+
+.quantity button,
+.quantity span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: transparent;
+
+    color: #fff;
+
+    border: none;
+
+    font-size: 1.1rem;
+}
+
+.quantity button {
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.quantity button:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.quantity span {
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+
+/* =========================
+   ADD TO CART
+========================= */
+
+.addButton {
+    flex: 1;
+
+    height: 50px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #faca16;
+
+    color: #073426;
+
+    font-family: Georgia, serif;
+
+    font-size: 1.05rem;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.25s ease;
+}
+
+.addButton:hover {
+    transform: translateY(-2px);
+
+    background: #ffd83d;
+
+    box-shadow:
+        0 8px 20px rgba(250, 202, 22, 0.22);
+}
+
+
+/* =========================
+   LOADING
+========================= */
+
+.loading {
+    text-align: center;
+
+    padding: 50px 20px;
+
+    color: #fff;
+}
+
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 900px) {
+
+    .boxContent {
+        grid-template-columns: 1fr;
+
+        padding: 25px;
+    }
+
+    .imageContainer {
+        min-height: 280px;
+    }
+
+    .image {
+        max-height: 300px;
+    }
+
+    .details {
+        padding: 10px;
+    }
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    .section {
+        padding: 35px 12px 15px;
+    }
+
+    .heading {
+        gap: 10px;
+
+        margin-bottom: 18px;
+    }
+
+    .heading h2 {
+        font-size: 1.45rem;
+    }
+
+    .heading p {
+        font-size: 0.8rem;
+    }
+
+    .headingDecoration {
+        font-size: 1rem;
+    }
+
+    .boxSelectors {
+        border-radius: 12px;
+
+        margin-bottom: 10px;
+    }
+
+    .selector,
+    .selected {
+        min-height: 60px;
+    }
+
+    .selector span,
+    .selected span {
+        font-size: 0.78rem;
+    }
+
+    .selector small,
+    .selected small {
+        font-size: 0.7rem;
+    }
+
+    .boxContent {
+        padding: 18px 14px;
+
+        border-radius: 16px;
+
+        min-height: auto;
+    }
+
+    .imageContainer {
+        min-height: 220px;
+    }
+
+    .image {
+        max-height: 240px;
+    }
+
+    .details {
+        padding: 5px 2px;
+    }
+
+    .details h3 {
+        font-size: 1.35rem;
+    }
+
+    .description {
+        font-size: 0.85rem;
+    }
+
+    .highlight {
+        gap: 8px;
+        padding: 10px 4px;
+    }
+
+    .icon {
+        font-size: 1.2rem;
+    }
+
+    .highlight strong {
+        font-size: 1.05rem;
+    }
+
+    .item {
+        font-size: 0.78rem;
+    }
+
+    .bottomActions {
+        gap: 10px;
+    }
+
+    .quantity {
+        grid-template-columns: 38px 42px 38px;
+        height: 46px;
+    }
+
+    .addButton {
+        height: 46px;
+
+        font-size: 0.9rem;
+    }
+}

@@ -4,7 +4,7 @@ import { ROUTES } from "../../constants/routes";
 import { useCart } from "../../context/CartContext";
 import { useAuthContext } from "../../auth/context/AuthContext";
 import { useAccountModal } from "../../context/AccountModalContext";
-import heartfulness from "../../assets/heartfulness.png";
+import heartfulness from "../../assets/Catering Logo.jpeg";
 import { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";

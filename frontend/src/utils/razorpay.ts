@@ -6,9 +6,15 @@ declare global {
     }
 }
 
+interface RazorpayCallbacks {
+    onSuccess: (response: any) => void;
+    onFailure?: (response: any) => void;
+    onClose?: () => void;
+}
+
 export const openRazorpay = (
     payment: PaymentResponse,
-    onSuccess: (response: any) => void
+    callbacks: RazorpayCallbacks
 ) => {
 
     const options = {
@@ -25,15 +31,40 @@ export const openRazorpay = (
 
         description: "Order Payment",
 
-        handler: function (response: any) {
+        handler: (response: any) => {
 
-            onSuccess(response);
+            callbacks.onSuccess(response);
+
+        },
+
+        modal: {
+
+            ondismiss: () => {
+
+                callbacks.onClose?.();
+
+            }
 
         }
 
     };
 
-    const razorpay = new window.Razorpay(options);
+
+    const razorpay =
+        new window.Razorpay(options);
+
+
+    razorpay.on(
+        "payment.failed",
+        (response: any) => {
+
+            callbacks.onFailure?.(
+                response
+            );
+
+        }
+    );
+
 
     razorpay.open();
 

@@ -1,6 +1,8 @@
 package com.arusuvai.checkout;
 
+import com.arusuvai.order.OrderItemType;
 import com.arusuvai.product.ProductEntity;
+import com.arusuvai.sweetbox.SweetBoxEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +12,11 @@ import java.math.BigDecimal;
 @Setter
 public class CalculatedOrderItem {
 
+    private OrderItemType itemType;
+
     private ProductEntity product;
+
+    private SweetBoxEntity sweetBox;
 
     private String weight;
 

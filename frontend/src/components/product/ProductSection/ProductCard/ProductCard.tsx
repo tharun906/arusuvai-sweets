@@ -112,13 +112,10 @@ function ProductCard({
         }
 
         addToCart({
-
+            itemType: "PRODUCT",
             productId: product.id,
-
             weight: selectedWeight,
-
             quantity,
-
         });
 
     };
