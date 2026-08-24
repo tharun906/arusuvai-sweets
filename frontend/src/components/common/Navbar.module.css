@@ -15,6 +15,13 @@
 }
 
 
+.loginDisabled {
+    opacity: 0.25;
+    cursor: not-allowed !important;
+    filter: grayscale(40%);
+}
+
+
 /* ========================================
    Container
 ======================================== */

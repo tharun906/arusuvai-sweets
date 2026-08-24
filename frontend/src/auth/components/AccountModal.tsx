@@ -50,8 +50,13 @@ function AccountModal({ open, onClose }: AccountModalProps) {
 
     const { checkPhone, loading } = useAuth();
     const { login, isLoggedIn, isGoogleUser } = useAuthContext();
-    const { pendingAction, setPendingAction, closeModal, setPhoneVerified } = useAccountModal();
-    const navigate = useNavigate();
+    const {
+        pendingAction,
+        setPendingAction,
+        closeModal,
+        setPhoneVerified,
+        setRegistrationPending
+    } = useAccountModal();    const navigate = useNavigate();
 
     if (!open) return null;
 
@@ -88,6 +93,7 @@ function AccountModal({ open, onClose }: AccountModalProps) {
     const handleClose = () => {
         resetModal();
         setPendingAction(PendingAction.NONE);
+        setRegistrationPending(false);
         closeModal();
         onClose();
     };
@@ -331,6 +337,7 @@ function AccountModal({ open, onClose }: AccountModalProps) {
     
                 login(response.customer, response.token);
                 setPhoneVerified(true);
+                setRegistrationPending(false);
                 resetModal();
                 continuePendingAction();
             } catch (error: any) {

@@ -13,7 +13,7 @@ import type { LoginResponse } from "../../auth/models/LoginResponse";
 
 function Navbar() {
     const { cartCount } = useCart();
-    const { customer, logout } = useAuthContext();
+    const { customer, logout, isGoogleUser } = useAuthContext();
     const { closeModal } = useAccountModal();
     const navigate = useNavigate();
 
@@ -23,46 +23,25 @@ function Navbar() {
 
     const desktopDropdownRef = useRef<HTMLDivElement>(null);
     const mobileDropdownRef = useRef<HTMLDivElement>(null);
+    const previousCartCount = useRef(cartCount);
 
     const handleLogout = () => {
         setShowMenu(false);
         closeModal();
-        logout(() => {
-            navigate(ROUTES.HOME);
-        });
+        logout(() => navigate(ROUTES.HOME));
     };
 
     const handleGoogleLoginSuccess = (loggedInCustomer?: LoginResponse) => {
         setShowGoogleLogin(false);
-
-        /*
-         * ========================================
-         * ADMIN LOGIN
-         * ========================================
-         *
-         * Existing Google account is already
-         * linked to an ADMIN customer.
-         *
-         * Send the admin directly to the
-         * admin orders page.
-         */
-
         if (loggedInCustomer?.role === "ADMIN") {
             navigate(ROUTES.ADMIN_ORDERS);
-            return;
         }
     };
-
-    const previousCartCount = useRef(cartCount);
 
     useEffect(() => {
         if (cartCount !== previousCartCount.current) {
             setCartUpdated(true);
-
-            const timer = setTimeout(() => {
-                setCartUpdated(false);
-            }, 700);
-
+            const timer = setTimeout(() => setCartUpdated(false), 700);
             previousCartCount.current = cartCount;
             return () => clearTimeout(timer);
         }
@@ -71,58 +50,31 @@ function Navbar() {
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             const target = event.target as Node;
-            const clickedInsideDesktop = desktopDropdownRef.current?.contains(target);
-            const clickedInsideMobile = mobileDropdownRef.current?.contains(target);
-
-            if (!clickedInsideDesktop && !clickedInsideMobile) {
-                setShowMenu(false);
-            }
+            if (
+                !desktopDropdownRef.current?.contains(target) &&
+                !mobileDropdownRef.current?.contains(target)
+            ) setShowMenu(false);
         };
 
         document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
+        return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
     useEffect(() => {
-        const handleScroll = () => {
-            setShowMenu(false);
-        };
-
+        const handleScroll = () => setShowMenu(false);
         window.addEventListener("scroll", handleScroll);
-        return () => {
-            window.removeEventListener("scroll", handleScroll);
-        };
+        return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
     return (
         <>
             {showGoogleLogin && (
-                <div
-                    style={{
-                        position: "fixed",
-                        inset: 0,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        background: "rgba(0, 0, 0, 0.6)",
-                        zIndex: 2000
-                    }}
-                >
-                    <div
-                        style={{
-                            background: "white",
-                            padding: "30px",
-                            borderRadius: "12px"
-                        }}
-                    >
+                <div className={styles.loginOverlay}>
+                    <div className={styles.loginModal}>
                         <GoogleLoginFallback
                             onSuccess={handleGoogleLoginSuccess}
                             onClose={() => setShowGoogleLogin(false)}
-                            onError={message => {
-                                console.error("Google login:", message);
-                            }}
+                            onError={message => console.error("Google login:", message)}
                         />
                     </div>
                 </div>
@@ -130,40 +82,24 @@ function Navbar() {
 
             <header className={styles.navbar}>
                 <div className={styles.container}>
-
-                    {/* BRAND */}
                     <h2 className={styles.logo}>
                         <img src={heartfulness} alt="Arusuvai" className={styles.logoImage} />
                         <span className={styles.logoPrimary}>ARUSUVAI</span>
                         <span className={styles.logoSecondary}>SWEETS</span>
                     </h2>
 
-                    {/* DESKTOP NAVIGATION */}
                     <nav className={styles.desktopNav}>
                         <ul className={styles.navLinks}>
-                            <li>
-                                <NavLink to={ROUTES.HOME} onClick={() => setShowMenu(false)}>
-                                    Home
-                                </NavLink>
-                            </li>
-
-                            <li>
-                                <NavLink to={ROUTES.ORDERS} onClick={() => setShowMenu(false)}>
-                                    My Orders
-                                </NavLink>
-                            </li>
-
+                            <li><NavLink to={ROUTES.HOME}>Home</NavLink></li>
+                            <li><NavLink to={ROUTES.ORDERS}>My Orders</NavLink></li>
                             <li>
                                 <NavLink
                                     to={ROUTES.CART}
-                                    className={`${cartUpdated ? styles.cartUpdated : ""}`}
-                                    onClick={() => setShowMenu(false)}
+                                    className={cartUpdated ? styles.cartUpdated : ""}
                                 >
-                                    🛒 Cart
-                                    <span className={styles.cartBadge}>{cartCount}</span>
+                                    🛒 Cart <span className={styles.cartBadge}>{cartCount}</span>
                                 </NavLink>
                             </li>
-
                             <li>
                                 {customer ? (
                                     <div ref={desktopDropdownRef} className={styles.accountContainer}>
@@ -173,7 +109,6 @@ function Navbar() {
                                         >
                                             👋 Hi {customer.name} ▼
                                         </button>
-
                                         {showMenu && (
                                             <div className={styles.dropdownMenu}>
                                                 <button className={styles.dropdownItem} onClick={handleLogout}>
@@ -184,17 +119,23 @@ function Navbar() {
                                     </div>
                                 ) : (
                                     <button
-                                        className={`${styles.accountButton} ${styles.loggedOut}`}
-                                        onClick={() => setShowGoogleLogin(true)}
+                                        className={`${styles.accountButton} ${styles.loggedOut} ${
+                                            isGoogleUser ? styles.loginDisabled : ""
+                                        }`}
+                                        onClick={() => {
+                                            if (!isGoogleUser) {
+                                                setShowGoogleLogin(true);
+                                            }
+                                        }}
+                                        disabled={isGoogleUser}
                                     >
                                         Login
-                                    </button>
+</button>
                                 )}
                             </li>
                         </ul>
                     </nav>
 
-                    {/* MOBILE PROFILE */}
                     <div ref={mobileDropdownRef} className={styles.mobileAccount}>
                         <button
                             className={styles.mobileProfileButton}
@@ -206,42 +147,40 @@ function Navbar() {
                             />
                         </button>
 
-                        {showMenu && customer && (
+                        {showMenu && (
                             <div className={styles.mobileProfilePopup}>
-                                <div className={styles.mobileCustomerName}>
-                                    Hi {customer.name}
-                                </div>
-
-                                <button className={styles.mobileLogout} onClick={handleLogout}>
-                                    Logout
-                                </button>
-                            </div>
-                        )}
-
-                        {showMenu && !customer && (
-                            <div className={styles.mobileProfilePopup}>
-                                <button
-                                    className={styles.mobileLogin}
-                                    onClick={() => setShowGoogleLogin(true)}
-                                >
-                                    Login
-                                </button>
+                                {customer ? (
+                                    <>
+                                        <div className={styles.mobileCustomerName}>Hi {customer.name}</div>
+                                        <button className={styles.mobileLogout} onClick={handleLogout}>
+                                            Logout
+                                        </button>
+                                    </>
+                                ) : (
+                                    <button
+                                        className={`${styles.mobileLogin} ${
+                                            isGoogleUser ? styles.loginDisabled : ""
+                                        }`}
+                                        onClick={() => {
+                                            if (!isGoogleUser) {
+                                                setShowGoogleLogin(true);
+                                            }
+                                        }}
+                                        disabled={isGoogleUser}
+                                    >
+                                        Login
+                                    </button>
+                                )}
                             </div>
                         )}
                     </div>
                 </div>
 
-                {/* MOBILE NAVIGATION */}
                 <nav className={styles.mobileNav}>
                     <NavLink to={ROUTES.HOME}>Home</NavLink>
                     <NavLink to={ROUTES.ORDERS}>My Orders</NavLink>
-
-                    <NavLink
-                        to={ROUTES.CART}
-                        className={cartUpdated ? styles.cartUpdated : ""}
-                    >
-                        🛒 Cart
-                        <span className={styles.cartBadge}>{cartCount}</span>
+                    <NavLink to={ROUTES.CART} className={cartUpdated ? styles.cartUpdated : ""}>
+                        🛒 Cart <span className={styles.cartBadge}>{cartCount}</span>
                     </NavLink>
                 </nav>
             </header>
