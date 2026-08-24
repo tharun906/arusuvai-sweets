@@ -1,5 +1,5 @@
 import styles from "./HeroBanner.module.css";
-import SweetBox from "../../../assets/FinalSweetBox.png";
+import SweetBox from "../../../assets/SweetBox.webp";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBagShopping, faLeaf, faSpa } from "@fortawesome/free-solid-svg-icons";
 

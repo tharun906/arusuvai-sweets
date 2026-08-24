@@ -1,51 +1,77 @@
 import styles from "./SweetTypeChoice.module.css";
 
-import sweetBoxImage from "../../../assets/SweetBoxNobg.png";
-import customizeImage from "../../../assets/SweetBox.png";
+import sweetBoxImage from "../../../assets/sweetbox.jpg";
+import customizeImage from "../../../assets/sweetbox.jpg";
+
+import headingLeft from "../../../assets/headingLeft.webp";
+import headingRight from "../../../assets/headingRight.webp";
+
+import leftBoxBadge from "../../../assets/leftBoxBadge.webp";
+import rightBoxBadge from "../../../assets/rightBoxBadge.webp";
+
 
 function SweetTypeChoice() {
 
-    const scrollToSweetBoxes = () => {
-
+    const scrollTo = (id: string) =>
         document
-            .getElementById("sweet-boxes")
+            .getElementById(id)
             ?.scrollIntoView({
                 behavior: "smooth",
                 block: "start",
             });
-    };
 
-    const scrollToProducts = () => {
-
-        document
-            .getElementById("products")
-            ?.scrollIntoView({
-                behavior: "smooth",
-                block: "start",
-            });
-    };
 
     return (
 
         <section className={styles.section}>
 
+            {/* =========================
+                HEADING
+            ========================= */}
+
             <div className={styles.heading}>
 
-                <span>✦</span>
+                <img
+                    src={headingLeft}
+                    alt=""
+                    className={styles.headingImage}
+                />
 
                 <h2>
                     How would you like your sweets?
                 </h2>
 
-                <span>✦</span>
+                <img
+                    src={headingRight}
+                    alt=""
+                    className={styles.headingImage}
+                />
 
             </div>
 
+
+            {/* =========================
+                CHOICE CARDS
+            ========================= */}
+
             <div className={styles.cards}>
 
-                {/* DEFAULT SWEET BOX */}
+                {/* =========================
+                    DEFAULT SWEET BOX
+                ========================= */}
 
-                <div className={styles.card}>
+                <div
+                    className={`${styles.card} ${styles.defaultCard}`}
+                >
+
+                    {/* Round badge */}
+
+                    <img
+                        src={leftBoxBadge}
+                        alt=""
+                        className={styles.boxBadge}
+                    />
+
 
                     <div className={styles.imageContainer}>
 
@@ -56,6 +82,7 @@ function SweetTypeChoice() {
 
                     </div>
 
+
                     <div className={styles.content}>
 
                         <h3>
@@ -63,24 +90,34 @@ function SweetTypeChoice() {
                         </h3>
 
                         <p>
-                            Ready-made combinations,
-                            carefully selected by Arusuvai.
+                            Ready-made combinations Sweet Box,
+                             by Arusuvai.
                         </p>
+
 
                         <div className={styles.weights}>
 
-                            <span>500g</span>
-                            <span>1kg</span>
-                            <span>1.5kg</span>
+                            <span>Small</span>
+
+                            <span>Medium</span>
+
+                            <span>Large</span>
 
                         </div>
 
+
                         <button
                             type="button"
-                            onClick={scrollToSweetBoxes}
+                            onClick={() =>
+                                scrollTo("sweet-boxes")
+                            }
                         >
                             Explore Boxes
-                            <span>→</span>
+
+                            <span>
+                                →
+                            </span>
+
                         </button>
 
                     </div>
@@ -88,9 +125,22 @@ function SweetTypeChoice() {
                 </div>
 
 
-                {/* CUSTOM SWEET BOX */}
+                {/* =========================
+                    BUILD YOUR OWN BOX
+                ========================= */}
 
-                <div className={styles.card}>
+                <div
+                    className={`${styles.card} ${styles.customizeCard}`}
+                >
+
+                    {/* Round badge */}
+
+                    <img
+                        src={rightBoxBadge}
+                        alt=""
+                        className={styles.boxBadge}
+                    />
+
 
                     <div className={styles.imageContainer}>
 
@@ -100,6 +150,7 @@ function SweetTypeChoice() {
                         />
 
                     </div>
+
 
                     <div className={styles.content}>
 
@@ -112,12 +163,19 @@ function SweetTypeChoice() {
                             and create your own combination.
                         </p>
 
+
                         <button
                             type="button"
-                            onClick={scrollToProducts}
+                            onClick={() =>
+                                scrollTo("products")
+                            }
                         >
                             Customize Now
-                            <span>→</span>
+
+                            <span>
+                                →
+                            </span>
+
                         </button>
 
                     </div>
@@ -127,6 +185,7 @@ function SweetTypeChoice() {
             </div>
 
         </section>
+
     );
 }
 

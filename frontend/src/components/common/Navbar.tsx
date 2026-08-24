@@ -110,9 +110,16 @@ function Navbar() {
                         zIndex: 2000
                     }}
                 >
-                    <div style={{ background: "white", padding: "30px", borderRadius: "12px" }}>
+                    <div
+                        style={{
+                            background: "white",
+                            padding: "30px",
+                            borderRadius: "12px"
+                        }}
+                    >
                         <GoogleLoginFallback
                             onSuccess={handleGoogleLoginSuccess}
+                            onClose={() => setShowGoogleLogin(false)}
                             onError={message => {
                                 console.error("Google login:", message);
                             }}

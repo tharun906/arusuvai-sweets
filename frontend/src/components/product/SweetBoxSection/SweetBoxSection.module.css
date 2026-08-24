@@ -24,8 +24,8 @@
 .heading h2 {
     margin: 0;
 
-    font-family: Georgia, serif;
-    font-size: 2rem;
+    font-family: "Playfair Display", serif;
+    font-size: 2.2rem;
     font-weight: 700;
 
     color: #fff;
@@ -40,9 +40,11 @@
     color: rgba(255, 255, 255, 0.75);
 }
 
-.headingDecoration {
-    color: #faca16;
-    font-size: 1.3rem;
+.headingImage {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    flex-shrink: 0;
 }
 
 
@@ -53,25 +55,23 @@
 .boxSelectors {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
 
     max-width: 1100px;
-    margin: 0 auto 12px;
+    margin: 0 auto 18px;
 
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 14px;
-
-    overflow: hidden;
+    border: none;
+    overflow: visible;
 }
 
 .selector,
 .selected {
     min-height: 70px;
 
-    border: none;
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
 
     background: rgba(0, 35, 25, 0.55);
-
     color: #fff;
 
     cursor: pointer;
@@ -85,8 +85,13 @@
 
     font-family: Georgia, serif;
 
-    transition: 0.25s ease;
+    transition:
+        background 0.25s ease,
+        border-color 0.25s ease,
+        transform 0.2s ease,
+        box-shadow 0.25s ease;
 }
+
 
 .selector:last-child,
 .selected:last-child {
@@ -105,7 +110,11 @@
 }
 
 .selector:hover {
-    background: rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.08);
+
+    border-color: var(--gold-hover);
+
+    transform: translateY(-2px);
 }
 
 .selected {
@@ -114,8 +123,13 @@
     border: 2px solid #faca16;
 
     background: rgba(0, 35, 25, 0.75);
+
+    box-shadow: 0 5px 15px rgba(250, 202, 22, 0.12);
 }
 
+.selected:hover {
+    border-color: var(--gold-hover);
+}
 
 /* =========================
    MAIN BOX
@@ -193,7 +207,7 @@
 
     font-size: 1.8rem;
 
-    color: #fff;
+    color: #faca16;
 }
 
 .description {
@@ -234,15 +248,17 @@
     border-left: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.icon {
-    color: #faca16;
-    font-size: 1.5rem;
+.highlightIcon {
+    width: 38px;
+    height: 38px;
+    object-fit: contain;
+    flex-shrink: 0;
 }
 
 .highlight small {
     display: block;
 
-    color: rgba(255, 255, 255, 0.7);
+    color: rgb(255, 255, 255);
 
     font-size: 0.75rem;
 }
@@ -314,48 +330,7 @@
     margin-top: 22px;
 }
 
-.quantity {
-    display: grid;
-    grid-template-columns: 48px 55px 48px;
 
-    height: 50px;
-
-    border: 1px solid rgba(255, 255, 255, 0.12);
-
-    border-radius: 9px;
-
-    overflow: hidden;
-}
-
-.quantity button,
-.quantity span {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: transparent;
-
-    color: #fff;
-
-    border: none;
-
-    font-size: 1.1rem;
-}
-
-.quantity button {
-    cursor: pointer;
-
-    transition: 0.2s;
-}
-
-.quantity button:hover {
-    background: rgba(255, 255, 255, 0.08);
-}
-
-.quantity span {
-    border-left: 1px solid rgba(255, 255, 255, 0.08);
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
-}
 
 
 /* =========================
@@ -458,19 +433,26 @@
         font-size: 0.8rem;
     }
 
-    .headingDecoration {
-        font-size: 1rem;
+    .headingImage {
+        width: 24px;
+        height: 24px;
     }
+    
+    .highlightIcon {
+        width: 30px;
+        height: 30px;
+    }
+
 
     .boxSelectors {
-        border-radius: 12px;
-
-        margin-bottom: 10px;
+        gap: 8px;
+        margin-bottom: 14px;
     }
-
+    
     .selector,
     .selected {
         min-height: 60px;
+        border-radius: 10px;
     }
 
     .selector span,
@@ -516,9 +498,6 @@
         padding: 10px 4px;
     }
 
-    .icon {
-        font-size: 1.2rem;
-    }
 
     .highlight strong {
         font-size: 1.05rem;
@@ -532,10 +511,6 @@
         gap: 10px;
     }
 
-    .quantity {
-        grid-template-columns: 38px 42px 38px;
-        height: 46px;
-    }
 
     .addButton {
         height: 46px;

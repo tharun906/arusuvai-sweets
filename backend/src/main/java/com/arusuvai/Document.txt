@@ -572,17 +572,17 @@ Create + validate JWT
    ADMIN / CUSTOMER
 
 
-   2. Open PostgreSQL / pgAdmin and run:
+
+
+
 ALTER TABLE order_item
 ADD COLUMN item_type VARCHAR(20);
 
-Then:
 
 UPDATE order_item
 SET item_type = 'PRODUCT'
 WHERE item_type IS NULL;
 
-Then make it permanently required:
 
 ALTER TABLE order_item
 ALTER COLUMN item_type SET NOT NULL;

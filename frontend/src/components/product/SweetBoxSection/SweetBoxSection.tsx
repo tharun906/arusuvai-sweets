@@ -2,6 +2,12 @@ import { useState } from "react";
 import styles from "./SweetBoxSection.module.css";
 import { useSweetBox } from "../../../hooks/useSweetBox";
 import { useCart } from "../../../context/CartContext";
+import QuantitySelector from "../../common/QuantitySelector";
+import headingLeft from "../../../assets/headingLeft.webp";
+import headingRight from "../../../assets/headingRight.webp";
+import price from "../../../assets/price.webp";
+import weight from "../../../assets/weight.webp";
+import sweetbox from "../../../assets/sweetbox.jpg";
 
 function SweetBoxSection() {
     const { sweetBoxes, loading } = useSweetBox();
@@ -21,17 +27,25 @@ function SweetBoxSection() {
     return (
         <section id="sweet-boxes" className={styles.section}>
             <div className={styles.heading}>
-                <span className={styles.headingDecoration}>✦</span>
+                <img src={headingLeft} alt="" className={styles.headingImage} />
                 <div>
                     <h2>Our Sweet Boxes</h2>
                     <p>Pre-designed boxes by Arusuvai</p>
                 </div>
-                <span className={styles.headingDecoration}>✦</span>
+                <img src={headingRight} alt="" className={styles.headingImage} />
             </div>
 
             <div className={styles.boxSelectors}>
                 {sweetBoxes.map(box => (
-                    <button key={box.id} type="button" className={selectedBox.id === box.id ? styles.selected : styles.selector} onClick={() => { setSelectedBoxId(box.id); setQuantity(1); }}>
+                    <button
+                        key={box.id}
+                        type="button"
+                        className={selectedBox.id === box.id ? styles.selected : styles.selector}
+                        onClick={() => {
+                            setSelectedBoxId(box.id);
+                            setQuantity(1);
+                        }}
+                    >
                         <span>{box.name}</span>
                         <small>{box.totalWeight}</small>
                     </button>
@@ -40,16 +54,18 @@ function SweetBoxSection() {
 
             <div className={styles.boxContent}>
                 <div className={styles.imageContainer}>
-                    <img src={selectedBox.imageUrl} alt={selectedBox.name} className={styles.image} />
+                    <img src={sweetbox} alt={selectedBox.name} className={styles.image} />
                 </div>
 
                 <div className={styles.details}>
                     <h3>{selectedBox.name}</h3>
-                    <p className={styles.description}>A delightful assortment of our signature sweets.</p>
+                    <p className={styles.description}>
+                        A delightful assortment of our signature sweets.
+                    </p>
 
                     <div className={styles.highlights}>
                         <div className={styles.highlight}>
-                            <span className={styles.icon}>♧</span>
+                            <img src={weight} alt="" className={styles.highlightIcon} />
                             <div>
                                 <small>Total Weight</small>
                                 <strong>{selectedBox.totalWeight}</strong>
@@ -57,7 +73,7 @@ function SweetBoxSection() {
                         </div>
 
                         <div className={styles.highlight}>
-                            <span className={styles.icon}>◇</span>
+                            <img src={price} alt="" className={styles.highlightIcon} />
                             <div>
                                 <small>Price</small>
                                 <strong>₹{selectedBox.price}</strong>
@@ -73,15 +89,10 @@ function SweetBoxSection() {
                                 <span>{item.quantity} pcs</span>
                             </div>
                         ))}
-                        <p className={styles.more}>& more delicious sweets...</p>
                     </div>
 
                     <div className={styles.bottomActions}>
-                        <div className={styles.quantity}>
-                            <button type="button" onClick={() => setQuantity(q => Math.max(1, q - 1))}>−</button>
-                            <span>{quantity}</span>
-                            <button type="button" onClick={() => setQuantity(q => Math.min(10, q + 1))}>+</button>
-                        </div>
+                        <QuantitySelector value={quantity} min={1} max={10} onChange={setQuantity} />
 
                         <button type="button" className={styles.addButton} onClick={handleAddToCart}>
                             <span>🛒</span> Add to Cart
