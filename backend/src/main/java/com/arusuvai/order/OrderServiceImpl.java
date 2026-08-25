@@ -4,6 +4,7 @@ import com.arusuvai.checkout.*;
 import com.arusuvai.customer.CustomerEntity;
 import com.arusuvai.customer.CustomerRepository;
 import com.arusuvai.enums.DeliveryType;
+import com.arusuvai.enums.PaymentMethod;
 import com.arusuvai.exception.BusinessException;
 import com.arusuvai.exception.ResourceNotFoundException;
 import com.arusuvai.product.ProductEntity;
@@ -58,13 +59,16 @@ public class OrderServiceImpl implements OrderService {
                                         "Customer not found"
                                 ));
 
-        Optional<OrderEntity> existingOrder =
-                orderRepository
-                        .findFirstByCustomerIdAndPaymentStatusOrderByCreatedAtDesc(
-                                customer.getId(),
-                                PaymentStatus.PENDING
-                        );
+        Optional<OrderEntity> existingOrder = Optional.empty();
 
+        if (request.getPaymentMethod() == PaymentMethod.ONLINE) {
+            existingOrder =
+                    orderRepository
+                            .findFirstByCustomerIdAndPaymentStatusOrderByCreatedAtDesc(
+                                    customer.getId(),
+                                    PaymentStatus.PENDING
+                            );
+        }
         // Calculate the order
         OrderCalculationResult calculationResult =
                 orderCalculationService.calculateCheckout(
@@ -386,14 +390,11 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderResponseDTO> getOrdersByCustomerId(Long customerId) {
 
         customerRepository.findById(customerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Customer not found"));
 
         List<OrderEntity> orders =
-                orderRepository
-                        .findByCustomerIdAndOrderStatusNotOrderByCreatedAtDesc(
-                                customerId,
-                                OrderStatus.PENDING_PAYMENT
-                        );
+                orderRepository.findCustomerOrdersForMyOrders(customerId);
 
         return orders.stream()
                 .map(this::mapToResponse)

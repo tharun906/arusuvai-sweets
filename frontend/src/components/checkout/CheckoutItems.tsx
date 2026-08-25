@@ -3,102 +3,74 @@ import Price from "../common/Price";
 
 import styles from "./CheckoutItems.module.css";
 
-interface CheckoutItem {
-
-    productId: number;
-
-    productName: string;
-
-    quantity: number;
-
-    unitPrice: number;
-
-    totalPrice: number;
-
-}
+import type { CheckoutItem } from "../../types/CheckoutItem";
 
 interface CheckoutItemsProps {
-
     items: CheckoutItem[];
-
 }
 
-function CheckoutItems({
-
-    items,
-
-}: CheckoutItemsProps) {
+function CheckoutItems({ items }: CheckoutItemsProps) {
 
     return (
 
         <Card className={styles.card}>
 
             <h2>
-
                 Order Items
-
             </h2>
 
             <div className={styles.list}>
 
-                {
+                {items.map((item, index) => (
 
-                    items.map((item) => (
+                    <div
+                        key={
+                            item.itemType === "PRODUCT"
+                                ? `${item.productId}-${item.weight}`
+                                : `sweetbox-${item.sweetBoxId}-${index}`
+                        }
+                        className={styles.item}
+                    >
 
-                        <div
+                        <div className={styles.left}>
 
-                            key={item.productId}
+                            <h3>
+                                {item.itemType === "PRODUCT"
+                                    ? item.productName
+                                    : item.sweetBoxName}
+                            </h3>
 
-                            className={styles.item}
+                            <p>
+                                {item.weight}
+                            </p>
 
-                        >
-
-                            <div className={styles.left}>
-
-                                <h3>
-
-                                    {item.productName}
-
-                                </h3>
-
-                                <p>
-
-                                    Qty : {item.quantity}
-
-                                </p>
-
-                            </div>
-
-                            <div className={styles.right}>
-
-                                <Price
-
-                                    amount={item.totalPrice}
-
-                                    size="md"
-
-                                />
-
-                                <span>
-
-                                    ₹{item.unitPrice} each
-
-                                </span>
-
-                            </div>
+                            <p>
+                                Qty : {item.quantity}
+                            </p>
 
                         </div>
 
-                    ))
+                        <div className={styles.right}>
 
-                }
+                            <Price
+                                amount={item.totalPrice}
+                                size="md"
+                            />
+
+                            <span>
+                                ₹{item.unitPrice} each
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                ))}
 
             </div>
 
         </Card>
-
     );
-
 }
 
 export default CheckoutItems;

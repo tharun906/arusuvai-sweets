@@ -4,7 +4,7 @@ import CustomerLayout from "../layouts/CustomerLayout";
 
 import Home from "../pages/customer/Home";
 import Cart from "../pages/customer/Cart";
-import Checkout from "../pages/customer/Checkout";
+
 import Orders from "../pages/customer/Orders";
 
 import { ROUTES } from "../constants/routes";
@@ -13,6 +13,7 @@ import Products from "../admin/pages/Products";
 import Customers from "../admin/pages/Customers";
 import AdminLayout from "../admin/layouts/AdminLayout";
 import AdminRoute from "./AdminRoute";
+import Checkout from "../pages/customer/Checkout";
 
 
 function AppRoutes() {
