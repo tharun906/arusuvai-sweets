@@ -2,302 +2,115 @@
 @import "./variables.css";
 @import "./reset.css";
 
+*,*::before,*::after{box-sizing:border-box}
 
-/* ========================================
-   Global
-======================================== */
+html{scroll-behavior:smooth}
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+body{
+  margin:0;
+  font-family:var(--font-heading);
+  font-size:16px;
+  background:var(--background-color);
+  color:var(--text-primary);
+  line-height:1.6;
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale
 }
 
+#root{min-height:100vh}
 
-html {
-  scroll-behavior: smooth;
+.container{width:min(92%,var(--container-width));margin:0 auto}
+
+.section{padding:var(--space-xxl) 0}
+
+h1,h2,h3,h4,h5,h6{
+  margin:0;
+  font-weight:700;
+  color:var(--text-primary);
+  line-height:1.3
 }
 
+h1{font-size:2.4rem}
+h2{font-size:1.8rem}
+h3{font-size:1.25rem}
+h4{font-size:1.1rem}
 
-body {
-  margin: 0;
-
-  font-family: var(--font-heading);
-
-  font-size: 16px;
-
-  background: var(--background-color);
-
-  color: var(--text-primary);
-
-  line-height: 1.6;
-
-  min-height: 100vh;
-
-  -webkit-font-smoothing: antialiased;
-
-  -moz-osx-font-smoothing: grayscale;
+p{
+  margin:0;
+  color:var(--text-secondary);
+  font-size:1rem;
+  line-height:1.7
 }
 
-#root {
-  min-height: 100vh;
+.section-title{
+  text-align:center;
+  font-size:2.3rem;
+  margin-bottom:var(--space-xl);
+  color:var(--text-primary)
 }
 
-
-/* ========================================
-   Layout
-======================================== */
-
-.container {
-
-  width: min(92%, var(--container-width));
-
-  margin: 0 auto;
-
+button{
+  cursor:pointer;
+  border:none;
+  border-radius:var(--radius-md);
+  transition:var(--transition);
+  font-family:inherit
 }
 
+button:hover{transform:translateY(-2px)}
+button:disabled{cursor:not-allowed;opacity:.7}
 
-.section {
-
-  padding: var(--space-xxl) 0;
-
+input,textarea,select{
+  width:100%;
+  padding:12px 14px;
+  border:1px solid var(--border-color);
+  border-radius:var(--radius-md);
+  background:var(--surface-color);
+  color:var(--text-primary);
+  font-family:inherit;
+  transition:var(--transition)
 }
 
+input::placeholder,textarea::placeholder{color:var(--text-dim)}
 
-/* ========================================
-   Typography
-======================================== */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    margin: 0;
-
-    font-weight: 700;
-
-    color: var(--text-primary);
-
-    line-height: 1.3;
+input:focus,textarea:focus,select:focus{
+  outline:none;
+  border-color:var(--gold-color);
+  box-shadow:0 0 0 3px rgba(212,175,55,.12)
 }
 
-h1 {
-    font-size: 2.4rem;
+.card{
+  background:var(--surface-color);
+  border:1px solid var(--border-soft);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-sm);
+  transition:var(--transition)
 }
 
-h2 {
-    font-size: 1.8rem;
+.card:hover{box-shadow:var(--shadow-md)}
+
+table{width:100%;border-collapse:collapse}
+
+th{
+  background:var(--surface-alt);
+  color:var(--text-primary);
+  border-bottom:1px solid var(--border-strong)
 }
 
-h3 {
-    font-size: 1.25rem;
+th,td{padding:14px;text-align:left}
+
+td{
+  color:var(--text-secondary);
+  border-bottom:1px solid var(--border-soft)
 }
 
-h4 {
-    font-size: 1.1rem;
-}
-
-p {
-    margin: 0;
-
-    color: var(--text-secondary);
-
-    font-size: 1rem;
-    line-height: 1.7;
-}
-
-.section-title {
-
-  text-align: center;
-
-  font-size: 2.3rem;
-
-  margin-bottom: var(--space-xl);
-
-  color: var(--text-primary);
-
-}
-
-
-/* ========================================
-   Buttons
-======================================== */
-
-button {
-
-  cursor: pointer;
-
-  border: none;
-
-  border-radius: var(--radius-md);
-
-  transition: var(--transition);
-
-  font-family: inherit;
-
-}
-
-
-button:hover {
-
-  transform: translateY(-2px);
-
-}
-
-
-button:disabled {
-
-  cursor: not-allowed;
-
-  opacity: .7;
-
-}
-
-
-/* ========================================
-   Inputs
-======================================== */
-
-input,
-textarea,
-select {
-
-  width: 100%;
-
-  padding: 12px 14px;
-
-  border: 1px solid var(--border-color);
-
-  border-radius: var(--radius-md);
-
-  background: var(--surface-color);
-
-  color: var(--text-primary);
-
-  font-family: inherit;
-
-  transition: var(--transition);
-
-}
-
-
-input::placeholder,
-textarea::placeholder {
-
-  color: var(--text-dim);
-
-}
-
-
-input:focus,
-textarea:focus,
-select:focus {
-
-  outline: none;
-
-  border-color: var(--gold-color);
-
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.12);
-
-}
-
-
-/* ========================================
-   Cards
-======================================== */
-
-.card {
-
-  background: var(--surface-color);
-
-  border: 1px solid var(--border-soft);
-
-  border-radius: var(--radius-lg);
-
-  box-shadow: var(--shadow-sm);
-
-  transition: var(--transition);
-
-}
-
-
-.card:hover {
-
-  box-shadow: var(--shadow-md);
-
-}
-
-
-/* ========================================
-   Tables
-======================================== */
-
-table {
-
-  width: 100%;
-
-  border-collapse: collapse;
-
-}
-
-
-th {
-
-  background: var(--surface-alt);
-
-  color: var(--text-primary);
-
-  border-bottom: 1px solid var(--border-strong);
-
-}
-
-
-th,
-td {
-
-  padding: 14px;
-
-  text-align: left;
-
-}
-
-
-td {
-
-  color: var(--text-secondary);
-
-  border-bottom: 1px solid var(--border-soft);
-
-}
-
-
-tbody tr {
-
-  transition: var(--transition);
-
-}
-
-
-tbody tr:hover {
-
-  background: var(--surface-hover);
-
-}
-
-
-/* ========================================
-   Validation
-======================================== */
-
-.error {
-
-  color: var(--error-color);
-
-  font-size: .85rem;
-
-  margin-top: 4px;
-
-  margin-bottom: 12px;
-
+tbody tr{transition:var(--transition)}
+tbody tr:hover{background:var(--surface-hover)}
+
+.error{
+  color:var(--error-color);
+  font-size:.85rem;
+  margin-top:4px;
+  margin-bottom:12px
 }

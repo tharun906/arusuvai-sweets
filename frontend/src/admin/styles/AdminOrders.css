@@ -52,6 +52,7 @@
     font-weight: 600;
 
     white-space: nowrap;
+    background: var(--primary-color);
 }
 
 .admin-orders-table td {

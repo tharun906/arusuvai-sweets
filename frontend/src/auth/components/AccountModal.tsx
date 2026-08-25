@@ -115,23 +115,48 @@ function AccountModal({ open, onClose }: AccountModalProps) {
 
     const handleContinue = async () => {
         setPhoneError("");
-
+    
         if (!/^[6-9]\d{9}$/.test(phoneNumber)) {
             setPhoneError("Enter a valid 10-digit mobile number.");
             return;
         }
-
+    
         try {
             const response = await checkPhone({ phoneNumber });
-
+    
             if (!response.success) {
-                setPhoneError(response.message || "This phone number is not associated with your account.");
+                setPhoneError(
+                    response.message ||
+                    "This phone number is not associated with your account."
+                );
                 return;
             }
-
+    
+            /*
+             * ========================================
+             * EXISTING GOOGLE CUSTOMER
+             * ========================================
+             *
+             * If Google authentication has already
+             * identified this user as an existing
+             * customer, the entered phone number
+             * MUST belong to that account.
+             *
+             * If the phone is not associated with
+             * this account, NEVER open registration.
+             */
+    
+            /*
+             * ========================================
+             * EXISTING CUSTOMER
+             * ========================================
+             */
+    
             if (response.existingCustomer && response.customer) {
                 const customer = response.customer;
+    
                 login(customer, response.token!);
+    
                 setExistingCustomer(customer);
                 setName(customer.name);
                 setEmail(customer.email ?? "");
@@ -144,14 +169,30 @@ function AccountModal({ open, onClose }: AccountModalProps) {
                 setPincode(customer.pincode ?? "");
                 setLatitude(customer.latitude ?? null);
                 setLongitude(customer.longitude ?? null);
-                setLocationCaptured(customer.latitude != null && customer.longitude != null);
+    
+                setLocationCaptured(
+                    customer.latitude != null &&
+                    customer.longitude != null
+                );
+    
                 setEditingAddress(false);
                 setShowRegistration(true);
+    
                 return;
             }
-
+    
+            /*
+             * ========================================
+             * NEW CUSTOMER
+             * ========================================
+             *
+             * This branch is allowed only when the
+             * user is actually a new customer.
+             */
+    
             setExistingCustomer(null);
             setEditingAddress(true);
+    
             setName("");
             setEmail("");
             setDoorNo("");
@@ -161,12 +202,18 @@ function AccountModal({ open, onClose }: AccountModalProps) {
             setCity("");
             setState("");
             setPincode("");
+    
             setLatitude(null);
             setLongitude(null);
+    
             setLocationCaptured(false);
             setShowRegistration(true);
+    
         } catch (error: any) {
-            setPhoneError(error?.response?.data?.message || "Unable to verify phone number.");
+            setPhoneError(
+                error?.response?.data?.message ||
+                "Unable to verify phone number."
+            );
         }
     };
         const handleCurrentLocation = () => {

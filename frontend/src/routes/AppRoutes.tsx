@@ -14,6 +14,7 @@ import Customers from "../admin/pages/Customers";
 import AdminLayout from "../admin/layouts/AdminLayout";
 import AdminRoute from "./AdminRoute";
 import Checkout from "../pages/customer/Checkout";
+import SweetBoxes from "../admin/pages/SweetBoxes";
 
 
 function AppRoutes() {
@@ -72,6 +73,11 @@ function AppRoutes() {
                         <Route
                             path={ROUTES.ADMIN_PRODUCTS}
                             element={<Products />}
+                        />
+
+                        <Route
+                            path={ROUTES.ADMIN_SWEET_BOXES}
+                            element={<SweetBoxes />}
                         />
 
                         <Route

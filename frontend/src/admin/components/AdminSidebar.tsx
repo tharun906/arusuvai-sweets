@@ -101,6 +101,19 @@ function AdminSidebar() {
                     </NavLink>
 
                     <NavLink
+                        to={ROUTES.ADMIN_SWEET_BOXES}
+                        onClick={closeSidebar}
+                        className={({ isActive }) =>
+                            `admin-nav-link ${
+                                isActive ? "active" : ""
+                            }`
+                        }
+                    >
+                        <span>🎁</span>
+                        <span>Sweet Boxes</span>
+                    </NavLink>
+
+                    <NavLink
                         to={ROUTES.ADMIN_CUSTOMERS}
                         onClick={closeSidebar}
                         className={({ isActive }) =>

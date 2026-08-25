@@ -1,0 +1,241 @@
+.admin-sweet-boxes-page {
+    padding: var(--space-lg);
+    color: var(--text-primary);
+}
+
+.sweet-boxes-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-lg);
+}
+
+.admin-sweet-boxes-title {
+    margin: 0;
+    color: var(--text-primary);
+}
+
+.add-sweet-box-btn {
+    padding: 11px 18px;
+    background: var(--gold-color);
+    color: var(--deep-background);
+    border-radius: var(--radius-md);
+    font-weight: 700;
+}
+
+.add-sweet-box-btn:hover {
+    background: var(--gold-hover);
+}
+
+.admin-sweet-boxes-divider {
+    margin: var(--space-lg) 0;
+    border: none;
+    border-top: 1px solid var(--border-strong);
+}
+
+.sweet-box-grid {
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fill,
+        minmax(300px, 1fr)
+    );
+    gap: var(--space-lg);
+}
+
+.sweet-box-card {
+    overflow: hidden;
+    background: var(--surface-color);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+}
+
+.sweet-box-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--gold-muted);
+}
+
+.sweet-box-image-container {
+    width: 100%;
+    height: 210px;
+    overflow: hidden;
+    background: var(--deep-background);
+}
+
+.sweet-box-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.sweet-box-no-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    color: var(--text-dim);
+    background: var(--surface-alt);
+}
+
+.sweet-box-content {
+    padding: var(--space-lg);
+}
+
+.sweet-box-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+}
+
+.sweet-box-title-row h2 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 1.25rem;
+}
+
+.sweet-box-weight {
+    margin-top: var(--space-sm);
+    color: var(--text-secondary);
+}
+
+.sweet-box-price {
+    margin-top: var(--space-sm);
+    margin-bottom: var(--space-lg);
+    color: var(--gold-color);
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.sweet-box-active,
+.sweet-box-inactive {
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.sweet-box-active {
+    color: var(--success-color);
+    background: var(--success-background);
+    border: 1px solid #fdcb13;
+}
+
+.sweet-box-inactive {
+    color: var(--error-color);
+    background: var(--error-background);
+    border: 1px solid #fdcb13;
+}
+
+.sweet-box-items {
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--border-soft);
+}
+
+.sweet-box-items h4 {
+    margin: 0 0 var(--space-sm);
+    color: var(--text-primary);
+}
+
+.sweet-box-items p {
+    color: var(--text-dim);
+}
+
+.sweet-box-items ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sweet-box-items li {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-md);
+    padding: 7px 0;
+    color: var(--text-secondary);
+    border-bottom: 1px solid rgba(42, 85, 72, 0.5);
+}
+
+.sweet-box-items li:last-child {
+    border-bottom: none;
+}
+
+.sweet-box-actions {
+    display: flex;
+    gap: var(--space-sm);
+    margin-top: var(--space-lg);
+}
+
+.sweet-box-actions button {
+    flex: 1;
+    padding: 9px 12px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+}
+
+.sweet-box-actions button:first-child {
+    background: var(--gold-color);
+    color: var(--deep-background);
+}
+
+.sweet-box-actions button:first-child:hover {
+    background: var(--gold-hover);
+}
+
+.sweet-box-actions button:last-child {
+    background: var(--error-background);
+    color: var(--error-color);
+}
+
+.sweet-box-actions button:last-child:hover {
+    background: #4a1818;
+}
+
+.sweet-box-empty {
+    grid-column: 1 / -1;
+    padding: var(--space-xl);
+    text-align: center;
+    background: var(--surface-color);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-lg);
+}
+
+.sweet-box-empty h3 {
+    color: var(--text-primary);
+}
+
+.sweet-box-empty p {
+    margin-top: var(--space-sm);
+    color: var(--text-secondary);
+}
+
+.sweet-box-loading,
+.sweet-box-error {
+    padding: var(--space-lg);
+    color: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+
+    .admin-sweet-boxes-page {
+        padding: var(--space-md);
+    }
+
+    .sweet-boxes-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .add-sweet-box-btn {
+        width: 100%;
+    }
+
+    .sweet-box-grid {
+        grid-template-columns: 1fr;
+    }
+}

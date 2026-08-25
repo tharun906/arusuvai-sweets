@@ -200,10 +200,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerResponseDTO verifyPhone(
-            String googleSubject,
-            String phoneNumber
-    ) {
+    public CustomerResponseDTO verifyPhone(String googleSubject, String phoneNumber) {
 
         CustomerIdentityEntity identity =
                 customerIdentityRepository

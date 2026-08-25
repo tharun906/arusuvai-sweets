@@ -64,98 +64,210 @@ public class AuthService {
         return new AuthResponse(true, "Registration Successful", true, loginResponse, token);
     }
 
-    public AuthResponse checkPhone(PhoneLoginRequest request, Authentication authentication) {
+    public AuthResponse checkPhone(
+            PhoneLoginRequest request,
+            Authentication authentication
+    ) {
+
         System.out.println("CHECK PHONE AUTH = " + authentication);
-        System.out.println("CHECK PHONE NAME = " + (authentication != null ? authentication.getName() : "NULL"));
-        System.out.println("CHECK PHONE AUTHORITIES = " + (authentication != null ? authentication.getAuthorities() : "NULL"));
+        System.out.println(
+                "CHECK PHONE NAME = " +
+                        (authentication != null
+                                ? authentication.getName()
+                                : "NULL")
+        );
+        System.out.println(
+                "CHECK PHONE AUTHORITIES = " +
+                        (authentication != null
+                                ? authentication.getAuthorities()
+                                : "NULL")
+        );
 
-        Optional<CustomerEntity> customer = customerRepository.findByPhoneNumber(request.getPhoneNumber());
+        Optional<CustomerEntity> customer =
+                customerRepository.findByPhoneNumber(
+                        request.getPhoneNumber()
+                );
 
-        boolean googleAuthenticated = authentication != null
-                && authentication.isAuthenticated()
-                && authentication.getAuthorities().isEmpty()
-                && authentication.getName() != null;
+        boolean googleAuthenticated =
+                authentication != null
+                        && authentication.isAuthenticated()
+                        && authentication.getAuthorities().isEmpty()
+                        && authentication.getName() != null;
 
-        System.out.println("GOOGLE AUTHENTICATED = " + googleAuthenticated);
+        System.out.println(
+                "GOOGLE AUTHENTICATED = " + googleAuthenticated
+        );
 
         /*
-         * ========================================
-         * GOOGLE AUTHENTICATED USER
-         * ========================================
-         */
+        * ========================================
+        * GOOGLE AUTHENTICATED USER
+        * ========================================
+        */
         if (googleAuthenticated) {
-            String googleSubject = authentication.getName();
+
+            String googleSubject =
+                    authentication.getName();
 
             Optional<CustomerIdentityEntity> googleIdentity =
-                    customerIdentityRepository.findByProviderAndProviderSubject("GOOGLE", googleSubject);
+                    customerIdentityRepository
+                            .findByProviderAndProviderSubject(
+                                    "GOOGLE",
+                                    googleSubject
+                            );
 
             /*
-             * No customer exists with this phone.
-             *
-             * This is a new Google customer.
-             */
+            * ========================================
+            * EXISTING GOOGLE IDENTITY
+            * ========================================
+            *
+            * Google account is already linked to
+            * an Arusuvai customer.
+            */
+            if (googleIdentity.isPresent()
+                    && googleIdentity.get().getCustomer() != null) {
+
+                CustomerEntity googleCustomer =
+                        googleIdentity.get().getCustomer();
+
+                /*
+                * Phone does not belong to any customer.
+                *
+                * This is NOT a new registration.
+                * The Google account already exists.
+                */
+                if (customer.isEmpty()) {
+
+                    return new AuthResponse(
+                            false,
+                            "This phone number is not associated with your Google account.",
+                            false,
+                            null,
+                            null,
+                            null
+                    );
+                }
+
+                CustomerEntity phoneCustomer =
+                        customer.get();
+
+                /*
+                * Phone belongs to another customer.
+                */
+                if (!googleCustomer.getId()
+                        .equals(phoneCustomer.getId())) {
+
+                    return new AuthResponse(
+                            false,
+                            "This phone number is not associated with your Google account.",
+                            false,
+                            null,
+                            null,
+                            null
+                    );
+                }
+
+                /*
+                * Correct Google account + correct phone.
+                */
+                LoginResponse loginResponse =
+                        authMapper.toLoginResponse(
+                                googleCustomer
+                        );
+
+                String token =
+                        jwtService.generateToken(
+                                googleCustomer.getId(),
+                                googleCustomer.getRole().name()
+                        );
+
+                return new AuthResponse(
+                        true,
+                        "Login Successful",
+                        true,
+                        loginResponse,
+                        token,
+                        jwtService.generateGoogleToken(
+                                googleSubject
+                        )
+                );
+            }
+
+            /*
+            * ========================================
+            * NEW GOOGLE CUSTOMER
+            * ========================================
+            *
+            * Google identity exists but is not yet
+            * linked to a completed customer profile.
+            */
             if (customer.isEmpty()) {
+
                 return new AuthResponse(
                         true,
                         "Complete Register",
                         false,
                         null,
                         null,
-                        jwtService.generateGoogleToken(googleSubject)
-                );
-            }
-
-            CustomerEntity phoneCustomer = customer.get();
-
-            /*
-             * Phone belongs to an existing customer.
-             *
-             * Verify that this Google identity is
-             * actually linked to that customer.
-             */
-            if (googleIdentity.isEmpty()
-                    || googleIdentity.get().getCustomer() == null
-                    || !googleIdentity.get().getCustomer().getId().equals(phoneCustomer.getId())) {
-
-                return new AuthResponse(
-                        false,
-                        "This phone number is not associated with your Google account.",
-                        false,
-                        null,
-                        null,
-                        null
+                        jwtService.generateGoogleToken(
+                                googleSubject
+                        )
                 );
             }
 
             /*
-             * Correct Google account + correct phone.
-             */
-            LoginResponse loginResponse = authMapper.toLoginResponse(phoneCustomer);
-            String token = jwtService.generateToken(phoneCustomer.getId(), phoneCustomer.getRole().name());
+            * A phone already belongs to an existing
+            * customer, but this Google account is not
+            * linked to that customer.
+            */
+            return new AuthResponse(
+                    false,
+                    "This phone number is not associated with your Google account.",
+                    false,
+                    null,
+                    null,
+                    null
+            );
+        }
+
+        /*
+        * ========================================
+        * NORMAL PHONE LOGIN
+        * ========================================
+        */
+        if (customer.isPresent()) {
+
+            LoginResponse loginResponse =
+                    authMapper.toLoginResponse(
+                            customer.get()
+                    );
+
+            String token =
+                    jwtService.generateToken(
+                            customer.get().getId(),
+                            customer.get().getRole().name()
+                    );
 
             return new AuthResponse(
                     true,
                     "Login Successful",
                     true,
                     loginResponse,
-                    token,
-                    jwtService.generateGoogleToken(googleSubject)
+                    token
             );
         }
 
         /*
-         * ========================================
-         * NORMAL PHONE LOGIN
-         * ========================================
-         */
-        if (customer.isPresent()) {
-            LoginResponse loginResponse = authMapper.toLoginResponse(customer.get());
-            String token = jwtService.generateToken(customer.get().getId(), customer.get().getRole().name());
-
-            return new AuthResponse(true, "Login Successful", true, loginResponse, token);
-        }
-
-        return new AuthResponse(true, "Complete Register", false, null, null);
+        * ========================================
+        * NEW NORMAL CUSTOMER
+        * ========================================
+        */
+        return new AuthResponse(
+                true,
+                "Complete Register",
+                false,
+                null,
+                null
+        );
     }
 
     public AuthResponse googleLogin(GoogleLoginRequest request) {

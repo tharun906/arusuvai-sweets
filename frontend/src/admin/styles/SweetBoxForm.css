@@ -1,0 +1,123 @@
+.sweet-box-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    color: var(--text-primary);
+}
+
+.sweet-box-form .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.sweet-box-form label {
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.sweet-box-form input,
+.sweet-box-form select {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--surface-alt);
+    color: var(--text-primary);
+}
+
+.sweet-box-form input::placeholder {
+    color: var(--text-dim);
+}
+
+.sweet-box-form input:focus,
+.sweet-box-form select:focus {
+    border-color: var(--gold-color);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.12);
+}
+
+.sweet-box-form h3 {
+    margin: 4px 0;
+    color: var(--text-primary);
+}
+
+.sweet-box-form hr {
+    width: 100%;
+    margin: var(--space-sm) 0;
+    border: none;
+    border-top: 1px solid var(--border-soft);
+}
+
+.sweet-box-item-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.sweet-box-item {
+    display: grid;
+    grid-template-columns: 1fr 80px auto;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: 10px 12px;
+    background: var(--surface-alt);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+}
+
+.sweet-box-item-name {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.sweet-box-item input {
+    width: 80px;
+}
+
+.sweet-box-remove-btn {
+    padding: 7px 10px;
+    background: var(--error-background);
+    color: var(--error-color);
+    border-radius: var(--radius-sm);
+}
+
+.sweet-box-remove-btn:hover {
+    background: #4a1818;
+}
+
+.sweet-box-add-btn {
+    padding: 10px 14px;
+    background: var(--secondary-color);
+    color: var(--text-primary);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+}
+
+.sweet-box-add-btn:hover {
+    background: var(--secondary-hover);
+}
+
+.sweet-box-submit-btn {
+    width: 100%;
+    margin-top: var(--space-sm);
+    padding: 12px 16px;
+    background: var(--gold-color);
+    color: var(--deep-background);
+    border-radius: var(--radius-md);
+    font-weight: 700;
+}
+
+.sweet-box-submit-btn:hover {
+    background: var(--gold-hover);
+}
+
+.sweet-box-submit-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.sweet-box-form .error {
+    color: var(--error-color);
+    font-size: 0.85rem;
+}
