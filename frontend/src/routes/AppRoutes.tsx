@@ -15,6 +15,8 @@ import AdminLayout from "../admin/layouts/AdminLayout";
 import AdminRoute from "./AdminRoute";
 import Checkout from "../pages/customer/Checkout";
 import SweetBoxes from "../admin/pages/SweetBoxes";
+import CarouselManagement from "../admin/pages/CarouselManagement";
+import GalleryManagement from "../admin/pages/GalleryManagement";
 
 
 function AppRoutes() {
@@ -84,6 +86,17 @@ function AppRoutes() {
                             path={ROUTES.ADMIN_CUSTOMERS}
                             element={<Customers />}
                         />
+
+                        <Route
+                            path={ROUTES.ADMIN_CAROUSEL}
+                            element={<CarouselManagement />}
+                        />
+
+                        <Route
+                            path={ROUTES.ADMIN_GALLERY}
+                            element={<GalleryManagement />}
+                        />
+
 
                     </Route>
 

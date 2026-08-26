@@ -13,6 +13,7 @@ import CheckoutItems from "../../components/checkout/CheckoutItems";
 import DeliveryStatusCard from "../../components/checkout/DeliveryStatusCard";
 import PaymentMethodCard from "../../components/checkout/PaymentMethodCard";
 import CheckoutSummaryCard from "../../components/checkout/CheckoutSummaryCard";
+import axios from "axios";
 
 function Checkout() {
     const navigate = useNavigate();
@@ -85,8 +86,29 @@ function Checkout() {
                 }
             });
         } catch (error) {
+
             console.error("Order creation failed:", error);
-            setPaymentMessage("Unable to place the order. Please try again.");
+        
+            if (axios.isAxiosError(error)) {
+        
+                const message =
+                    error.response?.data?.message;
+        
+                if (message) {
+                    setPaymentMessage(message);
+                } else {
+                    setPaymentMessage(
+                        "Unable to place the order. Please try again."
+                    );
+                }
+        
+            } else {
+        
+                setPaymentMessage(
+                    "Unable to place the order. Please try again."
+                );
+            }
+        
             setPlacingOrder(false);
         }
     };

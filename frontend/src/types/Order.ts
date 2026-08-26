@@ -24,16 +24,16 @@ export interface Order {
 
 export interface OrderItem {
 
-    productId: number;
+    itemType: "PRODUCT" | "SWEET_BOX";
 
-    productName: string;
+    productId: number | null;
+    productName: string | null;
+
+    sweetBoxId: number | null;
+    sweetBoxName: string | null;
 
     weight: string;
-
     quantity: number;
-
     pricePerUnit: number;
-
     totalPrice: number;
-
 }

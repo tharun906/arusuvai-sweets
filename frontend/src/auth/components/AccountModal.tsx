@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./AccountModal.module.css";
 import { useAuth } from "../hooks/useAuth";
 import { useAuthContext } from "../context/AuthContext";
@@ -15,7 +15,15 @@ interface AccountModalProps {
 }
 
 function AccountModal({ open, onClose }: AccountModalProps) {
-    const [phoneNumber, setPhoneNumber] = useState("");
+    const {
+        customer,
+        login,
+        isLoggedIn,
+        isGoogleUser
+    } = useAuthContext();
+    const [phoneNumber, setPhoneNumber] = useState(
+        customer?.phoneNumber ?? ""
+    );
     const [showRegistration, setShowRegistration] = useState(false);
     const [existingCustomer, setExistingCustomer] = useState<LoginResponse | null>(null);
     const [editingAddress, setEditingAddress] = useState(false);
@@ -49,7 +57,6 @@ function AccountModal({ open, onClose }: AccountModalProps) {
     const [locationMessage, setLocationMessage] = useState("");
 
     const { checkPhone, loading } = useAuth();
-    const { login, isLoggedIn, isGoogleUser } = useAuthContext();
     const {
         pendingAction,
         setPendingAction,
@@ -58,10 +65,16 @@ function AccountModal({ open, onClose }: AccountModalProps) {
         setRegistrationPending
     } = useAccountModal();    const navigate = useNavigate();
 
+    useEffect(() => {
+        if (customer?.phoneNumber) {
+            setPhoneNumber(customer.phoneNumber);
+        }
+    }, [customer]);
+
     if (!open) return null;
 
     const resetModal = () => {
-        setPhoneNumber("");
+        setPhoneNumber(customer?.phoneNumber ?? "");
         setShowRegistration(false);
         setExistingCustomer(null);
         setEditingAddress(false);
@@ -153,10 +166,11 @@ function AccountModal({ open, onClose }: AccountModalProps) {
              */
     
             if (response.existingCustomer && response.customer) {
+
                 const customer = response.customer;
     
                 login(customer, response.token!);
-    
+            
                 setExistingCustomer(customer);
                 setName(customer.name);
                 setEmail(customer.email ?? "");
@@ -167,17 +181,18 @@ function AccountModal({ open, onClose }: AccountModalProps) {
                 setCity(customer.city ?? "");
                 setState(customer.state ?? "");
                 setPincode(customer.pincode ?? "");
+            
                 setLatitude(customer.latitude ?? null);
                 setLongitude(customer.longitude ?? null);
-    
+            
                 setLocationCaptured(
                     customer.latitude != null &&
                     customer.longitude != null
                 );
-    
+            
                 setEditingAddress(false);
                 setShowRegistration(true);
-    
+            
                 return;
             }
     
@@ -261,6 +276,7 @@ function AccountModal({ open, onClose }: AccountModalProps) {
                 }
             );
         };
+
     
         const handleRegister = async () => {
             setNameError("");

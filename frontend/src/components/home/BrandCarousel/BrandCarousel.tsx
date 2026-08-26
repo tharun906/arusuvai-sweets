@@ -2,70 +2,139 @@ import { useEffect, useState } from "react";
 
 import styles from "./BrandCarousel.module.css";
 
-import sweetboxImage from "../../../assets/brand/event-catering-services-916.jpg";
+import api from "../../../services/api";
 
-const slides = [
-    {
-        image: sweetboxImage,
-        title: "Traditional Sweet Making",
-        description:
-            "Authentic sweets prepared with traditional recipes and care.",
-    },
-    {
-        image: sweetboxImage,
-        title: "Made With Care",
-        description:
-            "Every sweet is carefully prepared using quality ingredients.",
-    },
-    {
-        image: sweetboxImage,
-        title: "Made For Every Occasion",
-        description:
-            "From everyday treats to celebrations and special events.",
-    },
-];
+interface S3ImageResponse {
+    /*
+     * S3 object key.
+     *
+     * Example:
+     * carousel/abc123-image.jpg
+     */
+    key: string;
+
+    /*
+     * Public S3 URL used by the browser
+     * to display the image.
+     */
+    url: string;
+}
 
 function BrandCarousel() {
 
-    const [currentSlide, setCurrentSlide] = useState(0);
+    const [images, setImages] =
+        useState<S3ImageResponse[]>([]);
 
+    const [currentSlide, setCurrentSlide] =
+        useState(0);
+
+    const [loading, setLoading] =
+        useState(true);
+
+
+    /*
+     * Load carousel images from S3
+     * through our Spring Boot API.
+     */
     useEffect(() => {
 
-        const interval = setInterval(() => {
+        const loadImages = async () => {
 
-            setCurrentSlide((current) =>
-                current === slides.length - 1
-                    ? 0
-                    : current + 1
-            );
+            try {
 
-        }, 3000);
+                const response =
+                    await api.get<S3ImageResponse[]>(
+                        "/api/images/carousel"
+                    );
 
-        return () => clearInterval(interval);
+                setImages(response.data);
+
+            } catch (error) {
+
+                console.error(
+                    "Failed to load carousel images:",
+                    error
+                );
+
+            } finally {
+
+                setLoading(false);
+            }
+        };
+
+
+        loadImages();
 
     }, []);
 
+
+    /*
+     * Automatically move to the next slide.
+     */
+    useEffect(() => {
+
+        if (images.length <= 1) {
+            return;
+        }
+
+        const interval =
+            setInterval(() => {
+
+                setCurrentSlide(current =>
+                    current === images.length - 1
+                        ? 0
+                        : current + 1
+                );
+
+            }, 3000);
+
+
+        return () =>
+            clearInterval(interval);
+
+    }, [images.length]);
+
+
+    /*
+     * If S3 images are still loading.
+     */
+    if (loading) {
+        return null;
+    }
+
+
+    /*
+     * If there are no carousel images
+     * in the S3 carousel/ folder.
+     */
+    if (images.length === 0) {
+        return null;
+    }
+
+
     const goToPrevious = () => {
 
-        setCurrentSlide((current) =>
+        setCurrentSlide(current =>
             current === 0
-                ? slides.length - 1
+                ? images.length - 1
                 : current - 1
         );
-
     };
+
 
     const goToNext = () => {
 
-        setCurrentSlide((current) =>
-            current === slides.length - 1
+        setCurrentSlide(current =>
+            current === images.length - 1
                 ? 0
                 : current + 1
         );
-
     };
 
-    const slide = slides[currentSlide];
+
+    const slide =
+        images[currentSlide];
+
 
     return (
 
@@ -74,22 +143,11 @@ function BrandCarousel() {
             <div className={styles.carousel}>
 
                 <img
-                    src={slide.image}
-                    alt={slide.title}
+                    src={slide.url}
+                    alt="Arusuvai"
                     className={styles.image}
                 />
 
-                <div className={styles.overlay}>
-
-                    <h2>
-                        {slide.title}
-                    </h2>
-
-                    <p>
-                        {slide.description}
-                    </p>
-
-                </div>
 
                 <button
                     type="button"
@@ -99,6 +157,7 @@ function BrandCarousel() {
                 >
                     ←
                 </button>
+
 
                 <button
                     type="button"
@@ -111,12 +170,13 @@ function BrandCarousel() {
 
             </div>
 
+
             <div className={styles.dots}>
 
-                {slides.map((_, index) => (
+                {images.map((image, index) => (
 
                     <button
-                        key={index}
+                        key={image.key}
                         type="button"
                         className={`${styles.dot} ${
                             currentSlide === index
@@ -126,7 +186,9 @@ function BrandCarousel() {
                         onClick={() =>
                             setCurrentSlide(index)
                         }
-                        aria-label={`Go to slide ${index + 1}`}
+                        aria-label={
+                            `Go to slide ${index + 1}`
+                        }
                     />
 
                 ))}
@@ -134,7 +196,6 @@ function BrandCarousel() {
             </div>
 
         </section>
-
     );
 }
 

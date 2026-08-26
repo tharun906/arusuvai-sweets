@@ -95,7 +95,7 @@ function AdminOrderDetailsModal({
 
                             <tr>
 
-                                <th>Product</th>
+                                <th>Item</th>
 
                                 <th>Weight</th>
 
@@ -122,9 +122,9 @@ function AdminOrderDetailsModal({
                                     >
 
                                         <td>
-
-                                            {item.productName}
-
+                                            {item.itemType === "SWEET_BOX"
+                                                ? item.sweetBoxName
+                                                : item.productName}
                                         </td>
 
                                         <td>

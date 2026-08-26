@@ -54,7 +54,7 @@ function SweetBoxSection() {
 
             <div className={styles.boxContent}>
                 <div className={styles.imageContainer}>
-                    <img src={sweetbox} alt={selectedBox.name} className={styles.image} />
+                    <img  src={selectedBox.imageUrl} alt={selectedBox.name}  className={styles.image} />
                 </div>
 
                 <div className={styles.details}>

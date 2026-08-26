@@ -120,13 +120,14 @@ function ProductCard({
 
     };
 
+
     return (
 
         <Card className={styles.card}>
 
             <ProductImage
 
-                imageUrl={sweetbox}
+                imageUrl={product.imageUrl}
 
                 productName={product.name}
 

@@ -54,6 +54,8 @@ export function CartProvider({
         setCartItems,
     ] = useState<CartItem[]>([]);
 
+    const MAX_SWEET_BOX_QUANTITY = 10;
+
 
     const isSameItem = (
         first: CartItem,
@@ -93,26 +95,27 @@ export function CartProvider({
     };
 
 
-    const increaseQuantity = (
-        item: CartItem
-    ) => {
+    const increaseQuantity = (item: CartItem) => {
 
-        setCartItems(
-            previousItems =>
-                previousItems.map(
-                    cartItem =>
-                        isSameItem(
-                            cartItem,
-                            item
-                        )
-                            ? {
-                                  ...cartItem,
-                                  quantity:
-                                      cartItem.quantity +
-                                      1,
-                              }
-                            : cartItem
-                )
+        setCartItems(previousItems =>
+            previousItems.map(cartItem => {
+    
+                if (!isSameItem(cartItem, item)) {
+                    return cartItem;
+                }
+    
+                if (
+                    cartItem.itemType === "SWEET_BOX" &&
+                    cartItem.quantity >= MAX_SWEET_BOX_QUANTITY
+                ) {
+                    return cartItem;
+                }
+    
+                return {
+                    ...cartItem,
+                    quantity: cartItem.quantity + 1,
+                };
+            })
         );
     };
 
@@ -170,46 +173,42 @@ export function CartProvider({
     };
 
 
-    const addToCart = (
-        item: CartItem
-    ) => {
 
-        setCartItems(
-            previousItems => {
+    const addToCart = (item: CartItem) => {
 
-                const existingItem =
-                    previousItems.find(
-                        cartItem =>
-                            isSameItem(
-                                cartItem,
-                                item
-                            )
-                    );
-
-                if (existingItem) {
-
-                    return previousItems.map(
-                        cartItem =>
-                            isSameItem(
-                                cartItem,
-                                item
-                            )
-                                ? {
-                                      ...cartItem,
-                                      quantity:
-                                          cartItem.quantity +
-                                          item.quantity,
-                                  }
-                                : cartItem
-                    );
+        setCartItems(previousItems => {
+    
+            const existingItem = previousItems.find(
+                cartItem => isSameItem(cartItem, item)
+            );
+    
+            if (existingItem) {
+    
+                const newQuantity =
+                    existingItem.quantity + item.quantity;
+    
+                if (
+                    existingItem.itemType === "SWEET_BOX" &&
+                    newQuantity > MAX_SWEET_BOX_QUANTITY
+                ) {
+                    return previousItems;
                 }
-
-                return [
-                    ...previousItems,
-                    item,
-                ];
+    
+                return previousItems.map(cartItem =>
+                    isSameItem(cartItem, item)
+                        ? {
+                              ...cartItem,
+                              quantity: newQuantity,
+                          }
+                        : cartItem
+                );
             }
-        );
+    
+            return [
+                ...previousItems,
+                item,
+            ];
+        });
     };
 
 

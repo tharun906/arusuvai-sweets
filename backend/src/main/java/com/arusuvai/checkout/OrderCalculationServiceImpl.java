@@ -1,256 +1,93 @@
 package com.arusuvai.checkout;
 
-import com.arusuvai.customer.CustomerEntity;
-import com.arusuvai.customer.CustomerRepository;
-import com.arusuvai.exception.BusinessException;
-import com.arusuvai.exception.ResourceNotFoundException;
-import com.arusuvai.order.OrderItemRequestDTO;
-import com.arusuvai.order.OrderItemType;
-import com.arusuvai.product.ProductEntity;
-import com.arusuvai.product.ProductRepository;
-import com.arusuvai.sweetbox.SweetBoxEntity;
-import com.arusuvai.sweetbox.SweetBoxRepository;
-import com.arusuvai.util.WeightConverter;
+import com.arusuvai.customer.*;
+import com.arusuvai.exception.*;
+import com.arusuvai.order.*;
+import com.arusuvai.product.*;
+import com.arusuvai.sweetbox.*;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-
-//CheckoutRequestDTO
-//        │
-//                ▼
-//OrderCalculationService
-//        │
-//                ▼
-//OrderCalculationResult
-//        │
-//                ├────────────► CheckoutService
-//        │                 │
-//                │                 ▼
-//                │        CheckoutSummaryDTO
-//        │
-//                └────────────► OrderService
-//                          │
-//                                  ▼
-//                          Save Order + Save OrderItems
-
-
-
+import java.util.*;
 
 @Service
-public class OrderCalculationServiceImpl  implements OrderCalculationService{
+public class OrderCalculationServiceImpl implements OrderCalculationService {
     private final CustomerRepository customerRepository;
     private final ProductRepository productRepository;
     private final SweetBoxRepository sweetBoxRepository;
 
-    public OrderCalculationServiceImpl(
-            CustomerRepository customerRepository,
-            ProductRepository productRepository,
-            SweetBoxRepository sweetBoxRepository) {
-
+    public OrderCalculationServiceImpl(CustomerRepository customerRepository, ProductRepository productRepository, SweetBoxRepository sweetBoxRepository) {
         this.customerRepository = customerRepository;
         this.productRepository = productRepository;
         this.sweetBoxRepository = sweetBoxRepository;
     }
 
-//    OrderCalculationService
-//    -> Fetch products.
-//    -> Validate products.
-//    -> Validate quantities.
-//    -> Calculate each item's total.
-//    -> Calculate subtotal.
-//    -> Calculate delivery.
-//    -> Calculate grand total.
-
     @Override
-    public OrderCalculationResult calculateCheckout(CheckoutRequestDTO request){
-
+    public OrderCalculationResult calculateCheckout(CheckoutRequestDTO request) {
         customerRepository.findById(request.getCustomerId())
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
 
-        List<CalculatedOrderItem> calculatedItems = new ArrayList<>();
+        List<CalculatedOrderItem> items = new ArrayList<>();
+        BigDecimal total = BigDecimal.ZERO;
 
-        BigDecimal grandTotal = BigDecimal.ZERO;
-
-        for (OrderItemRequestDTO itemRequest : request.getItems()) {
-
+        for (OrderItemRequestDTO req : request.getItems()) {
             CalculatedOrderItem item = new CalculatedOrderItem();
 
-            // ========================================
-            // INDIVIDUAL PRODUCT
-            // ========================================
-            if (itemRequest.getItemType() == OrderItemType.PRODUCT) {
+            if (req.getItemType() == OrderItemType.PRODUCT) {
+                if (req.getProductId() == null) throw new BusinessException("Product ID is required");
+                if (req.getSweetBoxId() != null) throw new BusinessException("Product order cannot contain a sweet box ID");
+                if (req.getWeight() == null || req.getWeight().isBlank()) throw new BusinessException("Weight is required");
 
-                if (itemRequest.getProductId() == null) {
-                    throw new BusinessException(
-                            "Product ID is required"
-                    );
-                }
+                ProductEntity product = productRepository.findById(req.getProductId())
+                        .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
-                if (itemRequest.getSweetBoxId() != null) {
-                    throw new BusinessException(
-                            "Product order cannot contain a sweet box ID"
-                    );
-                }
-
-                if (itemRequest.getWeight() == null
-                        || itemRequest.getWeight().isBlank()) {
-                    throw new BusinessException(
-                            "Weight is required"
-                    );
-                }
-
-                ProductEntity product =
-                        productRepository.findById(
-                                itemRequest.getProductId()
-                        ).orElseThrow(() ->
-                                new ResourceNotFoundException(
-                                        "Product not found"
-                                ));
-
-                BigDecimal requestedWeight =
-                        WeightConverter.toKg(
-                                itemRequest.getWeight()
-                        );
-
-                BigDecimal requiredStock =
-                        requestedWeight.multiply(
-                                BigDecimal.valueOf(
-                                        itemRequest.getQuantity()
-                                )
-                        );
-
-                if (product.getCurrentStockKg()
-                        .compareTo(requiredStock) < 0) {
-
-                    throw new BusinessException(
-                            product.getName()
-                                    + " does not have enough stock."
-                    );
-                }
-
-                BigDecimal pricePerUnit =
-                        switch (itemRequest.getWeight()) {
-
-                            case "250g" -> product.getPrice250g();
-
-                            case "500g" -> product.getPrice500g();
-
-                            case "1kg" -> product.getPrice1kg();
-
-                            default ->
-                                    throw new BusinessException(
-                                            "Invalid weight"
-                                    );
-                        };
-
-                BigDecimal itemTotal =
-                        pricePerUnit.multiply(
-                                BigDecimal.valueOf(
-                                        itemRequest.getQuantity()
-                                )
-                        );
+                BigDecimal price = switch (req.getWeight()) {
+                    case "250g" -> product.getPrice250g();
+                    case "500g" -> product.getPrice500g();
+                    case "1kg" -> product.getPrice1kg();
+                    default -> throw new BusinessException("Invalid weight");
+                };
 
                 item.setItemType(OrderItemType.PRODUCT);
                 item.setProduct(product);
                 item.setSweetBox(null);
-                item.setWeight(itemRequest.getWeight());
-                item.setQuantity(itemRequest.getQuantity());
-                item.setPricePerUnit(pricePerUnit);
-                item.setItemTotal(itemTotal);
-            }
+                item.setWeight(req.getWeight());
+                item.setQuantity(req.getQuantity());
+                item.setPricePerUnit(price);
+                item.setItemTotal(price.multiply(BigDecimal.valueOf(req.getQuantity())));
 
-            // ========================================
-            // SWEET BOX
-            // ========================================
-            else if (itemRequest.getItemType()
-                    == OrderItemType.SWEET_BOX) {
+            } else if (req.getItemType() == OrderItemType.SWEET_BOX) {
+                if (req.getSweetBoxId() == null) throw new BusinessException("Sweet box ID is required");
+                if (req.getProductId() != null) throw new BusinessException("Sweet box order cannot contain a product ID");
+                if (req.getWeight() != null) throw new BusinessException("Weight should not be provided for a sweet box");
+                if (req.getQuantity() > 10) throw new BusinessException("Maximum 10 boxes can be purchased per order");
 
-                if (itemRequest.getSweetBoxId() == null) {
-                    throw new BusinessException(
-                            "Sweet box ID is required"
-                    );
-                }
+                SweetBoxEntity box = sweetBoxRepository.findById(req.getSweetBoxId())
+                        .orElseThrow(() -> new ResourceNotFoundException("Sweet box not found"));
 
-                if (itemRequest.getProductId() != null) {
-                    throw new BusinessException(
-                            "Sweet box order cannot contain a product ID"
-                    );
-                }
+                if (!box.isActive()) throw new BusinessException("This sweet box is currently unavailable");
 
-                if (itemRequest.getWeight() != null) {
-                    throw new BusinessException(
-                            "Weight should not be provided for a sweet box"
-                    );
-                }
-
-                if (itemRequest.getQuantity() > 10) {
-                    throw new BusinessException(
-                            "Maximum 10 boxes can be purchased per order"
-                    );
-                }
-
-                SweetBoxEntity sweetBox =
-                        sweetBoxRepository.findById(
-                                itemRequest.getSweetBoxId()
-                        ).orElseThrow(() ->
-                                new ResourceNotFoundException(
-                                        "Sweet box not found"
-                                ));
-
-                if (!sweetBox.isActive()) {
-                    throw new BusinessException(
-                            "This sweet box is currently unavailable"
-                    );
-                }
-
-                BigDecimal pricePerUnit =
-                        sweetBox.getPrice();
-
-                BigDecimal itemTotal =
-                        pricePerUnit.multiply(
-                                BigDecimal.valueOf(
-                                        itemRequest.getQuantity()
-                                )
-                        );
-
+                BigDecimal price = box.getPrice();
                 item.setItemType(OrderItemType.SWEET_BOX);
                 item.setProduct(null);
-                item.setSweetBox(sweetBox);
-                item.setWeight(sweetBox.getTotalWeight());
-                item.setQuantity(itemRequest.getQuantity());
-                item.setPricePerUnit(pricePerUnit);
-                item.setItemTotal(itemTotal);
+                item.setSweetBox(box);
+                item.setWeight(box.getTotalWeight());
+                item.setQuantity(req.getQuantity());
+                item.setPricePerUnit(price);
+                item.setItemTotal(price.multiply(BigDecimal.valueOf(req.getQuantity())));
+
+            } else {
+                throw new BusinessException("Invalid order item type");
             }
 
-            // ========================================
-            // INVALID TYPE
-            // ========================================
-            else {
-
-                throw new BusinessException(
-                        "Invalid order item type"
-                );
-            }
-
-            calculatedItems.add(item);
-
-            grandTotal = grandTotal.add(
-                    item.getItemTotal()
-            );
+            items.add(item);
+            total = total.add(item.getItemTotal());
         }
 
         OrderCalculationResult result = new OrderCalculationResult();
-
-        result.setItems(calculatedItems);
-        result.setSubtotal(grandTotal);
+        result.setItems(items);
+        result.setSubtotal(total);
         result.setDeliveryCharge(BigDecimal.ZERO);
-        //LATER - BigDecimal grandTotal = subtotal.add(deliveryCharge);
-        result.setGrandTotal(grandTotal);
-
+        result.setGrandTotal(total);
         return result;
     }
-
-
 }

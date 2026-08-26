@@ -18,4 +18,8 @@ export const ROUTES = {
 
     ADMIN_SWEET_BOXES: "/admin/sweet-boxes",
 
+    ADMIN_CAROUSEL: "/admin/carousel",
+
+    ADMIN_GALLERY: "/admin/gallery",
+
 } as const;
