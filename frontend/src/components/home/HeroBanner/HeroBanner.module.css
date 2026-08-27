@@ -476,7 +476,7 @@
         flex-direction: column;
     }
 .content h2 {
-    font-size: 1.4rem;
+    font-size: 1.6rem !important;
     line-height: 1.35;
     margin: 0 auto;
 }
@@ -507,6 +507,11 @@
         display: none;
     }
 
+    .imageContainer{
+        display: none;
+    }
+
+
 
     .container {
         width: 92%;
@@ -531,7 +536,7 @@
     }
 
     .content p {
-        font-size: .88rem;
+        font-size: .9rem !important;
         line-height: 1.7;
     }
 
@@ -543,7 +548,7 @@
 
     .features {
         gap: 8px;
-        font-size: .72rem;
+        font-size: .9rem !important;
     }
 
     .featureDivider {

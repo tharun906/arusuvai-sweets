@@ -64,7 +64,7 @@ function GalleryManagement() {
 
             <div className="gallery-upload-section">
                 <label className="gallery-upload-label">
-                    {uploading ? "Uploading..." : "Upload Gallery Image"}
+                    {uploading ? "Uploading..." : " + Upload Gallery Image"}
                     <input className="gallery-upload-input" type="file" accept="image/png,image/jpeg,image/webp" onChange={handleUpload} disabled={uploading} />
                 </label>
             </div>

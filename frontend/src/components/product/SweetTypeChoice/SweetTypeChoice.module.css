@@ -185,7 +185,7 @@
 
     .card {
         min-height: 175px;
-        padding: 10px;
+        padding: 3px;
         border-radius: 15px;
     }
 
@@ -220,6 +220,10 @@
     .weights span {
         padding: 4px 7px;
         font-size: 0.68rem;
+        border: 1px solid #8a4302;
+        background: #f7e7c0;
+        border-radius: 10px;
+        font-weight: bolder;
     }
 
     .content button {
@@ -232,11 +236,11 @@
 @media (max-width: 480px) {
 
     .heading {
-        gap: 5px;
+        gap: 10px;
     }
 
     .heading h2 {
-        font-size: 1.1rem;
+        font-size: 1.6rem !important;
     }
 
     .headingImage {
@@ -246,6 +250,7 @@
 
     .card {
         min-height: 165px;
+        padding: 3px;
     }
 
     .boxBadge {

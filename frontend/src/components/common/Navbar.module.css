@@ -531,7 +531,7 @@
 
     .logoSecondary {
 
-        font-size: 1rem;
+        font-size: 1.2rem;
 
     }
 
@@ -647,6 +647,7 @@
         font-weight: 600;
         padding-bottom: 10px;
         border-bottom: 1px solid var(--border-color);
+        text-align: center;
     }
     
     .mobileLogin,
@@ -662,8 +663,6 @@
     
         font-size: 0.8rem;
         font-weight: 500;
-    
-        text-align: left;
         cursor: pointer;
     
         transition: var(--transition);
@@ -684,7 +683,7 @@
     
         width: 130px;
     
-        padding: 8px;
+        padding: 5px;
     
         background: var(--surface-color);
     

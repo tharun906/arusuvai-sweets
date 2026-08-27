@@ -121,3 +121,74 @@
     color: var(--error-color);
     font-size: 0.85rem;
 }
+
+/* ========================================
+   MOBILE - SWEET BOX FORM
+======================================== */
+
+@media (max-width: 768px) {
+
+    .sweet-box-form {
+        gap: var(--space-sm);
+    }
+
+    .sweet-box-form label {
+        font-size: 0.85rem;
+    }
+
+    .sweet-box-form input,
+    .sweet-box-form select {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+
+    .sweet-box-form h3 {
+        font-size: 1rem;
+    }
+
+
+    /* ==============================
+       SWEET ITEMS
+    ============================== */
+
+    .sweet-box-item {
+        grid-template-columns: 1fr auto;
+        gap: 8px;
+        padding: 10px;
+    }
+
+    .sweet-box-item-name {
+        min-width: 0;
+        font-size: 0.9rem;
+    }
+
+    .sweet-box-item input {
+        width: 65px;
+    }
+
+    .sweet-box-remove-btn {
+        grid-column: 1 / -1;
+        width: 50%;
+        padding: 8px;
+    }
+
+
+    /* ==============================
+       ADD SWEET BUTTON
+    ============================== */
+
+    .sweet-box-add-btn {
+        width: 100%;
+        padding: 10px 12px;
+    }
+
+
+    /* ==============================
+       SUBMIT BUTTON
+    ============================== */
+
+    .sweet-box-submit-btn {
+        padding: 11px 14px;
+    }
+
+}

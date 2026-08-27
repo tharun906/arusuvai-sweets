@@ -2,6 +2,11 @@
     width: 100%;
 }
 
+
+/* ==============================
+   HEADER
+============================== */
+
 .carousel-management-header {
     display: flex;
     justify-content: space-between;
@@ -11,12 +16,15 @@
 
 .carousel-management-title {
     margin: 0;
+    color: var(--text-primary);
     font-size: 28px;
+    font-weight: 600;
 }
 
 .carousel-management-description {
     margin: 6px 0 0;
-    color: #777;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
 }
 
 
@@ -32,17 +40,23 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+
     padding: 12px 20px;
-    border-radius: 8px;
+
+    border-radius: var(--radius-md);
+
     cursor: pointer;
-    background: #8b3a3a;
-    color: white;
-    font-weight: 600;
-    transition: 0.2s ease;
+
+    background: var(--gold-color);
+    color: var(--deep-background);
+
+    font-weight: 700;
+
+    transition: var(--transition);
 }
 
 .carousel-upload-label:hover {
-    transform: translateY(-1px);
+    background: var(--gold-hover);
 }
 
 .carousel-upload-input {
@@ -57,9 +71,14 @@
 .carousel-error {
     margin-bottom: 20px;
     padding: 12px 16px;
-    border-radius: 8px;
-    background: #fff0f0;
-    color: #c62828;
+
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+
+    background: var(--error-background);
+    color: var(--error-color);
+
+    font-size: 0.85rem;
 }
 
 
@@ -69,47 +88,97 @@
 
 .carousel-image-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 20px;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: var(--space-lg);
 }
+
+
+/* ==============================
+   IMAGE CARD
+============================== */
 
 .carousel-image-card {
     overflow: hidden;
-    border-radius: 12px;
-    background: white;
-    border: 1px solid #eee;
+
+    background: var(--surface-color);
+
+    border: 1px solid var(--border-soft);
+
+    border-radius: var(--radius-lg);
+
+    box-shadow: var(--shadow-sm);
+
+    transition: var(--transition);
 }
+
+.carousel-image-card:hover {
+    transform: translateY(-3px);
+
+    box-shadow: var(--shadow-md);
+
+    border-color: var(--gold-muted);
+}
+
+
+/* ==============================
+   IMAGE
+============================== */
 
 .carousel-image-wrapper {
     width: 100%;
+
     aspect-ratio: 16 / 9;
+
     overflow: hidden;
+
+    background: var(--deep-background);
 }
 
 .carousel-image {
     width: 100%;
     height: 100%;
+
     object-fit: cover;
+
     display: block;
+
+    transition: transform 0.3s ease;
+}
+
+.carousel-image-card:hover .carousel-image {
+    transform: scale(1.02);
 }
 
 
 /* ==============================
-   DELETE
+   DELETE BUTTON
 ============================== */
 
 .carousel-delete-btn {
     width: 100%;
+
+    padding: 11px 12px;
+
     border: none;
-    padding: 12px;
+
+    border-top: 1px solid var(--border-soft);
+
     cursor: pointer;
-    background: #fff;
-    color: #c62828;
+
+    background: var(--surface-color);
+
+    color: var(--error-color);
+
     font-weight: 600;
+
+    transition: var(--transition);
 }
 
 .carousel-delete-btn:hover {
-    background: #fff0f0;
+    background: var(--error-background);
 }
 
 
@@ -118,9 +187,17 @@
 ============================== */
 
 .carousel-empty {
-    padding: 40px 20px;
+    padding: var(--space-xl);
+
     text-align: center;
-    color: #777;
+
+    background: var(--surface-color);
+
+    border: 1px solid var(--border-soft);
+
+    border-radius: var(--radius-lg);
+
+    color: var(--text-secondary);
 }
 
 
@@ -130,26 +207,102 @@
 
 @media (max-width: 768px) {
 
+    .carousel-management {
+        width: 100%;
+    }
+
+    .carousel-management-header {
+        margin-bottom: 20px;
+    }
+
     .carousel-management-title {
         font-size: 22px;
     }
 
     .carousel-management-description {
-        font-size: 14px;
+        margin-top: 5px;
+
+        font-size: 0.82rem;
+
+        line-height: 1.5;
     }
+
+
+    /* ==============================
+       UPLOAD
+    ============================== */
+
+    .carousel-upload-section {
+        margin-bottom: var(--space-lg);
+    }
+
+    .carousel-upload-label {
+        width: 60%;
+        padding: 11px 16px;
+        font-size: 0.7rem;
+    }
+
+
+    /* ==============================
+       ERROR
+    ============================== */
+
+    .carousel-error {
+        margin-bottom: var(--space-md);
+
+        padding: 10px 12px;
+
+        font-size: 0.8rem;
+    }
+
+
+    /* ==============================
+       IMAGE GRID
+    ============================== */
 
     .carousel-image-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 12px;
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: var(--space-md);
     }
+
+
+    /* ==============================
+       IMAGE CARD
+    ============================== */
 
     .carousel-image-card {
-        border-radius: 10px;
+        border-radius: var(--radius-md);
     }
 
+
+    /* ==============================
+       IMAGE
+    ============================== */
+
+    .carousel-image-wrapper {
+        aspect-ratio: 16 / 10;
+    }
+
+
+    /* ==============================
+       DELETE
+    ============================== */
+
     .carousel-delete-btn {
-        padding: 10px 6px;
-        font-size: 13px;
+        padding: 9px 6px;
+
+        font-size: 0.8rem;
+    }
+
+
+    /* ==============================
+       EMPTY
+    ============================== */
+
+    .carousel-empty {
+        padding: var(--space-lg);
     }
 
 }

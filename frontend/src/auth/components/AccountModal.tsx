@@ -8,6 +8,8 @@ import { PendingAction } from "../../constants/PendingAction";
 import { ROUTES } from "../../constants/routes";
 import { completeCustomerProfile, updateCustomerProfile } from "../../services/customerService";
 import type { LoginResponse } from "../models/LoginResponse";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck, faLocationCrosshairs } from "@fortawesome/free-solid-svg-icons";
 
 interface AccountModalProps {
     open: boolean;
@@ -496,7 +498,7 @@ function AccountModal({ open, onClose }: AccountModalProps) {
                                                 className={styles.secondaryButton}
                                                 onClick={() => setEditingAddress(true)}
                                             >
-                                                ✏️ Change Address
+                                                 Change Address
                                             </button>
                                             {/* =========================
                                                 FINAL SAVE
@@ -589,19 +591,26 @@ function AccountModal({ open, onClose }: AccountModalProps) {
                                                 onClick={handleCurrentLocation}
                                                 disabled={capturingLocation}
                                             >
-                                                {
-                                                    locationCaptured
-                                                        ? "✅ Location Captured"
-                                                        : capturingLocation
-                                                            ? "📍 Capturing Location..."
-                                                            : "📍 Use Current Location"
-                                                }
+                                        <FontAwesomeIcon
+                                                icon={locationCaptured ? faCheck : faLocationCrosshairs}
+                                                style={{ color: "#1e1e1e" }}
+                                            />
+
+                                            {
+                                                locationCaptured
+                                                    ? "Location Captured"
+                                                    : capturingLocation
+                                                        ? "Capturing Location..."
+                                                        : "Use Current Location"
+                                            }
                                             </button>
                                             {locationMessage && (
                                                 <p className={styles.infoText}>{locationMessage}</p>
                                             )}
                                             {locationCaptured && (
-                                                <p className={styles.successText}>✅ Location captured successfully.</p>
+                                                <p className={styles.successText}>
+                                                    ✅ Location captured successfully.
+                                                </p>
                                             )}
                                             {locationError && (
                                                 <p className={styles.errorText}>{locationError}</p>

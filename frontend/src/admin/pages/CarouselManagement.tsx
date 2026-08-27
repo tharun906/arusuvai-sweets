@@ -66,7 +66,7 @@ function CarouselManagement() {
 
             <div className="carousel-upload-section">
                 <label className="carousel-upload-label">
-                    {uploading ? "Uploading..." : "Upload Carousel Image"}
+                    {uploading ? "Uploading..." : "+ Upload Carousel Image"}
                     <input className="carousel-upload-input" type="file" accept="image/png,image/jpeg,image/webp" onChange={handleUpload} disabled={uploading} />
                 </label>
             </div>

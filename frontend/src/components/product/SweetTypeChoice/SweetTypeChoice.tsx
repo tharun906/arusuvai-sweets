@@ -38,7 +38,7 @@ function SweetTypeChoice() {
                 />
 
                 <h2>
-                    How would you like your sweets?
+                Pick Your Sweet
                 </h2>
 
                 <img

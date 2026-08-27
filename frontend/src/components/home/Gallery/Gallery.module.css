@@ -167,12 +167,14 @@
     }
 
     .header h2 {
-        font-size: 1.5rem;
+        font-size: 1.6rem;
     }
 
     .header p {
         font-size: 0.82rem;
         line-height: 1.5;
+        max-width: 80%;
+    margin-left: 30px;
     }
 
     .galleryContainer {

@@ -215,4 +215,8 @@
         font: 0.78rem;
     }
 
+    .admin-products-table button {
+        padding: 7px 11px;
+        font-size: 0.65rem;
+    }
 }

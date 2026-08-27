@@ -7,7 +7,6 @@ import headingLeft from "../../../assets/headingLeft.webp";
 import headingRight from "../../../assets/headingRight.webp";
 import price from "../../../assets/price.webp";
 import weight from "../../../assets/weight.webp";
-import sweetbox from "../../../assets/sweetbox.jpg";
 
 function SweetBoxSection() {
     const { sweetBoxes, loading } = useSweetBox();

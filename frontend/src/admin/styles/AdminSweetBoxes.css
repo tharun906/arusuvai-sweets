@@ -13,6 +13,8 @@
 .admin-sweet-boxes-title {
     margin: 0;
     color: var(--text-primary);
+    font-size: 1.4rem;
+    
 }
 
 .add-sweet-box-btn {
@@ -232,7 +234,8 @@
     }
 
     .add-sweet-box-btn {
-        width: 100%;
+        width: 50%;
+    font-size: 0.65rem;
     }
 
     .sweet-box-grid {
