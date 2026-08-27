@@ -8,7 +8,6 @@ import {
 
 import type {
     CartItem,
-    ProductWeight,
 } from "../types/CartItem";
 
 interface CartContextType {

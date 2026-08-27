@@ -4,7 +4,6 @@ import Price from "../common/Price";
 
 import styles from "./CartItem.module.css";
 import CartQuantitySelector from "./CartQuantitySelector";
-import sweetbox from "../../assets/sweetbox.jpg";
 
 interface CartItemProps {
 
@@ -56,7 +55,7 @@ function CartItem({
 
             <img
 
-                src={sweetbox}
+                src={imageUrl}
 
                 alt={productName}
 

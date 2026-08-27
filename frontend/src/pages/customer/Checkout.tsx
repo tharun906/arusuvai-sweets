@@ -28,10 +28,33 @@ function Checkout() {
     const [placingOrder, setPlacingOrder] = useState(false);
 
     useEffect(() => {
-        if (!customer || !phoneVerified) return;
-        getCheckoutSummary({ customerId: customer.id, items: cartItems });
-        checkDelivery({ latitude: customer.latitude, longitude: customer.longitude });
-    }, [customer, cartItems, phoneVerified]);
+
+        if (!customer || !phoneVerified) {
+            return;
+        }
+    
+        getCheckoutSummary({
+            customerId: customer.id,
+            items: cartItems
+        });
+    
+        if (
+            customer.latitude === null ||
+            customer.longitude === null
+        ) {
+            return;
+        }
+    
+        checkDelivery({
+            latitude: customer.latitude,
+            longitude: customer.longitude
+        });
+    
+    }, [
+        customer,
+        cartItems,
+        phoneVerified
+    ]);
 
     useEffect(() => {
         if (deliveryStatus?.codAvailable) setPaymentMethod("COD");

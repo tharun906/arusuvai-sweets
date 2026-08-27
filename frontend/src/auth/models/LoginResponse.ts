@@ -22,9 +22,9 @@ export interface LoginResponse {
 
     pincode: string;
 
-    latitude: number;
+    latitude: number | null;
 
-    longitude: number;
+    longitude: number | null;
 
     role: "ADMIN" | "CUSTOMER";
 }

@@ -12,7 +12,6 @@ import { useCart } from "../../../../context/CartContext";
 
 import type { Product } from "../../../../types/Product";
 import type { ProductWeight } from "../../../../types/CartItem";
-import  sweetbox  from "../../../../assets/sweetbox.jpg";
 
 interface ProductCardProps {
 

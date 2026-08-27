@@ -20,8 +20,6 @@ function AccountModal({ open, onClose }: AccountModalProps) {
     const {
         customer,
         login,
-        isLoggedIn,
-        isGoogleUser
     } = useAuthContext();
     const [phoneNumber, setPhoneNumber] = useState(
         customer?.phoneNumber ?? ""

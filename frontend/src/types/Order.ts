@@ -1,3 +1,9 @@
+export type PaymentStatus =
+    | "PENDING"
+    | "PAID"
+    | "FAILED"
+    | "REFUNDED";
+
 export interface Order {
 
     orderId: number;
@@ -10,7 +16,7 @@ export interface Order {
 
     orderStatus: string;
 
-    paymentStatus: string;
+    paymentStatus: PaymentStatus;
 
     deliveryType: "LOCAL" | "COURIER";
 
