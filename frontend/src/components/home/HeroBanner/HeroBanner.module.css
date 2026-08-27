@@ -1,9 +1,11 @@
-.hero {
+/* =========================================================
+   HERO
+   ========================================================= */
 
+   .hero {
     min-height: 88vh;
 
     display: flex;
-
     align-items: center;
 
     background: var(--background-color);
@@ -11,8 +13,12 @@
     overflow: hidden;
 
     position: relative;
-
 }
+
+
+/* =========================================================
+   MAIN CONTAINER
+   ========================================================= */
 
 .container {
     width: min(94%, var(--container-width));
@@ -30,41 +36,19 @@
     padding: 55px 0;
 }
 
+
+/* =========================================================
+   CONTENT
+   ========================================================= */
+
 .content {
-
     color: var(--text-primary);
-
 }
 
-/* .primary {
 
-    color: var(--text-primary);
-
-    font-size: 4rem;
-
-    font-weight: 700;
-
-    letter-spacing: 2px;
-
-    font-family: "Playfair Display", serif;
-
-}
-
-.secondary {
-
-    color: var(--gold-color);
-
-    font-size: 4rem;
-
-    margin-left: 12px;
-
-    font-weight: 700;
-
-    letter-spacing: 1px;
-
-    font-family: "Playfair Display", serif;
-
-} */
+/* =========================================================
+   DESKTOP BRAND
+   ========================================================= */
 
 .primary,
 .secondary {
@@ -72,13 +56,13 @@
 
     font-size: 5rem;
 
-    line-height: .95;
+    line-height: 0.95;
 
     font-weight: 700;
 
     letter-spacing: 2px;
 
-    font-family: var(--font-heading);   
+    font-family: var(--font-heading);
 }
 
 .primary {
@@ -93,35 +77,66 @@
     margin-top: 6px;
 }
 
+
+/* =========================================================
+   MAIN HEADING
+   ========================================================= */
+
 .content h2 {
+    margin-top: 30px;
 
-    margin-top: 24px;
+    color: var(--text-primary);
 
-    color: var(--font-body);
+    font-size: 2.25rem;
 
-    font-size: 2.5rem !important;
+    line-height: 1.3;
 
-    line-height: 1.4;
-
-    font-weight: 600;
+    font-weight: 500;
 
     max-width: 600px;
 
+    animation:
+        heroReveal
+        0.7s
+        ease-out
+        0.45s
+        both;
 }
 
-.content p {
+.content h2 span {
+    color: var(--gold-color);
 
-    margin-top: 22px;
+    font-style: italic;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+   ========================================================= */
+
+.content p {
+    margin-top: 20px;
 
     color: var(--text-secondary);
 
-    font-size: 1.25rem !important;
+    font-size: 1.05rem;
 
-    line-height: 1.9;
+    line-height: 1.8;
 
-    max-width: 540px;
+    max-width: 560px;
 
+    animation:
+        heroReveal
+        0.7s
+        ease-out
+        0.6s
+        both;
 }
+
+
+/* =========================================================
+   BUTTON
+   ========================================================= */
 
 .button {
     margin-top: 34px;
@@ -144,97 +159,99 @@
 
     transition: var(--transition);
 
-    box-shadow:0 8px 22px rgba(212, 175, 55, .18);
+    box-shadow:
+        0 8px 22px rgba(212, 175, 55, 0.18);
 
     display: flex;
 
-    justify-content:space-between ;
+    justify-content: space-between;
 
     align-items: center;
 
+    animation:
+        heroReveal
+        0.7s
+        ease-out
+        0.75s
+        both;
+
+    cursor: pointer;
 }
 
 .button:hover {
-
     transform: translateY(-3px);
 
     background: var(--gold-hover);
 
-    box-shadow: 0 12px 28px rgba(212, 175, 55, .25);
-
+    box-shadow:
+        0 12px 28px rgba(212, 175, 55, 0.25);
 }
+
+.buttonText {
+    margin-left: 8px;
+}
+
+.arrow {
+    margin-left: 8px;
+
+    font-size: 1.1rem;
+
+    transition:
+        transform 0.25s ease;
+}
+
+.button:hover .arrow {
+    transform: translateX(4px);
+}
+
+
+/* =========================================================
+   DESKTOP IMAGE
+   ========================================================= */
 
 .imageContainer {
     display: flex;
+
     justify-content: center;
+
     align-items: center;
 
     min-height: 620px;
 
-    animation: sweetBoxReveal 1s ease-out .2s both;
+    animation:
+        sweetBoxReveal
+        1s
+        ease-out
+        0.2s
+        both;
 }
+
 .image {
     height: 620px;
+
     width: auto;
+
     max-width: none;
 
-    filter: drop-shadow(
-        0 28px 45px rgba(0, 0, 0, .38)
-    );
+    filter:
+        drop-shadow(
+            0 28px 45px rgba(0, 0, 0, 0.38)
+        );
 
     transform: rotate(-6deg);
 
     animation:
-        sweetBoxFloat 5s ease-in-out 1s infinite;
+        sweetBoxFloat
+        5s
+        ease-in-out
+        1s
+        infinite;
 }
 
 
-@keyframes sweetBoxFloat {
-
-    0%,
-    100% {
-        transform: rotate(-6deg) translateY(0);
-    }
-
-    50% {
-        transform: rotate(-6deg) translateY(-7px);
-    }
-
-}
-
-@keyframes fadeLeft {
-
-    from {
-
-        opacity: 0;
-
-        transform: translateX(-40px);
-
-    }
-
-    to {
-
-        opacity: 1;
-
-        transform: translateX(0);
-
-    }
-
-}
-
-@keyframes sweetBoxReveal {
-
-    from {
-        opacity: 0;
-        transform: translateX(45px) scale(0.94);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateX(0) scale(1);
-    }
-
-}
+/* =========================================================
+   EYEBROW
+   ========================================================= */
 
 .eyebrow {
     display: flex;
@@ -245,7 +262,7 @@
 
     color: var(--gold-color);
 
-    font-size: .75rem;
+    font-size: 0.75rem;
 
     font-weight: 600;
 
@@ -253,9 +270,18 @@
 
     margin-bottom: 22px;
 
-    animation: heroReveal .6s ease-out .1s both;
+    animation:
+        heroReveal
+        0.6s
+        ease-out
+        0.1s
+        both;
 }
 
+
+/* =========================================================
+   DIVIDER
+   ========================================================= */
 
 .divider {
     display: flex;
@@ -268,83 +294,35 @@
 
     margin-top: 28px;
 
-    animation: heroReveal .6s ease-out .35s both;
+    animation:
+        heroReveal
+        0.6s
+        ease-out
+        0.35s
+        both;
 }
 
 .divider span:first-child,
 .divider span:last-child {
-
     height: 1px;
 
     flex: 1;
 
     background: var(--gold-color);
-
 }
 
 .dividerIcon {
-
     color: var(--gold-color);
 
-    font-size: .9rem;
-
+    font-size: 0.9rem;
 }
 
-.content h2 {
-    margin-top: 30px;
 
-    color: var(--text-primary);
-
-    font-size: 2.25rem;
-
-    line-height: 1.3;
-
-    font-weight: 500;
-
-    max-width: 600px;
-
-    animation: heroReveal .7s ease-out .45s both;
-}
-
-.content h2 span {
-
-    color: var(--gold-color);
-
-    font-style: italic;
-
-}
-
-.content p {
-    margin-top: 20px;
-
-    color: var(--text-secondary);
-
-    font-size: 1.05rem;
-
-    line-height: 1.8;
-
-    max-width: 560px;
-}
-
-.button span {
-
-    margin-left: 8px;
-
-    font-size: 1.1rem;
-
-    transition: transform .25s ease;
-
-}
-
-.button:hover span {
-
-    transform: translateX(4px);
-
-}
-
+/* =========================================================
+   FEATURES
+   ========================================================= */
 
 .features {
-
     display: flex;
 
     align-items: center;
@@ -353,10 +331,15 @@
 
     margin-top: 34px;
 
+    animation:
+        heroReveal
+        0.7s
+        ease-out
+        0.9s
+        both;
 }
 
 .feature {
-
     display: flex;
 
     align-items: center;
@@ -368,32 +351,108 @@
     font-size: 1.05rem;
 
     white-space: nowrap;
-
 }
 
 .featureIcon {
-
     color: var(--gold-color);
 
-    font-size: .9rem;
-
+    font-size: 0.9rem;
 }
 
 .featureDivider {
-
     width: 1px;
 
     height: 28px;
 
     background: rgb(253, 203, 19);
-
 }
 
 
+/* =========================================================
+   MOBILE HERO IMAGE
+   Hidden on desktop
+   ========================================================= */
+
+.mobileHeroImage {
+    display: none;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+
+@keyframes sweetBoxFloat {
+
+    0%,
+    100% {
+        transform:
+            rotate(-6deg)
+            translateY(0);
+    }
+
+    50% {
+        transform:
+            rotate(-6deg)
+            translateY(-7px);
+    }
+}
+
+
+@keyframes sweetBoxReveal {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateX(45px)
+            scale(0.94);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateX(0)
+            scale(1);
+    }
+}
+
+
+@keyframes heroReveal {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
 @media (max-width: 900px) {
 
-    .eyebrow{
+    .eyebrow {
         margin-bottom: 10px;
+
+        justify-content: center;
+
+        font-size: 0.68rem;
+
+        letter-spacing: 3px;
+
+        gap: 10px;
     }
 
     .hero {
@@ -402,21 +461,18 @@
 
     .container {
         grid-template-columns: 1fr;
+
         width: 92%;
+
         gap: 45px;
+
         padding: 55px 0;
+
         text-align: center;
     }
 
     .content {
         width: 100%;
-    }
-
-    .eyebrow {
-        justify-content: center;
-        font-size: .68rem;
-        letter-spacing: 3px;
-        gap: 10px;
     }
 
     .content h1 {
@@ -430,74 +486,208 @@
 
     .divider {
         width: 260px;
+
         margin: 10px auto 0;
     }
 
     .content h2 {
         font-size: 1.7rem;
+
         margin: 25px auto 0;
     }
 
     .content p {
-        font-size: .95rem;
+        font-size: 0.95rem;
+
         max-width: 500px;
+
         margin: 18px auto 0;
     }
 
     .button {
         margin: 28px auto 0;
+
         min-width: 230px;
     }
 
     .features {
         justify-content: center;
+
         flex-wrap: wrap;
+
         gap: 12px;
+
         margin-top: 28px;
     }
 
     .imageContainer {
         min-height: auto;
+
         width: 100%;
     }
 
     .image {
         width: 100%;
+
         height: auto;
+
         max-width: 500px;
     }
 }
 
 
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
 @media (max-width: 480px) {
 
-    .content {
-        display: flex;
-        flex-direction: column;
-    }
-.content h2 {
-    font-size: 1.6rem !important;
-    line-height: 1.35;
-    margin: 0 auto;
-}
+    /* =====================================================
+       HERO HEIGHT
+       ===================================================== */
 
-.divider {
-    order: 2;
-    width: 220px;
-    margin: 12px auto 0;
-}
-    
-    .content p {
-        order: 3;
+    .hero {
+        height: 700px;
+
+        min-height: 700px;
+
+        position: relative;
+
+        overflow: hidden;
+
+        background:
+            var(--background-color);
     }
-    
-    .button {
-        order: 4;
+
+
+    /* =====================================================
+       MOBILE IMAGE
+       ===================================================== */
+
+    .mobileHeroImage {
+        display: block;
+
+        position: absolute;
+
+        inset: 0;
+
+        width: 100%;
+
+        height: 100%;
+
+        z-index: 0;
+
+        overflow: hidden;
     }
-    
-    .features {
-        order: 5;
+
+    .mobileHeroImage img {
+        width: 100%;
+
+        height: 100%;
+
+        display: block;
+
+        object-fit: cover;
+
+        /*
+         * Slightly shift the artwork right.
+         * This gives the text more clean space.
+         */
+        object-position: 57% center;
+
+        animation:
+            mobileHeroImageReveal
+            1.2s
+            ease-out
+            both;
     }
+
+
+    /* =====================================================
+       LEFT DARK GRADIENT
+       ===================================================== */
+
+    .hero::after {
+        content: "";
+
+        position: absolute;
+
+        inset: 0;
+
+        z-index: 0;
+
+        pointer-events: none;
+
+        background:
+            linear-gradient(
+                90deg,
+                rgba(2, 25, 18, 0.88) 0%,
+                rgba(2, 25, 18, 0.68) 28%,
+                rgba(2, 25, 18, 0.35) 52%,
+                rgba(2, 25, 18, 0.08) 78%,
+                rgba(2, 25, 18, 0) 100%
+            );
+    }
+
+
+    /* =====================================================
+       CONTAINER
+       ===================================================== */
+
+    .container {
+        position: relative;
+
+        z-index: 1;
+
+        width: 100%;
+
+        height: 700px;
+
+        min-height: 700px;
+
+        padding:
+            55px
+            24px
+            25px;
+
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        justify-content: flex-start;
+
+        text-align: left;
+
+        gap: 0;
+    }
+
+
+    /* =====================================================
+       CONTENT
+       ===================================================== */
+
+    .content {
+        width: 100%;
+
+        max-width: 285px;
+
+        height: 100%;
+
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        text-align: left;
+    }
+
+
+    /* =====================================================
+       REMOVE OLD BRANDING
+       ===================================================== */
 
     .eyebrow {
         display: none;
@@ -507,101 +697,367 @@
         display: none;
     }
 
-    .imageContainer{
-        display: none;
+
+    /* =====================================================
+       DIVIDER
+       ===================================================== */
+
+    .divider {
+        order: 1;
+
+        width: 200px;
+
+        margin:
+            10px
+            0
+            22px;
+
+        gap: 10px;
+
+        animation:
+            heroReveal
+            0.7s
+            ease-out
+            0.2s
+            both;
+    }
+
+    .divider span:first-child,
+    .divider span:last-child {
+        height: 2px;
+
+        background:
+            var(--gold-color);
+    }
+
+    .dividerIcon {
+        font-size: 0.8rem;
+
+        line-height: 1;
     }
 
 
-
-    .container {
-        width: 92%;
-        padding: 40px 0 50px;
-        gap: 32px;
-    }
-
-    .eyebrow {
-        font-size: .6rem;
-        letter-spacing: 2.5px;
-    }
-
-    .primary,
-    .secondary {
-        font-size: 2.1rem;
-        letter-spacing: 1px;
-    }
+    /* =====================================================
+       MAIN HEADING
+       ===================================================== */
 
     .content h2 {
-        font-size: 1.4rem;
-        line-height: 1.35;
+        order: 2;
+
+        width: 100%;
+
+        max-width: 285px;
+
+        margin: 0;
+
+        color:
+            var(--text-primary);
+
+        font-size: 2.05rem;
+
+        line-height: 1.28;
+
+        font-weight: 500;
+
+        letter-spacing: 0;
+
+        text-align: left;
+
+        text-shadow:
+            0 3px 14px rgba(0, 0, 0, 0.75);
+
+        animation:
+            heroReveal
+            0.75s
+            ease-out
+            0.35s
+            both;
     }
+
+    .content h2 span {
+        display: inline;
+
+        color:
+            var(--gold-color);
+
+        font-style: italic;
+    }
+
+
+    /* =====================================================
+       DESCRIPTION
+       ===================================================== */
 
     .content p {
-        font-size: .9rem !important;
-        line-height: 1.7;
+        order: 3;
+
+        width: 100%;
+
+        max-width: 265px;
+
+        margin:
+            18px
+            0
+            0;
+
+        color:
+            rgba(255, 255, 255, 0.92);
+
+        font-size: 1rem;
+
+        line-height: 1.65;
+
+        text-align: left;
+
+        text-shadow:
+            0 2px 10px rgba(0, 0, 0, 0.85);
+
+        animation:
+            heroReveal
+            0.75s
+            ease-out
+            0.5s
+            both;
     }
+
+
+    /* =====================================================
+       BUTTON
+       ===================================================== */
 
     .button {
-        min-width: 175px;
-        padding: 10px 17px;
-        font-size: .9rem;
+        order: 4;
+
+        margin-top: auto;
+
+        margin-bottom: 0;
+
+        width: 220px;
+
+        min-width: 220px;
+
+        height: 58px;
+
+        padding:
+            0
+            20px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        background:
+            var(--gold-color);
+
+        color:
+            var(--background-color);
+
+        border: none;
+
+        border-radius:
+            var(--radius-pill);
+
+        font-size: 1rem;
+
+        font-weight: 700;
+
+        box-shadow:
+            0 10px 28px
+            rgba(212, 175, 55, 0.32);
+
+        animation:
+            heroReveal
+            0.75s
+            ease-out
+            0.65s
+            both;
+
+        cursor: pointer;
     }
+
+    .buttonText {
+        flex: 1;
+
+        margin-left: 9px;
+
+        text-align: center;
+    }
+
+    .arrow {
+        flex: 0 0 auto;
+
+        margin-left: 8px;
+
+        font-size: 1.2rem;
+
+        transition:
+            transform 0.25s ease;
+    }
+
+    .button:hover {
+        transform:
+            translateY(-3px);
+
+        background:
+            var(--gold-hover);
+    }
+
+    .button:hover .arrow {
+        transform:
+            translateX(5px);
+    }
+
+
+    /* =====================================================
+       FEATURES
+       ===================================================== */
 
     .features {
-        gap: 8px;
-        font-size: .9rem !important;
+        order: 5;
+
+        width: 100%;
+
+        max-width: 285px;
+
+        margin:
+            20px
+            0
+            5px;
+
+        display: flex;
+
+        align-items: stretch;
+
+        justify-content: space-between;
+
+        flex-wrap: nowrap;
+
+        gap: 0;
+
+        animation:
+            heroReveal
+            0.75s
+            ease-out
+            0.8s
+            both;
     }
+
+
+    /* Individual feature */
+
+    .feature {
+        flex: 1;
+
+        min-width: 0;
+
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: center;
+
+        justify-content: flex-start;
+
+        gap: 8px;
+
+        color:
+            rgba(255, 255, 255, 0.92);
+
+        font-size: 0.72rem;
+
+        line-height: 1.3;
+
+        text-align: center;
+
+        white-space: normal;
+
+        text-shadow:
+            0 2px 9px rgba(0, 0, 0, 0.85);
+    }
+
+
+    /* Feature icons */
+
+    .featureIcon {
+        color:
+            var(--gold-color);
+
+        font-size: 1.45rem;
+
+        filter:
+            drop-shadow(
+                0 2px 5px
+                rgba(0, 0, 0, 0.45)
+            );
+    }
+
+
+    /* Feature dividers */
 
     .featureDivider {
-        height: 20px;
+        flex: 0 0 auto;
+
+        width: 1px;
+
+        height: 55px;
+
+        margin:
+            0
+            5px;
+
+        background:
+            var(--gold-color);
+
+        opacity: 0.75;
     }
 
-    .image {
-        width: 115%;
-        max-width: 380px;
+
+    /* =====================================================
+       HIDE DESKTOP SWEET BOX
+       ===================================================== */
+
+    .imageContainer {
+        display: none;
     }
 }
 
 
-/* Hero entrance animation */
+/* =========================================================
+   MOBILE IMAGE ANIMATION
+   ========================================================= */
 
-.eyebrow {
-    animation: heroReveal 0.6s ease-out 0.1s both;
-}
-
-.content h1 {
-    animation: heroReveal 0.7s ease-out 0.2s both;
-}
-
-.divider {
-    animation: heroReveal 0.6s ease-out 0.35s both;
-}
-
-.content h2 {
-    animation: heroReveal 0.7s ease-out 0.45s both;
-}
-
-.content p {
-    animation: heroReveal 0.7s ease-out 0.6s both;
-}
-
-.button {
-    animation: heroReveal 0.7s ease-out 0.75s both;
-}
-
-.features {
-    animation: heroReveal 0.7s ease-out 0.9s both;
-}
-
-@keyframes heroReveal {
+@keyframes mobileHeroImageReveal {
 
     from {
         opacity: 0;
-        transform: translateY(20px);
+
+        transform:
+            scale(1.04);
     }
 
     to {
         opacity: 1;
-        transform: translateY(0);
-    }
 
+        transform:
+            scale(1);
+    }
+}
+
+
+/* =========================================================
+   REDUCE MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .mobileHeroImage img,
+    .content h2,
+    .content p,
+    .button,
+    .features,
+    .divider {
+        animation: none;
+    }
 }
