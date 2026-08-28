@@ -6,7 +6,6 @@ import {
     faBagShopping,
     faLeaf,
     faSpa,
-    faAward
 } from "@fortawesome/free-solid-svg-icons";
 
 function HeroBanner() {
@@ -117,11 +116,7 @@ function HeroBanner() {
 
                         <div className={styles.feature}>
 
-                            <FontAwesomeIcon
-                                icon={faSpa}
-                                className={styles.featureIcon}
-                            />
-
+       
                             <span>
                                 Pure Ghee
                             </span>
@@ -132,11 +127,7 @@ function HeroBanner() {
 
                         <div className={styles.feature}>
 
-                            <FontAwesomeIcon
-                                icon={faAward}
-                                className={styles.featureIcon}
-                            />
-
+                          
                             <span>
                                 Premium
                                 <br />
@@ -149,10 +140,7 @@ function HeroBanner() {
 
                         <div className={styles.feature}>
 
-                            <FontAwesomeIcon
-                                icon={faLeaf}
-                                className={styles.featureIcon}
-                            />
+              
 
                             <span>
                                 Traditional

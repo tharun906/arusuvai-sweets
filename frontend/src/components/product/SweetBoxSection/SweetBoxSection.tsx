@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styles from "./SweetBoxSection.module.css";
 import { useSweetBox } from "../../../hooks/useSweetBox";
+import { useProducts } from "../../../hooks/useProducts";
 import { useCart } from "../../../context/CartContext";
 import QuantitySelector from "../../common/QuantitySelector";
 import headingLeft from "../../../assets/headingLeft.webp";
@@ -9,15 +10,22 @@ import price from "../../../assets/price.webp";
 import weight from "../../../assets/weight.webp";
 
 function SweetBoxSection() {
-    const { sweetBoxes, loading } = useSweetBox();
+    const { sweetBoxes, loading: sweetBoxLoading } = useSweetBox();
+    const { products, loading: productsLoading } = useProducts();
     const { addToCart } = useCart();
     const [selectedBoxId, setSelectedBoxId] = useState<number | null>(null);
     const [quantity, setQuantity] = useState(1);
+    const loading = sweetBoxLoading || productsLoading;
 
-    if (loading) return <div className={styles.loading}>Loading Sweet Boxes...</div>;
+    if (loading) return <div className={styles.loading}>Loading...</div>;
     if (sweetBoxes.length === 0) return null;
 
     const selectedBox = sweetBoxes.find(box => box.id === selectedBoxId) ?? sweetBoxes[0];
+
+    const handleSelectBox = (id: number) => {
+        setSelectedBoxId(id);
+        setQuantity(1);
+    };
 
     const handleAddToCart = () => {
         addToCart({ itemType: "SWEET_BOX", sweetBoxId: selectedBox.id, quantity });
@@ -40,10 +48,7 @@ function SweetBoxSection() {
                         key={box.id}
                         type="button"
                         className={selectedBox.id === box.id ? styles.selected : styles.selector}
-                        onClick={() => {
-                            setSelectedBoxId(box.id);
-                            setQuantity(1);
-                        }}
+                        onClick={() => handleSelectBox(box.id)}
                     >
                         <span>{box.name}</span>
                         <small>{box.totalWeight}</small>
@@ -53,14 +58,19 @@ function SweetBoxSection() {
 
             <div className={styles.boxContent}>
                 <div className={styles.imageContainer}>
-                    <img  src={selectedBox.imageUrl} alt={selectedBox.name}  className={styles.image} />
+                    <img src={selectedBox.imageUrl} alt={selectedBox.name} className={styles.image} />
                 </div>
 
                 <div className={styles.details}>
-                    <h3>{selectedBox.name}</h3>
-                    <p className={styles.description}>
-                        A delightful assortment of our signature sweets.
-                    </p>
+                    <div className={styles.productHeader}>
+                        <div>
+                            <h3>{selectedBox.name}</h3>
+                            <span className={styles.weightText}>{selectedBox.totalWeight}</span>
+                        </div>
+                        <strong className={styles.productPrice}>₹{selectedBox.price}</strong>
+                    </div>
+
+                    <p className={styles.description}>A delightful assortment of our signature sweets.</p>
 
                     <div className={styles.highlights}>
                         <div className={styles.highlight}>
@@ -82,19 +92,38 @@ function SweetBoxSection() {
 
                     <div className={styles.contents}>
                         <h4>What's Inside?</h4>
-                        {selectedBox.items.map(item => (
-                            <div key={item.productId} className={styles.item}>
-                                <span>{item.productName}</span>
-                                <span>{item.quantity} pcs</span>
-                            </div>
-                        ))}
+                        <div className={styles.items}>
+                            {selectedBox.items.map(item => {
+                                const product = products.find(p => p.id === item.productId);
+
+                                return (
+                                    <div key={item.productId} className={styles.item}>
+                                        <div className={styles.itemProduct}>
+                                            <div className={styles.itemImageContainer}>
+                                                {product?.imageUrl ? (
+                                                    <img
+                                                        src={product.imageUrl}
+                                                        alt={item.productName}
+                                                        className={styles.itemImage}
+                                                    />
+                                                ) : (
+                                                    <div className={styles.itemImagePlaceholder}>🍬</div>
+                                                )}
+                                            </div>
+                                            <span>{item.productName}</span>
+                                        </div>
+                                        <span className={styles.itemQuantity}>{item.quantity} pcs</span>
+                                    </div>
+                                );
+                            })}
+                        </div>
                     </div>
 
                     <div className={styles.bottomActions}>
                         <QuantitySelector value={quantity} min={1} max={10} onChange={setQuantity} />
-
                         <button type="button" className={styles.addButton} onClick={handleAddToCart}>
-                            <span>🛒</span> Add to Cart
+                            <span>🛒</span>
+                            Add to Cart
                         </button>
                     </div>
                 </div>

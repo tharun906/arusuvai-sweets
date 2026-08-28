@@ -44,6 +44,7 @@
 
     position: relative;
     z-index: 5;
+    bottom: 20px;
 }
 
 
@@ -378,7 +379,7 @@
         width: 92%;
         min-height: 100%;
 
-        padding: 40px 0 50px;
+        padding: 15px 0 50px;
 
         display: block;
         margin: 0 auto;
@@ -396,7 +397,6 @@
         z-index: 5;
     }
 
-
     /* Hide desktop branding */
 
     .eyebrow,
@@ -410,11 +410,11 @@
     ========================================= */
 
     .content h2 {
-        margin: 0 auto;
+        margin: 15px auto;
 
         width: 100%;
 
-        font-size: 1.6rem !important;
+        font-size: 1.9rem !important;
         line-height: 1.35;
 
         text-align: left;
@@ -430,7 +430,7 @@
 
         width: 220px;
 
-        margin: 12px auto 0;
+        margin: 15px  0;
     }
 
 
@@ -441,14 +441,15 @@
     .content p {
         order: 3;
 
-        width: 100%;
+        width: 50%;
 
-        margin: 18px auto 0;
+        margin: 70px  0;
 
         font-size: 0.9rem !important;
         line-height: 1.7;
 
         text-align: left;
+        color: white;
     }
 
 
@@ -492,5 +493,10 @@
 
     .featureDivider {
         height: 20px;
+    }
+
+    .feature{
+        font-size: 0.85rem;
+        color: white;
     }
 }

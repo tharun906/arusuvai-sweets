@@ -39,7 +39,7 @@
 
     object-fit: contain;
 
-    animation: pulse 1.5s infinite ease-in-out;
+    animation: pulse 2s infinite ease-in-out;
 }
 
 .loading-content h2 {
@@ -67,30 +67,28 @@
 }
 
 @keyframes pulse {
+
     0% {
         transform: scale(1);
-
         opacity: 1;
     }
 
     50% {
         transform: scale(1.08);
-
         opacity: .72;
     }
 
     100% {
         transform: scale(1);
-
         opacity: 1;
     }
+
 }
 
 @media (max-width: 768px) {
 
     .loading-logo {
         width: 70px;
-
         height: 70px;
     }
 

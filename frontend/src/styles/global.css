@@ -18,6 +18,16 @@ body{
   -moz-osx-font-smoothing:grayscale
 }
 
+button,
+a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+button:focus,
+a:focus {
+    outline: none;
+}
+
 #root{min-height:100vh}
 
 .container{width:min(92%,var(--container-width));margin:0 auto}

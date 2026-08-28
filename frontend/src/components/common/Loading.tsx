@@ -1,6 +1,6 @@
 import "./Loading.css";
 
-import heartfulnessLogo from "../../assets/heartfulness.png";
+import loading from "../../assets/Loading/Loading.png";
 
 interface LoadingProps {
     text?: string;
@@ -14,15 +14,16 @@ function Loading({
 
     return (
         <div
-            className={`loading-container
-                ${fullScreen ? "fullscreen" : ""}
-            `}
+            className={`loading-container ${
+                fullScreen ? "fullscreen" : ""
+            }`}
         >
 
             <div className="loading-content">
+
                 <img
-                    src={heartfulnessLogo}
-                    alt="Loading"
+                    src={loading}
+                    alt="Arusuvai Sweets"
                     className="loading-logo"
                 />
 
@@ -33,8 +34,9 @@ function Loading({
                 <p>
                     {text}
                 </p>
-                
+
             </div>
+
         </div>
     );
 }

@@ -1,520 +1,879 @@
+/* ========================================
+   SECTION
+======================================== */
+
 .section {
     width: 100%;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 50px 24px 20px;
-
-    color: #fff;
+    padding: 70px 5% 50px;
 }
 
 
-/* =========================
+/* ========================================
    HEADING
-========================= */
+======================================== */
 
 .heading {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 18px;
+    margin-bottom: 34px;
     text-align: center;
-    margin-bottom: 24px;
+}
+
+.heading > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .heading h2 {
     margin: 0;
-
-    font-family: "Playfair Display", serif;
-    font-size: 2.2rem;
+    color: var(--text-primary);
+    font-size: 2.5rem;
     font-weight: 700;
-
-    color: #fff;
 }
 
 .heading p {
-    margin: 5px 0 0;
-
-    font-family: Georgia, serif;
-    font-size: 0.95rem;
-
-    color: rgba(255, 255, 255, 0.75);
+    margin: 8px 0 0;
+    color: var(--text-secondary);
+    font-size: 1.05rem;
 }
 
 .headingImage {
-    width: 32px;
-    height: 32px;
+    width: 55px;
+    height: 55px;
     object-fit: contain;
-    flex-shrink: 0;
 }
 
 
-/* =========================
+/* ========================================
    BOX SELECTORS
-========================= */
+======================================== */
 
 .boxSelectors {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
+    justify-content: center;
+    align-items: center;
     gap: 12px;
-
-    max-width: 1100px;
-    margin: 0 auto 18px;
-
-    border: none;
-    overflow: visible;
+    margin: 0 auto 30px;
 }
 
 .selector,
 .selected {
-    min-height: 70px;
-
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 12px;
-
-    background: rgba(0, 35, 25, 0.55);
-    color: #fff;
-
-    cursor: pointer;
-
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 
-    gap: 4px;
+    min-width: 150px;
+    padding: 11px 20px;
 
-    font-family: Georgia, serif;
+    border-radius: 12px;
+
+    cursor: pointer;
 
     transition:
-        background 0.25s ease,
-        border-color 0.25s ease,
-        transform 0.2s ease,
-        box-shadow 0.25s ease;
+        transform .2s ease,
+        background .2s ease,
+        border-color .2s ease,
+        box-shadow .2s ease;
 }
 
+.selector {
+    border: 1px solid #b5790a;
+    background: transparent;
+    color: var(--text-primary);
+}
 
-.selector:last-child,
-.selected:last-child {
-    border-right: none;
+.selected {
+    border: 1px solid var(--gold-color);
+    background: var(--deep-background);
+    color: var(--gold-color);
+    box-shadow: var(--shadow-sm);
+}
+
+.selector:hover,
+.selected:hover {
+    transform: translateY(-2px);
 }
 
 .selector span,
 .selected span {
-    font-size: 1.05rem;
+    font-size: .95rem;
     font-weight: 700;
 }
 
 .selector small,
 .selected small {
-    font-size: 0.9rem;
+    margin-top: 2px;
+    font-size: .75rem;
+    opacity: .85;
 }
 
-.selector:hover {
-    background: rgba(255, 255, 255, 0.08);
 
-    border-color: var(--gold-hover);
-
-    transform: translateY(-2px);
-}
-
-.selected {
-    color: #faca16;
-
-    border: 2px solid #faca16;
-
-    background: rgba(0, 35, 25, 0.75);
-
-    box-shadow: 0 5px 15px rgba(250, 202, 22, 0.12);
-}
-
-.selected:hover {
-    border-color: var(--gold-hover);
-}
-
-/* =========================
-   MAIN BOX
-========================= */
+/* ========================================
+   MAIN PRODUCT CONTENT
+======================================== */
 
 .boxContent {
-    width: 100%;
-
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
 
-    align-items: center;
+    width: 100%;
+    max-width: 1100px;
 
-    min-height: 430px;
+    margin: 0 auto;
 
-    padding: 25px 35px;
+    overflow: hidden;
 
-    border-radius: 18px;
+    border: 1px solid #AA9642;
+    border-radius: 24px;
 
-    background:
-        linear-gradient(
-            135deg,
-            rgba(25, 67, 53, 0.78),
-            rgba(8, 42, 32, 0.88)
-        );
+    background: var(--surface-color);
 
-    border: 1px solid rgba(255, 255, 255, 0.08);
-
-    box-shadow:
-        0 15px 40px rgba(0, 0, 0, 0.18);
+    box-shadow: var(--shadow-md);
+}
+.boxContent:hover {
+    border: 1px solid var(--gold-color);
 }
 
 
-/* =========================
-   IMAGE
-========================= */
+/* ========================================
+   PRODUCT IMAGE
+======================================== */
 
 .imageContainer {
-    display: flex;
+    min-width: 0;
+    min-height: 520px;
 
-    align-items: center;
-    justify-content: center;
+    overflow: hidden;
 
-    min-height: 350px;
+    background: var(--surface-alt);
 }
 
 .image {
+    display: block;
+
     width: 100%;
-    max-width: 560px;
-    max-height: 380px;
+    height: 100%;
+    min-height: 520px;
 
-    object-fit: contain;
+    object-fit: cover;
 
-    filter:
-        drop-shadow(
-            0 18px 20px rgba(0, 0, 0, 0.28)
-        );
+    transition: transform .45s ease;
+}
 
-    transition: 0.3s ease;
+.imageContainer:hover .image {
+    transform: scale(1.04);
 }
 
 
-/* =========================
+/* ========================================
    DETAILS
-========================= */
+======================================== */
 
 .details {
-    padding: 15px 20px;
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+
+    padding: 34px 36px;
 }
 
-.details h3 {
-    margin: 0 0 8px;
 
-    font-family: Georgia, serif;
+/* ========================================
+   PRODUCT HEADER
+======================================== */
 
-    font-size: 1.8rem;
-
-    color: #faca16;
+.productHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
 }
+
+.productHeader h3 {
+    margin: 0;
+
+    color: white;
+
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.weightText {
+    display: inline-block;
+
+    margin-top: 7px;
+
+    color: var(--text-secondary);
+    font-size: .9rem;
+}
+
+.productPrice {
+    flex-shrink: 0;
+
+    color: var(--gold-color);
+    font-size: 1.65rem;
+    font-weight: 700;
+}
+
+
+/* ========================================
+   DESCRIPTION
+======================================== */
 
 .description {
-    margin: 0 0 18px;
+    max-width: 500px;
 
-    color: rgba(255, 255, 255, 0.78);
+    margin: 12px 0 24px;
 
-    font-family: Georgia, serif;
-
-    line-height: 1.5;
+    color: var(--text-secondary);
+    font-size: .95rem;
+    line-height: 1.6;
 }
 
 
-/* =========================
-   WEIGHT + PRICE
-========================= */
+/* ========================================
+   HIGHLIGHTS
+======================================== */
 
 .highlights {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
 
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    gap: 12px;
 
-    margin-bottom: 18px;
+    margin-bottom: 26px;
 }
 
 .highlight {
     display: flex;
     align-items: center;
 
-    gap: 12px;
+    gap: 10px;
 
-    padding: 14px 8px;
-}
+    padding: 12px;
 
-.highlight + .highlight {
-    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+
+    background: var(--surface-alt);
 }
 
 .highlightIcon {
-    width: 38px;
-    height: 38px;
+    width: 34px;
+    height: 34px;
+
     object-fit: contain;
+
     flex-shrink: 0;
 }
 
+.highlight div {
+    display: flex;
+    flex-direction: column;
+}
+
 .highlight small {
-    display: block;
+    color: var(--text-primary);
 
-    color: rgb(255, 255, 255);
-
-    font-size: 0.75rem;
+    font-size: .68rem;
 }
 
 .highlight strong {
-    display: block;
-
     margin-top: 2px;
 
-    color: #faca16;
-
-    font-family: Georgia, serif;
-
-    font-size: 1.35rem;
+    color: var(--text-primary);
+    font-size: .9rem;
 }
 
 
-/* =========================
-   CONTENTS
-========================= */
+/* ========================================
+   WHAT'S INSIDE
+======================================== */
+
+.contents {
+    padding-top: 20px;
+
+    border-top: 1px solid var(--border-soft);
+}
 
 .contents h4 {
-    margin: 0 0 8px;
+    margin: 0 0 12px;
 
-    color: #fff;
+    color: var(--text-primary);
 
-    font-family: Georgia, serif;
+    font-size: 1.15rem;
+}
 
-    font-size: 1.05rem;
+
+/* ========================================
+   ITEMS
+======================================== */
+
+.items {
+    display: flex;
+    flex-direction: column;
 }
 
 .item {
     display: flex;
+    align-items: center;
     justify-content: space-between;
 
-    padding: 7px 0;
+    gap: 12px;
 
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 9px 0;
 
-    color: rgba(255, 255, 255, 0.9);
-
-    font-size: 0.9rem;
+    border-bottom: 1px solid var(--border-soft);
 }
 
-.item span:last-child {
-    color: #fff;
+.item:last-child {
+    border-bottom: none;
+}
+
+.itemProduct {
+    display: flex;
+    align-items: center;
+
+    min-width: 0;
+
+    gap: 10px;
+}
+
+.itemProduct > span {
+    overflow: hidden;
+
+    color: var(--text-secondary);
+    font-size: .88rem;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* ========================================
+   SWEET IMAGE
+======================================== */
+
+.itemImageContainer {
+    width: 48px;
+    height: 48px;
+
+    flex-shrink: 0;
+
+    overflow: hidden;
+
+    border: 1px solid var(--border-soft);
+    border-radius: 10px;
+
+    background: var(--surface-alt);
+}
+
+.itemImage {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    transition: transform .25s ease;
+}
+
+.itemImageContainer:hover .itemImage {
+    transform: scale(1.08);
+}
+
+.itemImagePlaceholder {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
+
+    font-size: 1.2rem;
+}
+
+
+/* ========================================
+   ITEM QUANTITY
+======================================== */
+
+.itemQuantity {
+    flex-shrink: 0;
+
+    color: var(--text-primary);
+
+    font-size: .8rem;
     font-weight: 600;
 }
 
-.more {
-    margin: 8px 0 0;
 
-    color: rgba(255, 255, 255, 0.7);
-
-    font-size: 0.85rem;
-}
-
-
-/* =========================
-   BOTTOM ACTIONS
-========================= */
+/* ========================================
+   PURCHASE ACTIONS
+======================================== */
 
 .bottomActions {
     display: flex;
     align-items: center;
 
-    gap: 20px;
+    gap: 12px;
 
-    margin-top: 22px;
+    margin-top: auto;
+    padding-top: 24px;
 }
 
 
-
-
-/* =========================
+/* ========================================
    ADD TO CART
-========================= */
+======================================== */
 
 .addButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     flex: 1;
 
-    height: 50px;
+    min-height: 46px;
+
+    gap: 8px;
+
+    padding: 11px 18px;
 
     border: none;
+    border-radius: 12px;
 
-    border-radius: 10px;
+    background: #FDCB13;
+    color: #062018;
 
-    background: #faca16;
-
-    color: #073426;
-
-    font-family: Georgia, serif;
-
-    font-size: 1.05rem;
+    font-size: .95rem;
     font-weight: 700;
 
     cursor: pointer;
 
-    transition: 0.25s ease;
+    transition:
+        transform .2s ease,
+        background .2s ease,
+        box-shadow .2s ease;
+}
+
+.addButton span {
+    font-size: 1rem;
 }
 
 .addButton:hover {
+    background: var(--secondary-color);
+
     transform: translateY(-2px);
 
-    background: #ffd83d;
-
-    box-shadow:
-        0 8px 20px rgba(250, 202, 22, 0.22);
+    box-shadow: var(--shadow-sm);
 }
 
 
-/* =========================
+/* ========================================
    LOADING
-========================= */
+======================================== */
 
 .loading {
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    padding: 50px 20px;
+    min-height: 300px;
 
-    color: #fff;
+    color: var(--text-secondary);
 }
 
 
-/* =========================
+/* ========================================
    TABLET
-========================= */
+======================================== */
 
 @media (max-width: 900px) {
 
+    .section {
+        padding: 55px 24px 35px;
+    }
+
     .boxContent {
         grid-template-columns: 1fr;
-
-        padding: 25px;
     }
 
     .imageContainer {
-        min-height: 280px;
+        min-height: 380px;
     }
 
     .image {
-        max-height: 300px;
+        min-height: 380px;
     }
 
     .details {
-        padding: 10px;
+        padding: 28px;
     }
+
 }
 
 
-/* =========================
+/* ========================================
    MOBILE
-========================= */
+======================================== */
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
 
     .section {
-        padding: 35px 12px 15px;
+        padding: 30px 12px 25px;
     }
 
-    .heading {
-        gap: 10px;
 
+    /* Heading */
+
+    .heading {
+        gap: 7px;
         margin-bottom: 18px;
     }
 
     .heading h2 {
-        font-size: 1.6rem !important;
+        font-size: 1.55rem;
+        white-space: nowrap;
     }
 
     .heading p {
-        font-size: 0.8rem;
+        margin-top: 5px;
+        font-size: .72rem;
+        line-height: 1.35;
+        white-space: nowrap;
     }
 
     .headingImage {
         width: 24px;
         height: 24px;
     }
-    
-    .highlightIcon {
-        width: 30px;
-        height: 30px;
-    }
 
+
+    /* Box selectors */
 
     .boxSelectors {
-        gap: 8px;
-        margin-bottom: 14px;
+        gap: 7px;
+        margin-bottom: 18px;
     }
-    
+
     .selector,
     .selected {
-        min-height: 60px;
+        min-width: 0;
+
+        flex: 1;
+
+        padding: 9px 8px;
+
         border-radius: 10px;
     }
 
     .selector span,
     .selected span {
-        font-size: 0.78rem;
+        font-size: .75rem;
     }
 
     .selector small,
     .selected small {
-        font-size: 0.7rem;
+        font-size: .62rem;
     }
+
+
+    /* Main card */
 
     .boxContent {
-        padding: 18px 14px;
+        display: flex;
+        flex-direction: column;
 
         border-radius: 16px;
-
-        min-height: auto;
     }
+
+
+    /* Product image */
+
+    .imageContainer {
+        width: 100%;
+        min-height: 250px;
+
+        border-radius: 15px 15px 0 0;
+    }
+
+    .image {
+        width: 100%;
+        min-height: 250px;
+        height: 250px;
+    }
+
+
+    /* Details */
+
+    .details {
+        padding: 18px 16px 17px;
+    }
+
+
+    /* Product header */
+
+    .productHeader {
+        gap: 10px;
+    }
+
+    .productHeader h3 {
+        font-size: 1.25rem;
+    }
+
+    .weightText {
+        margin-top: 4px;
+        font-size: .72rem;
+    }
+
+    .productPrice {
+        font-size: 1.2rem;
+    }
+
+
+    /* Description */
+
+    .description {
+        margin: 7px 0 15px;
+
+        font-size: .72rem;
+        line-height: 1.45;
+    }
+
+
+    /* Highlights */
+
+    .highlights {
+        gap: 7px;
+        margin-bottom: 17px;
+    }
+
+    .highlight {
+        gap: 7px;
+        padding: 8px;
+        border-radius: 9px;
+    }
+
+    .highlightIcon {
+        width: 27px;
+        height: 27px;
+    }
+
+    .highlight small {
+        font-size: .55rem;
+    }
+
+    .highlight strong {
+        font-size: .72rem;
+    }
+
+
+    /* What's inside */
+
+    .contents {
+        padding-top: 14px;
+    }
+
+    .contents h4 {
+        margin-bottom: 8px;
+        font-size: .95rem;
+    }
+
+
+    /* Sweet items */
+
+
+    .item {
+        padding: 7px 0;
+        gap: 8px;
+    }
+
+    .itemProduct {
+        gap: 8px;
+    }
+
+    .itemImageContainer {
+        width: 38px;
+        height: 38px;
+
+        border-radius: 8px;
+    }
+
+    .itemProduct > span {
+        font-size: .7rem;
+    }
+
+    .itemQuantity {
+        font-size: .65rem;
+    }
+
+
+    /* Purchase */
+
+    .bottomActions {
+        gap: 8px;
+        padding-top: 17px;
+    }
+
+    .addButton {
+        min-height: 40px;
+
+        padding: 8px 10px;
+
+        border-radius: 9px;
+
+        font-size: .72rem;
+    }
+
+    .addButton span {
+        font-size: .8rem;
+    }
+
+}
+
+
+/* ========================================
+   SMALL MOBILE
+======================================== */
+
+@media (max-width: 480px) {
+
+    .section {
+        padding: 26px 10px 20px;
+    }
+
+    .heading {
+        gap: 5px;
+        margin-bottom: 15px;
+    }
+
+    .heading h2 {
+        font-size: 1.35rem;
+    }
+
+    .heading p {
+        font-size: .64rem;
+    }
+
+    .headingImage {
+        width: 20px;
+        height: 20px;
+    }
+
+
+    .boxSelectors {
+        gap: 6px;
+        margin-bottom: 15px;
+    }
+
+    .selector,
+    .selected {
+        padding: 8px 5px;
+        border-radius: 9px;
+    }
+
+    .selector span,
+    .selected span {
+        font-size: .68rem;
+    }
+
+    .selector small,
+    .selected small {
+        font-size: .8rem;
+    }
+
+
+    .boxContent {
+        border-radius: 14px;
+    }
+
 
     .imageContainer {
         min-height: 220px;
     }
 
     .image {
-        max-height: 240px;
+        height: 220px;
+        min-height: 220px;
     }
+
 
     .details {
-        padding: 5px 2px;
-    }
-
-    .details h3 {
-        font-size: 1.35rem;
-    }
-
-    .description {
-        font-size: 0.85rem;
-    }
-
-    .highlight {
-        gap: 8px;
-        padding: 10px 4px;
+        padding: 15px 12px 14px;
     }
 
 
-    .highlight strong {
+    .productHeader h3 {
+        font-size: 1.08rem;
+    }
+
+    .weightText {
+        font-size: .85rem;
+    }
+
+    .productPrice {
         font-size: 1.05rem;
     }
 
-    .item {
-        font-size: 0.78rem;
+
+    .description {
+        font-size: .65rem;
     }
+
+
+    .highlight {
+        padding: 7px;
+    }
+
+    .highlightIcon {
+        width: 24px;
+        height: 24px;
+    }
+
+    .highlight small {
+        font-size: .65rem;
+    }
+
+    .highlight strong {
+        font-size: .65rem;
+    }
+
+
+    .contents h4 {
+        font-size: 1rem;
+        color: #fdcb13;
+    }
+
+
+    .itemImageContainer {
+        width: 34px;
+        height: 34px;
+    }
+
+    .itemProduct > span {
+        font-size: .82rem;
+    }
+
+    .itemQuantity {
+        font-size: .82rem;
+    }
+
 
     .bottomActions {
-        gap: 10px;
+        gap: 6px;
     }
-
 
     .addButton {
-        height: 40px;
-
-        font-size: 0.85rem;
+        font-size: .85rem;
     }
+
 }
