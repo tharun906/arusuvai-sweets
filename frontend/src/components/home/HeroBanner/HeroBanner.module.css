@@ -1,68 +1,92 @@
-/* =========================================================
-   HERO
-   ========================================================= */
+.hero {
+    position: relative;
+    width: 100%;
 
-   .hero {
-    min-height: 88vh;
+    /* Let the complete desktop image define the height */
+    aspect-ratio: 16 / 9;
 
+    background-color: var(--background-color);
+
+    background-image: url("../../../assets/herobanner/final_desklayout.png");
+
+    background-size: 100% 100%;
+    background-position: center top;
+    background-repeat: no-repeat;
+
+    overflow: hidden;
+}
+
+/* =========================================
+   DESKTOP CONTAINER
+========================================= */
+
+.container {
+    position: relative;
+    z-index: 2;
+
+    width: min(92%, var(--container-width));
+    min-height: 100%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+}
+
+
+/* =========================================
+   LEFT CONTENT
+========================================= */
+
+.content {
+    width: 45%;
+    max-width: 620px;
+
+    color: var(--text-primary);
+
+    position: relative;
+    z-index: 5;
+}
+
+
+/* =========================================
+   EYEBROW
+========================================= */
+
+.eyebrow {
     display: flex;
     align-items: center;
 
-    background: var(--background-color);
+    gap: 14px;
 
-    overflow: hidden;
+    margin-bottom: 24px;
 
-    position: relative;
+    color: var(--gold-color);
+
+    font-size: 0.78rem;
+    font-weight: 700;
+
+    letter-spacing: 4px;
+
+    animation: heroReveal 0.6s ease-out 0.1s both;
 }
 
 
-/* =========================================================
-   MAIN CONTAINER
-   ========================================================= */
-
-.container {
-    width: min(94%, var(--container-width));
-
-    margin: auto;
-
-    display: grid;
-
-    grid-template-columns: 0.9fr 1.1fr;
-
-    gap: 35px;
-
-    align-items: center;
-
-    padding: 55px 0;
-}
-
-
-/* =========================================================
-   CONTENT
-   ========================================================= */
-
-.content {
-    color: var(--text-primary);
-}
-
-
-/* =========================================================
-   DESKTOP BRAND
-   ========================================================= */
+/* =========================================
+   MAIN TITLE
+========================================= */
 
 .primary,
 .secondary {
     display: block;
 
-    font-size: 5rem;
+    font-family: var(--font-heading);
+
+    font-size: clamp(4rem, 5.5vw, 6rem);
 
     line-height: 0.95;
 
     font-weight: 700;
 
     letter-spacing: 2px;
-
-    font-family: var(--font-heading);
 }
 
 .primary {
@@ -72,35 +96,26 @@
 .secondary {
     color: var(--gold-color);
 
-    margin-left: 0;
-
-    margin-top: 6px;
+    margin-top: 8px;
 }
 
 
-/* =========================================================
-   MAIN HEADING
-   ========================================================= */
+/* =========================================
+   SUB HEADING
+========================================= */
 
 .content h2 {
     margin-top: 30px;
 
     color: var(--text-primary);
 
-    font-size: 2.25rem;
+    font-size: clamp(1.8rem, 2.3vw, 2.5rem);
 
     line-height: 1.3;
 
     font-weight: 500;
 
-    max-width: 600px;
-
-    animation:
-        heroReveal
-        0.7s
-        ease-out
-        0.45s
-        both;
+    animation: heroReveal 0.7s ease-out 0.35s both;
 }
 
 .content h2 span {
@@ -110,196 +125,21 @@
 }
 
 
-/* =========================================================
-   DESCRIPTION
-   ========================================================= */
-
-.content p {
-    margin-top: 20px;
-
-    color: var(--text-secondary);
-
-    font-size: 1.05rem;
-
-    line-height: 1.8;
-
-    max-width: 560px;
-
-    animation:
-        heroReveal
-        0.7s
-        ease-out
-        0.6s
-        both;
-}
-
-
-/* =========================================================
-   BUTTON
-   ========================================================= */
-
-.button {
-    margin-top: 34px;
-
-    min-width: 255px;
-
-    padding: 17px 38px;
-
-    background: var(--gold-color);
-
-    color: var(--background-color);
-
-    font-size: 1rem;
-
-    font-weight: 700;
-
-    border: none;
-
-    border-radius: var(--radius-pill);
-
-    transition: var(--transition);
-
-    box-shadow:
-        0 8px 22px rgba(212, 175, 55, 0.18);
-
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    animation:
-        heroReveal
-        0.7s
-        ease-out
-        0.75s
-        both;
-
-    cursor: pointer;
-}
-
-.button:hover {
-    transform: translateY(-3px);
-
-    background: var(--gold-hover);
-
-    box-shadow:
-        0 12px 28px rgba(212, 175, 55, 0.25);
-}
-
-.buttonText {
-    margin-left: 8px;
-}
-
-.arrow {
-    margin-left: 8px;
-
-    font-size: 1.1rem;
-
-    transition:
-        transform 0.25s ease;
-}
-
-.button:hover .arrow {
-    transform: translateX(4px);
-}
-
-
-/* =========================================================
-   DESKTOP IMAGE
-   ========================================================= */
-
-.imageContainer {
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    min-height: 620px;
-
-    animation:
-        sweetBoxReveal
-        1s
-        ease-out
-        0.2s
-        both;
-}
-
-.image {
-    height: 620px;
-
-    width: auto;
-
-    max-width: none;
-
-    filter:
-        drop-shadow(
-            0 28px 45px rgba(0, 0, 0, 0.38)
-        );
-
-    transform: rotate(-6deg);
-
-    animation:
-        sweetBoxFloat
-        5s
-        ease-in-out
-        1s
-        infinite;
-}
-
-
-/* =========================================================
-   EYEBROW
-   ========================================================= */
-
-.eyebrow {
-    display: flex;
-
-    align-items: center;
-
-    gap: 14px;
-
-    color: var(--gold-color);
-
-    font-size: 0.75rem;
-
-    font-weight: 600;
-
-    letter-spacing: 4px;
-
-    margin-bottom: 22px;
-
-    animation:
-        heroReveal
-        0.6s
-        ease-out
-        0.1s
-        both;
-}
-
-
-/* =========================================================
+/* =========================================
    DIVIDER
-   ========================================================= */
+========================================= */
 
 .divider {
     display: flex;
-
     align-items: center;
 
     gap: 14px;
 
-    width: 390px;
+    width: 300px;
 
-    margin-top: 28px;
+    margin-top: 25px;
 
-    animation:
-        heroReveal
-        0.6s
-        ease-out
-        0.35s
-        both;
+    animation: heroReveal 0.6s ease-out 0.45s both;
 }
 
 .divider span:first-child,
@@ -318,45 +158,113 @@
 }
 
 
-/* =========================================================
-   FEATURES
-   ========================================================= */
+/* =========================================
+   DESCRIPTION
+========================================= */
 
-.features {
-    display: flex;
+.content p {
+    margin-top: 22px;
 
-    align-items: center;
-
-    gap: 20px;
-
-    margin-top: 34px;
-
-    animation:
-        heroReveal
-        0.7s
-        ease-out
-        0.9s
-        both;
-}
-
-.feature {
-    display: flex;
-
-    align-items: center;
-
-    gap: 9px;
+    max-width: 500px;
 
     color: var(--text-secondary);
 
     font-size: 1.05rem;
+
+    line-height: 1.8;
+
+    animation: heroReveal 0.7s ease-out 0.55s both;
+}
+
+
+/* =========================================
+   SHOP BUTTON
+========================================= */
+
+.button {
+    margin-top: 32px;
+
+    min-width: 255px;
+
+    padding: 17px 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border: none;
+
+    border-radius: var(--radius-pill);
+
+    background: var(--gold-color);
+
+    color: var(--background-color);
+
+    font-size: 1rem;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 22px rgba(212, 175, 55, 0.18);
+
+    transition: var(--transition);
+
+    animation: heroReveal 0.7s ease-out 0.7s both;
+}
+
+.button:hover {
+    transform: translateY(-3px);
+
+    background: var(--gold-hover);
+
+    box-shadow:
+        0 12px 28px rgba(212, 175, 55, 0.25);
+}
+
+.buttonText {
+    flex: 1;
+
+    text-align: center;
+}
+
+.arrow {
+    margin-left: 8px;
+
+    font-size: 1.1rem;
+
+    transition: transform 0.25s ease;
+}
+
+.button:hover .arrow {
+    transform: translateX(4px);
+}
+
+
+/* =========================================
+   MOBILE FEATURES
+========================================= */
+
+.features {
+    display: none;
+}
+
+.feature {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    color: var(--text-secondary);
+
+    font-size: 1rem;
 
     white-space: nowrap;
 }
 
 .featureIcon {
     color: var(--gold-color);
-
-    font-size: 0.9rem;
 }
 
 .featureDivider {
@@ -364,215 +272,84 @@
 
     height: 28px;
 
-    background: rgb(253, 203, 19);
+    background: var(--gold-color);
 }
 
 
-/* =========================================================
-   MOBILE HERO IMAGE
-   Hidden on desktop
-   ========================================================= */
+/* =========================================
+   MOBILE BACKGROUND
+========================================= */
 
 .mobileHeroImage {
     display: none;
 }
 
 
-/* =========================================================
+/* =========================================
    ANIMATIONS
-   ========================================================= */
-
-@keyframes sweetBoxFloat {
-
-    0%,
-    100% {
-        transform:
-            rotate(-6deg)
-            translateY(0);
-    }
-
-    50% {
-        transform:
-            rotate(-6deg)
-            translateY(-7px);
-    }
-}
-
-
-@keyframes sweetBoxReveal {
-
-    from {
-        opacity: 0;
-
-        transform:
-            translateX(45px)
-            scale(0.94);
-    }
-
-    to {
-        opacity: 1;
-
-        transform:
-            translateX(0)
-            scale(1);
-    }
-}
-
+========================================= */
 
 @keyframes heroReveal {
 
     from {
         opacity: 0;
-
-        transform:
-            translateY(20px);
+        transform: translateY(20px);
     }
 
     to {
         opacity: 1;
-
-        transform:
-            translateY(0);
+        transform: translateY(0);
     }
+
 }
 
 
-/* =========================================================
+/* =========================================
    TABLET
-   ========================================================= */
+========================================= */
 
-@media (max-width: 900px) {
-
-    .eyebrow {
-        margin-bottom: 10px;
-
-        justify-content: center;
-
-        font-size: 0.68rem;
-
-        letter-spacing: 3px;
-
-        gap: 10px;
-    }
-
-    .hero {
-        min-height: auto;
-    }
-
-    .container {
-        grid-template-columns: 1fr;
-
-        width: 92%;
-
-        gap: 45px;
-
-        padding: 55px 0;
-
-        text-align: center;
-    }
+@media (max-width: 1100px) {
 
     .content {
-        width: 100%;
-    }
-
-    .content h1 {
-        margin-top: 10px;
+        width: 48%;
     }
 
     .primary,
     .secondary {
-        font-size: 3.2rem;
+        font-size: 4.5rem;
     }
 
-    .divider {
-        width: 260px;
-
-        margin: 10px auto 0;
-    }
-
-    .content h2 {
-        font-size: 1.7rem;
-
-        margin: 25px auto 0;
-    }
-
-    .content p {
-        font-size: 0.95rem;
-
-        max-width: 500px;
-
-        margin: 18px auto 0;
-    }
-
-    .button {
-        margin: 28px auto 0;
-
-        min-width: 230px;
-    }
-
-    .features {
-        justify-content: center;
-
-        flex-wrap: wrap;
-
-        gap: 12px;
-
-        margin-top: 28px;
-    }
-
-    .imageContainer {
-        min-height: auto;
-
-        width: 100%;
-    }
-
-    .image {
-        width: 100%;
-
-        height: auto;
-
-        max-width: 500px;
-    }
 }
 
 
-/* =========================================================
+/* =========================================
    MOBILE
-   ========================================================= */
-
+========================================= */
 @media (max-width: 480px) {
 
-    /* =====================================================
-       HERO HEIGHT
-       ===================================================== */
-
     .hero {
-        height: 700px;
-
-        min-height: 700px;
-
         position: relative;
+        min-height: calc(100svh - 95px);
+
+        background-image: none;
+        background-color: var(--background-color);
 
         overflow: hidden;
-
-        background:
-            var(--background-color);
     }
 
 
-    /* =====================================================
-       MOBILE IMAGE
-       ===================================================== */
+    /* =========================================
+       MOBILE HERO IMAGE
+    ========================================= */
 
     .mobileHeroImage {
         display: block;
 
         position: absolute;
-
-        inset: 0;
+        top: 0;
+        left: 0;
 
         width: 100%;
-
         height: 100%;
 
         z-index: 0;
@@ -582,482 +359,138 @@
 
     .mobileHeroImage img {
         width: 100%;
-
-        height: 100%;
-
-        display: block;
-
+        height: calc(100% + 40px);
         object-fit: cover;
-
-        /*
-         * Slightly shift the artwork right.
-         * This gives the text more clean space.
-         */
-        object-position: 57% center;
-
-        animation:
-            mobileHeroImageReveal
-            1.2s
-            ease-out
-            both;
+        object-position: center top;
+        transform: translateY(-64px);
+        display: block;
     }
 
 
-    /* =====================================================
-       LEFT DARK GRADIENT
-       ===================================================== */
-
-    .hero::after {
-        content: "";
-
-        position: absolute;
-
-        inset: 0;
-
-        z-index: 0;
-
-        pointer-events: none;
-
-        background:
-            linear-gradient(
-                90deg,
-                rgba(2, 25, 18, 0.88) 0%,
-                rgba(2, 25, 18, 0.68) 28%,
-                rgba(2, 25, 18, 0.35) 52%,
-                rgba(2, 25, 18, 0.08) 78%,
-                rgba(2, 25, 18, 0) 100%
-            );
-    }
-
-
-    /* =====================================================
-       CONTAINER
-       ===================================================== */
+    /* =========================================
+       MOBILE CONTENT
+    ========================================= */
 
     .container {
         position: relative;
+        z-index: 2;
 
-        z-index: 1;
+        width: 92%;
+        min-height: 100%;
 
-        width: 100%;
+        padding: 40px 0 50px;
 
-        height: 700px;
-
-        min-height: 700px;
-
-        padding:
-            55px
-            24px
-            25px;
-
-        display: flex;
-
-        flex-direction: column;
-
-        align-items: flex-start;
-
-        justify-content: flex-start;
-
-        text-align: left;
-
-        gap: 0;
+        display: block;
+        margin: 0 auto;
     }
 
-
-    /* =====================================================
-       CONTENT
-       ===================================================== */
 
     .content {
         width: 100%;
-
-        max-width: 285px;
-
-        height: 100%;
+        max-width: none;
 
         display: flex;
-
         flex-direction: column;
 
-        align-items: flex-start;
-
-        text-align: left;
+        position: relative;
+        z-index: 5;
     }
 
 
-    /* =====================================================
-       REMOVE OLD BRANDING
-       ===================================================== */
+    /* Hide desktop branding */
 
-    .eyebrow {
-        display: none;
-    }
-
+    .eyebrow,
     .content h1 {
         display: none;
     }
 
 
-    /* =====================================================
-       DIVIDER
-       ===================================================== */
-
-    .divider {
-        order: 1;
-
-        width: 200px;
-
-        margin:
-            10px
-            0
-            22px;
-
-        gap: 10px;
-
-        animation:
-            heroReveal
-            0.7s
-            ease-out
-            0.2s
-            both;
-    }
-
-    .divider span:first-child,
-    .divider span:last-child {
-        height: 2px;
-
-        background:
-            var(--gold-color);
-    }
-
-    .dividerIcon {
-        font-size: 0.8rem;
-
-        line-height: 1;
-    }
-
-
-    /* =====================================================
-       MAIN HEADING
-       ===================================================== */
+    /* =========================================
+       MOBILE TITLE
+    ========================================= */
 
     .content h2 {
-        order: 2;
+        margin: 0 auto;
 
         width: 100%;
 
-        max-width: 285px;
-
-        margin: 0;
-
-        color:
-            var(--text-primary);
-
-        font-size: 2.05rem;
-
-        line-height: 1.28;
-
-        font-weight: 500;
-
-        letter-spacing: 0;
+        font-size: 1.6rem !important;
+        line-height: 1.35;
 
         text-align: left;
-
-        text-shadow:
-            0 3px 14px rgba(0, 0, 0, 0.75);
-
-        animation:
-            heroReveal
-            0.75s
-            ease-out
-            0.35s
-            both;
-    }
-
-    .content h2 span {
-        display: inline;
-
-        color:
-            var(--gold-color);
-
-        font-style: italic;
     }
 
 
-    /* =====================================================
+    /* =========================================
+       DIVIDER
+    ========================================= */
+
+    .divider {
+        order: 2;
+
+        width: 220px;
+
+        margin: 12px auto 0;
+    }
+
+
+    /* =========================================
        DESCRIPTION
-       ===================================================== */
+    ========================================= */
 
     .content p {
         order: 3;
 
         width: 100%;
 
-        max-width: 265px;
+        margin: 18px auto 0;
 
-        margin:
-            18px
-            0
-            0;
-
-        color:
-            rgba(255, 255, 255, 0.92);
-
-        font-size: 1rem;
-
-        line-height: 1.65;
+        font-size: 0.9rem !important;
+        line-height: 1.7;
 
         text-align: left;
-
-        text-shadow:
-            0 2px 10px rgba(0, 0, 0, 0.85);
-
-        animation:
-            heroReveal
-            0.75s
-            ease-out
-            0.5s
-            both;
     }
 
 
-    /* =====================================================
-       BUTTON
-       ===================================================== */
+    /* =========================================
+       SHOP BUTTON
+    ========================================= */
 
     .button {
         order: 4;
 
-        margin-top: auto;
+        min-width: 175px;
 
-        margin-bottom: 0;
+        margin: 28px auto 0;
 
-        width: 220px;
+        padding: 10px 17px;
 
-        min-width: 220px;
-
-        height: 58px;
-
-        padding:
-            0
-            20px;
-
-        display: flex;
-
-        align-items: center;
-
-        justify-content: space-between;
-
-        background:
-            var(--gold-color);
-
-        color:
-            var(--background-color);
-
-        border: none;
-
-        border-radius:
-            var(--radius-pill);
-
-        font-size: 1rem;
-
-        font-weight: 700;
-
-        box-shadow:
-            0 10px 28px
-            rgba(212, 175, 55, 0.32);
-
-        animation:
-            heroReveal
-            0.75s
-            ease-out
-            0.65s
-            both;
-
-        cursor: pointer;
-    }
-
-    .buttonText {
-        flex: 1;
-
-        margin-left: 9px;
-
-        text-align: center;
-    }
-
-    .arrow {
-        flex: 0 0 auto;
-
-        margin-left: 8px;
-
-        font-size: 1.2rem;
-
-        transition:
-            transform 0.25s ease;
-    }
-
-    .button:hover {
-        transform:
-            translateY(-3px);
-
-        background:
-            var(--gold-hover);
-    }
-
-    .button:hover .arrow {
-        transform:
-            translateX(5px);
+        font-size: 0.9rem;
     }
 
 
-    /* =====================================================
-       FEATURES
-       ===================================================== */
+    /* =========================================
+       MOBILE FEATURES
+    ========================================= */
 
     .features {
         order: 5;
 
-        width: 100%;
-
-        max-width: 285px;
-
-        margin:
-            20px
-            0
-            5px;
-
         display: flex;
 
-        align-items: stretch;
-
-        justify-content: space-between;
-
-        flex-wrap: nowrap;
-
-        gap: 0;
-
-        animation:
-            heroReveal
-            0.75s
-            ease-out
-            0.8s
-            both;
-    }
-
-
-    /* Individual feature */
-
-    .feature {
-        flex: 1;
-
-        min-width: 0;
-
-        display: flex;
-
-        flex-direction: column;
-
+        justify-content: center;
         align-items: center;
 
-        justify-content: flex-start;
+        flex-wrap: wrap;
 
         gap: 8px;
 
-        color:
-            rgba(255, 255, 255, 0.92);
+        margin-top: 28px;
 
-        font-size: 0.72rem;
-
-        line-height: 1.3;
-
-        text-align: center;
-
-        white-space: normal;
-
-        text-shadow:
-            0 2px 9px rgba(0, 0, 0, 0.85);
+        font-size: 0.9rem !important;
     }
-
-
-    /* Feature icons */
-
-    .featureIcon {
-        color:
-            var(--gold-color);
-
-        font-size: 1.45rem;
-
-        filter:
-            drop-shadow(
-                0 2px 5px
-                rgba(0, 0, 0, 0.45)
-            );
-    }
-
-
-    /* Feature dividers */
 
     .featureDivider {
-        flex: 0 0 auto;
-
-        width: 1px;
-
-        height: 55px;
-
-        margin:
-            0
-            5px;
-
-        background:
-            var(--gold-color);
-
-        opacity: 0.75;
-    }
-
-
-    /* =====================================================
-       HIDE DESKTOP SWEET BOX
-       ===================================================== */
-
-    .imageContainer {
-        display: none;
-    }
-}
-
-
-/* =========================================================
-   MOBILE IMAGE ANIMATION
-   ========================================================= */
-
-@keyframes mobileHeroImageReveal {
-
-    from {
-        opacity: 0;
-
-        transform:
-            scale(1.04);
-    }
-
-    to {
-        opacity: 1;
-
-        transform:
-            scale(1);
-    }
-}
-
-
-/* =========================================================
-   REDUCE MOTION
-   ========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-
-    .mobileHeroImage img,
-    .content h2,
-    .content p,
-    .button,
-    .features,
-    .divider {
-        animation: none;
+        height: 20px;
     }
 }

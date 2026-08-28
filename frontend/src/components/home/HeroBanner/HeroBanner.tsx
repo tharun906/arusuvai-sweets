@@ -1,35 +1,26 @@
 import styles from "./HeroBanner.module.css";
-import SweetBox from "../../../assets/SweetBox.webp";
-import MobileHero from "../../../assets/gallery/mobile_layout.png";
+import MobileHero from "../../../assets/herobanner/mobile_layout.png";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faBagShopping,
     faLeaf,
     faSpa,
-    faAward,
+    faAward
 } from "@fortawesome/free-solid-svg-icons";
 
 function HeroBanner() {
 
     const scrollToProducts = () => {
-        const section = document.getElementById("products");
-
-        if (section) {
-            section.scrollIntoView({
-                behavior: "smooth",
-            });
-        }
+        document
+            .getElementById("products")
+            ?.scrollIntoView({ behavior: "smooth" });
     };
 
     return (
         <section className={styles.hero}>
 
-            {/* ==================================================
-                MOBILE HERO BACKGROUND
-                Only visible on mobile
-               ================================================== */}
-
+            {/* Mobile hero image */}
             <div className={styles.mobileHeroImage}>
                 <img
                     src={MobileHero}
@@ -37,18 +28,9 @@ function HeroBanner() {
                 />
             </div>
 
-
-            {/* ==================================================
-                HERO CONTENT
-               ================================================== */}
-
             <div className={styles.container}>
 
                 <div className={styles.content}>
-
-                    {/* ==================================================
-                        DESKTOP EYEBROW
-                       ================================================== */}
 
                     <div className={styles.eyebrow}>
 
@@ -69,13 +51,7 @@ function HeroBanner() {
 
                     </div>
 
-
-                    {/* ==================================================
-                        DESKTOP BRAND
-                       ================================================== */}
-
                     <h1>
-
                         <span className={styles.primary}>
                             ARUSUVAI
                         </span>
@@ -83,13 +59,16 @@ function HeroBanner() {
                         <span className={styles.secondary}>
                             SWEETS
                         </span>
-
                     </h1>
 
+                    <h2>
+                        A Sweet Tradition,
+                        <br />
 
-                    {/* ==================================================
-                        DIVIDER
-                       ================================================== */}
+                        <span>
+                            Made With Care.
+                        </span>
+                    </h2>
 
                     <div className={styles.divider}>
 
@@ -109,38 +88,10 @@ function HeroBanner() {
 
                     </div>
 
-
-                    {/* ==================================================
-                        MAIN HEADING
-                       ================================================== */}
-
-                    <h2>
-
-                        A Sweet Tradition,
-                        <br />
-
-                        <span>
-                            Made With Care.
-                        </span>
-
-                    </h2>
-
-
-                    {/* ==================================================
-                        DESCRIPTION
-                       ================================================== */}
-
                     <p>
-
                         Handcrafted with premium ingredients,
                         pure ghee, and timeless recipes.
-
                     </p>
-
-
-                    {/* ==================================================
-                        SHOP BUTTON
-                       ================================================== */}
 
                     <button
                         onClick={scrollToProducts}
@@ -162,14 +113,7 @@ function HeroBanner() {
 
                     </button>
 
-
-                    {/* ==================================================
-                        FEATURES
-                       ================================================== */}
-
                     <div className={styles.features}>
-
-                        {/* PURE GHEE */}
 
                         <div className={styles.feature}>
 
@@ -184,13 +128,7 @@ function HeroBanner() {
 
                         </div>
 
-
-                        {/* DIVIDER */}
-
                         <div className={styles.featureDivider}></div>
-
-
-                        {/* PREMIUM QUALITY */}
 
                         <div className={styles.feature}>
 
@@ -207,13 +145,7 @@ function HeroBanner() {
 
                         </div>
 
-
-                        {/* DIVIDER */}
-
                         <div className={styles.featureDivider}></div>
-
-
-                        {/* TRADITIONAL RECIPES */}
 
                         <div className={styles.feature}>
 
@@ -231,22 +163,6 @@ function HeroBanner() {
                         </div>
 
                     </div>
-
-                </div>
-
-
-                {/* ==================================================
-                    DESKTOP SWEET BOX
-                    Hidden on mobile
-                   ================================================== */}
-
-                <div className={styles.imageContainer}>
-
-                    <img
-                        src={SweetBox}
-                        alt="Arusuvai Sweets"
-                        className={styles.image}
-                    />
 
                 </div>
 
