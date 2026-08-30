@@ -10,6 +10,7 @@ import CartItem from "../../components/cart/CartItem";
 import CartSummary from "../../components/cart/CartSummary";
 import { useAccountModal } from "../../context/AccountModalContext";
 import { PendingAction } from "../../constants/PendingAction";
+import Loading from "../../components/common/Loading";
 
 function Cart() {
     const { cartItems, increaseQuantity, decreaseQuantity, removeFromCart } = useCart();
@@ -19,7 +20,9 @@ function Cart() {
     const { isLoggedIn } = useAuthContext();
     const [showGoogleLogin, setShowGoogleLogin] = useState(false);
 
-    if (productsLoading || sweetBoxesLoading) return <>Loading...</>;
+    if (productsLoading || sweetBoxesLoading) {
+        return <Loading />;
+    }
     if (cartItems.length === 0) return <EmptyCart />;
 
     const grandTotal = cartItems.reduce((total, item) => {

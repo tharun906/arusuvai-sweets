@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { galleryService, type S3GalleryImage } from "../services/galleryService";
 import "../styles/AdminGalleryManagement.css";
+import Loading from "../../components/common/Loading";
 
 function GalleryManagement() {
     const [images, setImages] = useState<S3GalleryImage[]>([]);
@@ -53,7 +54,7 @@ function GalleryManagement() {
         }
     };
 
-    if (loading) return <div className="gallery-management">Loading Gallery Images...</div>;
+    if (loading) return <Loading />;
 
     return (
         <section className="gallery-management">

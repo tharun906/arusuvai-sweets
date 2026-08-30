@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { carouselService, type S3ImageResponse } from "../../services/carouselService";
 import "../styles/AdminCarouselManagement.css";
+import Loading from "../../components/common/Loading";
 
 function CarouselManagement() {
     const [images, setImages] = useState<S3ImageResponse[]>([]);
@@ -53,8 +54,8 @@ function CarouselManagement() {
         }
     };
 
-    if (loading) return <div className="carousel-management">Loading Carousel Images...</div>;
-
+    if (loading) return <Loading />;
+    
     return (
         <section className="carousel-management">
             <div className="carousel-management-header">

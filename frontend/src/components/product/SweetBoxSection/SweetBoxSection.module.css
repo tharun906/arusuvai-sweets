@@ -36,7 +36,7 @@
 
 .heading p {
     margin: 8px 0 0;
-    color: var(--text-secondary);
+    color: var(--primary-color);
     font-size: 1.05rem;
 }
 
@@ -761,7 +761,7 @@
     }
 
     .heading p {
-        font-size: .64rem;
+        font-size: .67rem;
     }
 
     .headingImage {
@@ -783,7 +783,7 @@
 
     .selector span,
     .selected span {
-        font-size: .68rem;
+        font-size: .70rem;
     }
 
     .selector small,
@@ -813,25 +813,25 @@
 
 
     .productHeader h3 {
-        font-size: 1.08rem;
+        font-size: 1.25rem;
     }
 
     .weightText {
-        font-size: .85rem;
+        font-size: 1.05rem;
     }
 
     .productPrice {
-        font-size: 1.05rem;
+        font-size: 1.10rem;
     }
 
 
     .description {
-        font-size: .65rem;
+        font-size: .8rem;
     }
 
 
     .highlight {
-        padding: 7px;
+        padding: 5px;
     }
 
     .highlightIcon {
@@ -860,11 +860,11 @@
     }
 
     .itemProduct > span {
-        font-size: .82rem;
+        font-size: .85rem;
     }
 
     .itemQuantity {
-        font-size: .82rem;
+        font-size: .85rem;
     }
 
 

@@ -9,6 +9,7 @@ import { useUpdateProduct } from "../hooks/useUpdateProduct";
 import { useProductStatus } from "../hooks/useProductStatus";
 import Modal from "../../components/common/Modal";
 import Toast from "../../components/common/Toast";
+import Loading from "../../components/common/Loading";
 
 const EMPTY_PRODUCT: ProductRequest = {
     name: "", description: "", imageUrl: "", price250g: 0, price500g: 0,
@@ -48,7 +49,7 @@ function Products() {
         window.location.reload();
     };
 
-    if (loading) return <h2>Loading Products...</h2>;
+    if (loading) return <Loading />;
     if (error) return <h2>{error}</h2>;
 
     return (

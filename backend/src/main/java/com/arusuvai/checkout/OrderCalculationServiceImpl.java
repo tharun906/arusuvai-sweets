@@ -15,16 +15,27 @@ public class OrderCalculationServiceImpl implements OrderCalculationService {
     private final ProductRepository productRepository;
     private final SweetBoxRepository sweetBoxRepository;
 
-    public OrderCalculationServiceImpl(CustomerRepository customerRepository, ProductRepository productRepository, SweetBoxRepository sweetBoxRepository) {
+    private final DeliveryService deliveryService;
+
+    public OrderCalculationServiceImpl(
+            CustomerRepository customerRepository,
+            ProductRepository productRepository,
+            SweetBoxRepository sweetBoxRepository,
+            DeliveryService deliveryService
+    ) {
         this.customerRepository = customerRepository;
         this.productRepository = productRepository;
         this.sweetBoxRepository = sweetBoxRepository;
+        this.deliveryService = deliveryService;
     }
 
     @Override
     public OrderCalculationResult calculateCheckout(CheckoutRequestDTO request) {
-        customerRepository.findById(request.getCustomerId())
-                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
+        CustomerEntity customer =
+                customerRepository.findById(request.getCustomerId())
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException("Customer not found")
+                        );
 
         List<CalculatedOrderItem> items = new ArrayList<>();
         BigDecimal total = BigDecimal.ZERO;
@@ -83,11 +94,37 @@ public class OrderCalculationServiceImpl implements OrderCalculationService {
             total = total.add(item.getItemTotal());
         }
 
-        OrderCalculationResult result = new OrderCalculationResult();
+        if (customer.getLatitude() == null ||
+                customer.getLongitude() == null) {
+
+            throw new BusinessException(
+                    "Customer delivery location is not available"
+            );
+        }
+
+        double distance =
+                deliveryService.calculateDistance(
+                        customer.getLatitude(),
+                        customer.getLongitude()
+                );
+
+        DeliveryCheckResponse deliveryDetails =
+                deliveryService.getDeliveryDetails(distance);
+
+        BigDecimal deliveryCharge =
+                deliveryDetails.getDeliveryCharge();
+
+        BigDecimal grandTotal =
+                total.add(deliveryCharge);
+
+        OrderCalculationResult result =
+                new OrderCalculationResult();
+
         result.setItems(items);
         result.setSubtotal(total);
-        result.setDeliveryCharge(BigDecimal.ZERO);
-        result.setGrandTotal(total);
+        result.setDeliveryCharge(deliveryCharge);
+        result.setGrandTotal(grandTotal);
+
         return result;
     }
 }

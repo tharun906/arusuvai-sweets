@@ -3,6 +3,7 @@ import { useOrders } from "../../hooks/useOrders";
 import "../../styles/Orders.css";
 import OrderCard from "../../components/orders/OrderCard";
 import { useAuthContext } from "../../auth/context/AuthContext";
+import Loading from "../../components/common/Loading";
 
 function Orders() {
     const { orders, loading, loadOrders } = useOrders();
@@ -12,6 +13,10 @@ function Orders() {
         if (!isLoggedIn) return;
         loadOrders();
     }, [isLoggedIn]);
+
+    if (loading) {
+        return <Loading />;
+    }
 
     /*
      * ========================================
@@ -54,19 +59,6 @@ function Orders() {
                         </p>
                     </div>
                 </div>
-            </div>
-        );
-    }
-
-    /*
-     * ========================================
-     * LOADING
-     * ========================================
-     */
-    if (loading) {
-        return (
-            <div className="orders-loading">
-                <h2>Loading your orders...</h2>
             </div>
         );
     }

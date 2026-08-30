@@ -6,6 +6,7 @@ import { useSweetBoxAdmin } from "../hooks/useSweetBoxAdmin";
 import type { SweetBox } from "../types/SweetBox";
 import type { SweetBoxRequest } from "../types/SweetBoxRequest";
 import "../styles/AdminSweetBoxes.css";
+import Loading from "../../components/common/Loading";
 
 const EMPTY_SWEET_BOX: SweetBoxRequest = {
     name: "",
@@ -99,7 +100,7 @@ function SweetBoxes() {
         }
     };
 
-    if (loading) return <h2 className="sweet-box-loading">Loading Sweet Boxes...</h2>;
+    if (loading) return <Loading />;
     if (error) return <h2 className="sweet-box-error">{error}</h2>;
 
     return (

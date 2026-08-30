@@ -3,37 +3,77 @@
     background: var(--surface-alt);
 }
 
+
+/* ========================================
+   HEADING
+======================================== */
+
 .header {
-    max-width: 700px;
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 18px;
+
     margin: 0 auto 28px;
+
     text-align: center;
 }
 
-.header h2 {
-    margin: 0 0 10px;
+.headingContent {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+}
+
+.headingContent h2 {
+    margin: 0;
 
     color: var(--text-primary);
 
-    font-family: "Playfair Display", serif;
+    font-size: 2.5rem;
 
-    font-size: 2.2rem;
     font-weight: 600;
 }
 
-.header p {
-    margin: 0;
+.headingContent p {
+    margin: 8px 0 0;
 
-    color: var(--text-secondary);
+    color: var(--primary-color);
 
-    font-size: .95rem;
+    font-size: 1.05rem;
+
     line-height: 1.6;
 }
 
+.headingImage {
+    width: 55px;
+
+    height: 55px;
+
+    object-fit: contain;
+}
+
+
+/* ========================================
+   GALLERY CONTAINER
+======================================== */
+
 .galleryContainer {
     width: 100%;
+
     max-width: 1200px;
+
     margin: 0 auto;
 }
+
+
+/* ========================================
+   IMAGE GRID
+======================================== */
 
 .grid {
     width: 100%;
@@ -45,8 +85,14 @@
     gap: 18px;
 }
 
+
+/* ========================================
+   IMAGE
+======================================== */
+
 .imageWrapper {
     width: 100%;
+
     aspect-ratio: 1 / 1;
 
     overflow: hidden;
@@ -60,6 +106,7 @@
 
 .image {
     width: 100%;
+
     height: 100%;
 
     display: block;
@@ -73,10 +120,16 @@
     transform: scale(1.06);
 }
 
+
+/* ========================================
+   NAVIGATION
+======================================== */
+
 .navigation {
     display: flex;
 
     justify-content: center;
+
     align-items: center;
 
     gap: 24px;
@@ -84,12 +137,20 @@
     margin-top: 24px;
 }
 
+
+/* ========================================
+   ARROWS
+======================================== */
+
 .arrow {
     width: 42px;
+
     height: 42px;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
     border: 1px solid var(--border-soft);
@@ -117,14 +178,22 @@
     transform: translateY(-2px);
 }
 
+
+/* ========================================
+   DOTS
+======================================== */
+
 .dots {
     display: flex;
+
     align-items: center;
+
     gap: 8px;
 }
 
 .dot {
     width: 8px;
+
     height: 8px;
 
     padding: 0;
@@ -148,6 +217,11 @@
     background: var(--gold-color);
 }
 
+
+/* ========================================
+   TABLET
+======================================== */
+
 @media (max-width: 900px) {
 
     .grid {
@@ -156,60 +230,169 @@
 
 }
 
+
+/* ========================================
+   MOBILE
+======================================== */
+
 @media (max-width: 768px) {
 
     .section {
         padding: 48px 16px;
     }
 
+
+    /* ------------------------------------
+       Heading
+    ------------------------------------ */
+
     .header {
+        gap: 7px;
+
         margin-bottom: 24px;
     }
 
-    .header h2 {
-        font-size: 1.6rem;
+    .headingContent h2 {
+        font-size: 1.55rem;
+
+        white-space: nowrap;
     }
 
-    .header p {
-        font-size: 0.82rem;
-        line-height: 1.5;
-        max-width: 80%;
-    margin-left: 30px;
+    .headingContent p {
+        margin-top: 5px;
+
+        max-width: none;
+
+        font-size: .72rem;
+
+        line-height: 1.35;
+
+        white-space: nowrap;
     }
+
+    .headingImage {
+        width: 24px;
+
+        height: 24px;
+    }
+
+
+    /* ------------------------------------
+       Gallery Container
+    ------------------------------------ */
 
     .galleryContainer {
         width: 100%;
     }
 
-    /*
-     * 2 images per row.
-     *
-     * Gallery.tsx gives us 4 images
-     * per page.
-     *
-     * Therefore:
-     *
-     * 2 columns × 2 rows = 4 images
-     */
+
+    /* ------------------------------------
+       Gallery Grid
+       
+       4 images per page
+       2 columns × 2 rows
+    ------------------------------------ */
+
     .grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+
         gap: 10px;
     }
 
+
+    /* ------------------------------------
+       Image
+    ------------------------------------ */
+
     .imageWrapper {
         width: 100%;
+
         aspect-ratio: 1 / 1;
     }
 
+
+    /* ------------------------------------
+       Navigation
+    ------------------------------------ */
+
     .navigation {
         margin-top: 20px;
+
         gap: 18px;
     }
 
+
     .arrow {
         width: 38px;
+
         height: 38px;
+
         font-size: 1rem;
+    }
+
+}
+
+
+/* ========================================
+   SMALL MOBILE
+======================================== */
+
+@media (max-width: 480px) {
+
+    .section {
+        padding: 40px 10px;
+    }
+
+
+    .header {
+        gap: 5px;
+
+        margin-bottom: 20px;
+    }
+
+
+    .headingContent h2 {
+        font-size: 1.35rem;
+    }
+
+
+    .headingContent p {
+        width: 280px;
+        max-width: 280px;
+
+        margin: 5px auto 0;
+
+        font-size: .67rem;
+        line-height: 1.35;
+
+        white-space: normal;
+        text-align: center;
+    }
+
+
+    .headingImage {
+        width: 20px;
+
+        height: 20px;
+    }
+
+
+    .grid {
+        gap: 8px;
+    }
+
+
+    .navigation {
+        gap: 14px;
+    }
+
+
+    .arrow {
+        width: 36px;
+
+        height: 36px;
+
+        font-size: .9rem;
     }
 
 }

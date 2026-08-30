@@ -10,7 +10,6 @@ interface DeliveryStatusCardProps {
     message: string;
 
     codAvailable: boolean;
-
 }
 
 function DeliveryStatusCard({

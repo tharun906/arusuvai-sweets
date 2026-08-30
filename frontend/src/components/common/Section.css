@@ -1,0 +1,228 @@
+.section {
+    width: 100%;
+    padding: 70px 5% 40px;
+}
+
+
+/* ========================================
+   HEADING
+======================================== */
+
+.section-heading {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 18px;
+
+    margin-bottom: 34px;
+
+    text-align: center;
+}
+
+
+.section-heading > div {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+}
+
+
+.section-heading h2 {
+
+    margin: 0;
+
+    color: var(--text-primary);
+
+    font-size: 2.5rem;
+
+    font-weight: 700;
+
+}
+
+
+.section-heading p {
+
+    margin: 8px 0 0;
+
+    color: var(--primary-color);
+
+    font-size: 1.05rem;
+
+}
+
+
+.section-heading-image {
+
+    width: 55px;
+
+    height: 55px;
+
+    object-fit: contain;
+
+}
+
+
+/* ========================================
+   TABLET
+======================================== */
+
+@media (max-width: 900px) {
+
+    .section {
+
+        padding: 55px 24px 30px;
+
+    }
+
+
+    .section-heading {
+
+        gap: 12px;
+
+        margin-bottom: 28px;
+
+    }
+
+
+    .section-heading h2 {
+
+        font-size: 2rem;
+
+    }
+
+
+    .section-heading p {
+
+        font-size: .95rem;
+
+    }
+
+
+    .section-heading-image {
+
+        width: 42px;
+
+        height: 42px;
+
+    }
+
+}
+
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 768px) {
+
+    .section {
+
+        padding: 30px 12px 20px;
+
+    }
+
+
+    .section-heading {
+
+        gap: 7px;
+
+        margin-bottom: 18px;
+
+    }
+
+
+    .section-heading h2 {
+
+        font-size: 1.55rem;
+
+        white-space: nowrap;
+
+    }
+
+
+    .section-heading p {
+
+        margin-top: 5px;
+
+        font-size: .72rem;
+
+        line-height: 1.35;
+
+        white-space: nowrap;
+
+    }
+
+
+    .section-heading-image {
+
+        width: 24px;
+
+        height: 24px;
+
+    }
+
+}
+
+
+/* ========================================
+   SMALL MOBILE
+======================================== */
+
+@media (max-width: 480px) {
+
+    .section {
+
+        padding: 26px 10px 18px;
+
+    }
+
+
+    .section-heading {
+
+        gap: 5px;
+
+        margin-bottom: 15px;
+
+    }
+
+
+    .section-heading h2 {
+
+        font-size: 1.35rem;
+
+    }
+
+
+    .section-heading p {
+
+        width: 280px;
+        max-width: 280px;
+
+        margin: 5px auto 0;
+
+        font-size: .67rem;
+        line-height: 1.35;
+
+        white-space: normal;
+        text-align: center;
+
+    }
+
+
+    .section-heading-image {
+
+        width: 20px;
+
+        height: 20px;
+
+    }
+
+}

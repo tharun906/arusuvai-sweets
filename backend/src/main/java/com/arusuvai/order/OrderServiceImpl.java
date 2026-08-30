@@ -69,9 +69,19 @@ public class OrderServiceImpl implements OrderService {
 
         DeliveryCheckResponse delivery = deliveryService.checkDeliveryAvailability(
                 customer.getLatitude(), customer.getLongitude());
-        DeliveryType deliveryType = delivery.isWithinDeliveryArea()
-                ? DeliveryType.LOCAL : DeliveryType.COURIER;
 
+        if (request.getPaymentMethod() == PaymentMethod.COD
+                && !delivery.isCodAvailable()) {
+
+            throw new BusinessException(
+                    "Cash on Delivery is not available for this delivery distance"
+            );
+        }
+
+        DeliveryType deliveryType =
+                delivery.isLocalDelivery()
+                        ? DeliveryType.LOCAL
+                        : DeliveryType.COURIER;
         String address = customer.getDoorNo() + ", " + customer.getAddressLine1() +
                 (customer.getAddressLine2() != null && !customer.getAddressLine2().isBlank()
                         ? ", " + customer.getAddressLine2() : "") +

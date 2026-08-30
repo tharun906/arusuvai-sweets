@@ -14,6 +14,7 @@ import DeliveryStatusCard from "../../components/checkout/DeliveryStatusCard";
 import PaymentMethodCard from "../../components/checkout/PaymentMethodCard";
 import CheckoutSummaryCard from "../../components/checkout/CheckoutSummaryCard";
 import axios from "axios";
+import Loading from "../../components/common/Loading";
 
 function Checkout() {
     const navigate = useNavigate();
@@ -137,28 +138,59 @@ function Checkout() {
     };
 
     if (!customer || !phoneVerified) return <section className={styles.page} />;
-    if (loading) return <>Loading...</>;
+    if (loading) {
+        return <Loading />;
+    }
     if (!summary || !deliveryStatus) return <>No Checkout Data</>;
-
     return (
         <section className={styles.page}>
             <div className={styles.container}>
                 <div className={styles.left}>
                     <CheckoutItems items={summary.items} />
-                    <DeliveryStatusCard distance={deliveryStatus.distance} message={deliveryStatus.message} codAvailable={deliveryStatus.codAvailable} />
-                    <PaymentMethodCard value={paymentMethod} codAvailable={deliveryStatus.codAvailable} onChange={setPaymentMethod} />
+    
+                    <DeliveryStatusCard
+                        distance={deliveryStatus.distance}
+                        message={deliveryStatus.message}
+                        codAvailable={deliveryStatus.codAvailable}
+                    />
+    
+                    <PaymentMethodCard
+                        value={paymentMethod}
+                        codAvailable={deliveryStatus.codAvailable}
+                        onChange={setPaymentMethod}
+                    />
+    
+                    <div className={styles.billInfo}>
+                        🧾 <strong>Bill:</strong> Your bill will be attached to the sweet box at the time of delivery.
+                    </div>
+    
                     {paymentMessage && (
-                        <div role="alert" style={{ marginTop: "16px", padding: "12px 16px", borderRadius: "8px", background: "var(--error-background)", color: "var(--error-color)", fontSize: "0.85rem" }}>
+                        <div
+                            role="alert"
+                            style={{
+                                marginTop: "16px",
+                                padding: "12px 16px",
+                                borderRadius: "8px",
+                                background: "var(--error-background)",
+                                color: "var(--error-color)",
+                                fontSize: "0.85rem"
+                            }}
+                        >
                             {paymentMessage}
                         </div>
                     )}
                 </div>
+    
                 <div className={styles.right}>
                     <CheckoutSummaryCard
                         subtotal={summary.subtotal}
                         deliveryCharge={summary.deliveryCharge}
                         grandTotal={summary.grandTotal}
-                        loading={placingOrder || orderLoading || paymentLoading}
+                        loading={
+                            placingOrder ||
+                            orderLoading ||
+                            paymentLoading
+                        }
                         onPlaceOrder={handlePlaceOrder}
                     />
                 </div>

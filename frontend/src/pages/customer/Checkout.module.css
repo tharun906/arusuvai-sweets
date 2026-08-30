@@ -217,3 +217,23 @@
         width: 100%;
     }
 }
+
+/* ========================================
+   Bill Information
+======================================== */
+
+.billInfo {
+    padding: 12px 16px;
+
+    background: var(--surface-alt);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    line-height: 1.5;
+}
+
+.billInfo strong {
+    color: var(--text-primary);
+}

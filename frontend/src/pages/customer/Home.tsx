@@ -10,6 +10,8 @@ import ProductSection from "../../components/product/ProductSection/ProductSecti
 import { useProducts } from "../../hooks/useProducts";
 import { useCategories } from "../../hooks/useCategories";
 
+import Loading from "../../components/common/Loading";
+
 
 function Home() {
 
@@ -39,9 +41,13 @@ function Home() {
             );
 
 
+    /*
+     * Show the Arusuvai loading screen
+     * while the main Home data is loading.
+     */
     if (categoryLoading || productLoading) {
 
-        return <h2>Loading...</h2>;
+        return <Loading />;
 
     }
 

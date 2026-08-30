@@ -25,22 +25,35 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
                         .requestMatchers("/api/auth/**").permitAll()
+
                         .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/products/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/products/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/api/products/**").hasRole("ADMIN")
+
                         .requestMatchers(HttpMethod.GET, "/api/categories/**").permitAll()
                         .requestMatchers(HttpMethod.PATCH, "/api/categories/**").hasRole("ADMIN")
+
                         .requestMatchers(HttpMethod.GET, "/api/sweet-boxes").permitAll()
+
+                        // Public image viewing
+                        .requestMatchers(HttpMethod.GET, "/api/images/carousel").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/images/gallery").permitAll()
+
                         .requestMatchers(HttpMethod.POST, "/api/customer/profile").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/customer/verify-phone").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/customer/profile").authenticated()
+
                         .requestMatchers(HttpMethod.POST, "/api/checkout/check-delivery").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/checkout/summary").authenticated()
+
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
+
                         .requestMatchers(HttpMethod.GET, "/api/customer").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/customer").hasRole("ADMIN")
+
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

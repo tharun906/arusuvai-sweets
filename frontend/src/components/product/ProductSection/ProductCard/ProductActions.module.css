@@ -40,7 +40,7 @@
 
     .actions button {
         padding: 0px 6px;
-        font-size: .6rem;
+        font-size: .85rem !important;
         border-radius: 40px;
     }
 

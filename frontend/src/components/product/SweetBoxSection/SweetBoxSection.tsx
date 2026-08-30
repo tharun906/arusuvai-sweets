@@ -8,6 +8,7 @@ import headingLeft from "../../../assets/headingLeft.webp";
 import headingRight from "../../../assets/headingRight.webp";
 import price from "../../../assets/price.webp";
 import weight from "../../../assets/weight.webp";
+import Loading from "../../common/Loading";
 
 function SweetBoxSection() {
     const { sweetBoxes, loading: sweetBoxLoading } = useSweetBox();
@@ -17,7 +18,7 @@ function SweetBoxSection() {
     const [quantity, setQuantity] = useState(1);
     const loading = sweetBoxLoading || productsLoading;
 
-    if (loading) return <div className={styles.loading}>Loading...</div>;
+    if (loading) return <Loading />;
     if (sweetBoxes.length === 0) return null;
 
     const selectedBox = sweetBoxes.find(box => box.id === selectedBoxId) ?? sweetBoxes[0];

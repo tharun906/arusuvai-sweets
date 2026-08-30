@@ -1,7 +1,6 @@
-
+import "./Section.css";
 import headingLeft from "../../assets/headingLeft.webp";
 import headingRight from "../../assets/headingRight.webp";
-import styles from "../product/SweetTypeChoice/SweetTypeChoice.module.css";
 
 interface SectionProps {
 
@@ -27,17 +26,42 @@ function Section({
 
         <section className="section">
 
-            <div className={styles.heading}>
-                <img src={headingLeft} alt="" className={styles.headingImage} />
+            <div className="section-heading">
+
+                <img
+                    src={headingLeft}
+                    alt=""
+                    className="section-heading-image"
+                />
+
                 <div>
-                    <h2> {title} </h2>
-                   {subtitle && ( <p>{subtitle}</p> )}
+
+                    <h2>
+                        {title}
+                    </h2>
+
+                    {subtitle && (
+                        <p>
+                            {subtitle}
+                        </p>
+                    )}
+
                 </div>
-                <img src={headingRight} alt="" className={styles.headingImage} />
+
+                <img
+                    src={headingRight}
+                    alt=""
+                    className="section-heading-image"
+                />
+
             </div>
+
             {children}
+
         </section>
+
     );
+
 }
 
 export default Section;
