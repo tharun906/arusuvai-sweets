@@ -126,37 +126,7 @@
 }
 
 
-/* =========================================
-   DIVIDER
-========================================= */
 
-.divider {
-    display: flex;
-    align-items: center;
-
-    gap: 14px;
-
-    width: 300px;
-
-    margin-top: 25px;
-
-    animation: heroReveal 0.6s ease-out 0.45s both;
-}
-
-.divider span:first-child,
-.divider span:last-child {
-    height: 1px;
-
-    flex: 1;
-
-    background: var(--gold-color);
-}
-
-.dividerIcon {
-    color: var(--gold-color);
-
-    font-size: 0.9rem;
-}
 
 
 /* =========================================
@@ -312,12 +282,18 @@
 @media (max-width: 1100px) {
 
     .content {
-        width: 48%;
+        width: 80%;
     }
 
     .primary,
     .secondary {
-        font-size: 4.5rem;
+        font-size: 3rem;
+    }
+
+    .button{
+        margin-top: 0px;
+        min-width: 195px;
+padding: 10px 20px;
     }
 
 }
@@ -410,28 +386,14 @@
     ========================================= */
 
     .content h2 {
-        margin: 15px auto;
-
+        margin: 30px auto;
         width: 100%;
-
-        font-size: 1.9rem !important;
-        line-height: 1.35;
-
+        font-size: 2.5rem !important;
+        line-height: 1.5;
         text-align: left;
     }
 
 
-    /* =========================================
-       DIVIDER
-    ========================================= */
-
-    .divider {
-        order: 2;
-
-        width: 220px;
-
-        margin: 15px  0;
-    }
 
 
     /* =========================================
@@ -443,7 +405,7 @@
 
         width: 50%;
 
-        margin: 70px  0;
+        margin: 95px  0;
 
         font-size: 0.9rem !important;
         line-height: 1.7;

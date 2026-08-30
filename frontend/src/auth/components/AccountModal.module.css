@@ -1,105 +1,50 @@
-/* ========================================
-   Overlay
-======================================== */
-
 .overlay {
     position: fixed;
-
     inset: 0;
-
     display: flex;
-
     justify-content: center;
-
     align-items: center;
-
     padding: 20px;
-
     background: rgba(4, 20, 15, .78);
-
     backdrop-filter: blur(8px);
-
     z-index: 1000;
-
     overflow-y: auto;
 }
-
-
-/* ========================================
-   Modal
-======================================== */
 
 .modal {
     width: 400px;
-
     max-width: 100%;
-
     max-height: 90vh;
-
     overflow-y: auto;
-
     padding: 28px;
-
     background: var(--surface-color);
-
     border: 1px solid var(--border-soft);
-
     border-radius: var(--radius-lg);
-
-    box-shadow:
-        0 24px 60px rgba(0, 0, 0, .45);
-
+    box-shadow: 0 24px 60px rgba(0, 0, 0, .45);
 }
-
-
-/* ========================================
-   Title
-======================================== */
 
 .title {
     margin: 0 0 24px;
-
     color: var(--text-primary);
-
     font-family: "Playfair Display", serif;
-
     font-size: 1.5rem;
-
     font-weight: 600;
-
     text-align: center;
 }
 
-
-/* ========================================
-   Inputs
-======================================== */
-
 .input {
     width: 100%;
-
     height: 42px;
-
     padding: 10px 13px;
-
     margin-bottom: 10px;
-
     box-sizing: border-box;
-
     background: var(--surface-alt);
-
     color: var(--text-primary);
-
     border: 1px solid var(--border-soft);
-
     border-radius: var(--radius-md);
-
     outline: none;
-
     font-family: inherit;
-
     font-size: .82rem;
-
     transition: var(--transition);
 }
 
@@ -107,280 +52,155 @@
     color: var(--text-dim);
 }
 
-.input:focus {
-    border-color: var(--gold-color);
+.inputLabel {
+    display: block;
+    margin-bottom: 5px;
 
-    background: var(--surface-color);
-
-    box-shadow:
-        0 0 0 2px rgba(212, 175, 55, .10);
+    color: var(--primary-color);
+    font-size: .76rem;
+    font-weight: 600;
 }
 
-
-/* ========================================
-   Saved Address
-======================================== */
+.input:focus {
+    border-color: var(--gold-color);
+    background: var(--surface-color);
+    box-shadow: 0 0 0 2px rgba(212, 175, 55, .10);
+}
 
 .savedAddress {
     padding: 14px 16px;
-
     margin-bottom: 10px;
-
     background: var(--surface-alt);
-
     border: 1px solid var(--border-soft);
-
     border-radius: var(--radius-md);
-
     color: var(--text-primary);
-
     font-size: .82rem;
-
     line-height: 1.6;
-
     white-space: pre-line;
 }
 
 .savedAddressTitle {
     margin: 0 0 8px;
-
     color: var(--gold-color);
-
     font-size: .78rem;
-
     font-weight: 600;
 }
 
-
-/* ========================================
-   Secondary Button
-======================================== */
-
-.secondaryButton {
+.secondaryButton,
+.closeButton {
     width: 100%;
-
     min-height: 40px;
-
     padding: 9px 16px;
-
-    margin-top: 8px;
-
     border: 1px solid var(--border-soft);
-
     border-radius: var(--radius-md);
-
     background: transparent;
-
     color: var(--text-primary);
-
     font-family: inherit;
-
     font-size: .82rem;
-
     font-weight: 500;
-
     cursor: pointer;
-
     transition: var(--transition);
 }
 
-.secondaryButton:hover {
+.secondaryButton {
+    margin-top: 8px;
+}
+
+.closeButton {
+    margin-top: 10px;
+}
+
+.secondaryButton:hover,
+.closeButton:hover {
     border-color: var(--gold-color);
-
     color: var(--gold-color);
-
     background: var(--surface-alt);
 }
-/* ========================================
-   Primary Button
-======================================== */
 
 .primaryButton {
     width: 100%;
-
     min-height: 42px;
-
     padding: 10px 16px;
-
     margin-top: 8px;
-
     border: 1px solid var(--gold-color);
-
     border-radius: var(--radius-md);
-
     background: var(--gold-color);
-
     color: var(--background-color);
-
     font-family: inherit;
-
     font-size: .84rem;
-
     font-weight: 600;
-
     cursor: pointer;
-
     transition: var(--transition);
 }
 
 .primaryButton:hover {
     background: var(--gold-hover);
-
     border-color: var(--gold-hover);
-
     transform: translateY(-1px);
-
-    box-shadow:
-        0 6px 18px rgba(212, 175, 55, .16);
+    box-shadow: 0 6px 18px rgba(212, 175, 55, .16);
 }
 
 .primaryButton:disabled {
     background: var(--surface-alt);
-
     border-color: var(--border-soft);
-
     color: var(--text-dim);
-
     cursor: not-allowed;
-
     transform: none;
-
     box-shadow: none;
 }
 
-
-/* ========================================
-   Close Button
-======================================== */
-
-.closeButton {
-    width: 100%;
-
-    min-height: 40px;
-
-    padding: 9px 16px;
-
-    margin-top: 10px;
-
-    border: 1px solid var(--border-soft);
-
-    border-radius: var(--radius-md);
-
-    background: transparent;
-
-    color: var(--text-primary);
-
-    font-family: inherit;
-
-    font-size: .82rem;
-
-    font-weight: 500;
-
-    cursor: pointer;
-
-    transition: var(--transition);
-}
-
-.closeButton:hover {
-    border-color: var(--gold-color);
-
-    color: var(--gold-color);
-
-    background: var(--surface-alt);
-}
-
-
-/* ========================================
-   Information
-======================================== */
-
 .infoText {
     margin: 0 0 14px;
-
     color: var(--text-primary);
-
     font-size: .78rem;
-
     line-height: 1.6;
-
     text-align: center;
 }
-
-
-/* ========================================
-   Validation Error
-======================================== */
 
 .errorText {
     margin: -3px 0 9px;
-
     color: var(--error-color);
-
     font-size: .72rem;
-
     line-height: 1.4;
 }
 
-
-/* ========================================
-   Success
-======================================== */
-
 .successText {
     margin: 8px 0 10px;
-
     color: var(--success-color);
-
     font-size: .75rem;
-
     line-height: 1.5;
-
     text-align: center;
 }
 
-
-/* ========================================
-   Mobile
-======================================== */
-
 @media (max-width: 600px) {
-
     .overlay {
         padding: 12px;
     }
 
     .modal {
         width: 100%;
-
         padding: 22px;
-
         max-height: 92vh;
-
         border-radius: var(--radius-md);
     }
 
     .title {
         margin-bottom: 20px;
-
         font-size: 1.3rem;
     }
 
     .input {
         height: 40px;
-
         font-size: .78rem;
     }
 
     .primaryButton {
         min-height: 40px;
-
         font-size: .78rem;
     }
 
     .closeButton {
         min-height: 38px;
-
         font-size: .76rem;
     }
-
 }

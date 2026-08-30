@@ -140,13 +140,13 @@ function ProductForm({ initialValues, buttonText, loading, onSubmit }: ProductFo
 
             <div className="form-field">
                 <label htmlFor="current-stock">Current Stock (kg)</label>
-                <input id="current-stock" type="number" name="currentStockKg" placeholder="Enter current stock" value={form.currentStockKg} onChange={handleChange} min="0" step="0.01" />
+                <input id="current-stock" type="number" name="currentStockKg" placeholder="Enter current stock" value={form.currentStockKg} onChange={handleChange} min="0" step="1" />
                 {stockError && <p className="error">{stockError}</p>}
             </div>
 
             <div className="form-field">
                 <label htmlFor="low-stock">Low Stock Alert (kg)</label>
-                <input id="low-stock" type="number" name="lowStockAlertKg" placeholder="Enter low stock alert" value={form.lowStockAlertKg} onChange={handleChange} min="0" step="0.01" />
+                <input id="low-stock" type="number" name="lowStockAlertKg" placeholder="Enter low stock alert" value={form.lowStockAlertKg} onChange={handleChange} min="0" step="1" />
                 {lowStockError && <p className="error">{lowStockError}</p>}
             </div>
 

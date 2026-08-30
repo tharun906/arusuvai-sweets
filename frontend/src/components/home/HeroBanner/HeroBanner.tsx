@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faBagShopping,
     faLeaf,
-    faSpa,
 } from "@fortawesome/free-solid-svg-icons";
 
 function HeroBanner() {
@@ -69,23 +68,6 @@ function HeroBanner() {
                         </span>
                     </h2>
 
-                    <div className={styles.divider}>
-
-                        <span></span>
-
-                        <span className={styles.dividerIcon}>
-
-                            <FontAwesomeIcon
-                                icon={faSpa}
-                                size="2xl"
-                                style={{ color: "#fdcb13" }}
-                            />
-
-                        </span>
-
-                        <span></span>
-
-                    </div>
 
                     <p>
                         Handcrafted with premium ingredients,
