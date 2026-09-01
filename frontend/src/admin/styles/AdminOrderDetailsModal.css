@@ -80,6 +80,10 @@
     color: var(--error-color);
 }
 
+.directions-container {
+    grid-column: 1 / -1;
+}
+
 /* ========================================
    Order Information
 ======================================== */
@@ -120,6 +124,44 @@
     color: var(--text-primary);
 
     font-size: .72rem;
+}
+
+/* ========================================
+   Get Directions
+======================================== */
+
+.directions-btn {
+    margin-top: 12px;
+
+    padding: 10px 16px;
+
+    border: 1px solid var(--gold-color);
+
+    border-radius: var(--radius-md);
+
+    background: var(--gold-color);
+
+    color: var(--background-color);
+
+    font-family: inherit;
+
+    font-size: .78rem;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: var(--transition);
+}
+
+.directions-btn:hover {
+    background: var(--gold-hover);
+
+    border-color: var(--gold-hover);
+
+    transform: translateY(-2px);
+
+    box-shadow: var(--shadow-sm);
 }
 
 /* ========================================

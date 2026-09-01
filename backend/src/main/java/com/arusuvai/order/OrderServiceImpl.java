@@ -139,7 +139,20 @@ public class OrderServiceImpl implements OrderService {
             return new OrderItemResponseDTO(OrderItemType.SWEET_BOX, null, null, item.getSweetBox().getId(), item.getSweetBox().getName(), item.getWeight(), item.getQuantity(), item.getPricePerUnit(), item.getTotalPrice());
         }).toList();
 
-        return new OrderResponseDTO(order.getId(), order.getCustomer().getId(), order.getCustomer().getName(), order.getTotalAmount(), order.getOrderStatus(), order.getPaymentStatus(), order.getDeliveryType(), order.getDeliveryAddress(), order.getCreatedAt(), items);
+        return new OrderResponseDTO(
+                order.getId(),
+                order.getCustomer().getId(),
+                order.getCustomer().getName(),
+                order.getTotalAmount(),
+                order.getOrderStatus(),
+                order.getPaymentStatus(),
+                order.getDeliveryType(),
+                order.getDeliveryAddress(),
+                order.getCustomer().getLatitude(),
+                order.getCustomer().getLongitude(),
+                order.getCreatedAt(),
+                items
+        );
     }
 
     @Override

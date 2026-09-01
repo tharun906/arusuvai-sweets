@@ -322,6 +322,39 @@
 
 }
 
+/* In-between — tablets / small laptops */
+@media (min-width: 712px) and (max-width: 1199px) {
+    .primary,
+    .secondary {
+        font-size: 2.5rem;
+    }
+
+    .content {
+        width: 55%;
+    }
+
+    .content p {
+        font-size: .9rem;
+    }
+
+    .eyebrow{
+        margin-bottom: 9px;
+        font-size: 0.68rem;
+        margin-top: 25px;
+    }
+
+    .button{
+        min-width: 160px;
+        padding: 8px 15px;
+        font-size: 0.85rem;
+        margin-top: 15px;
+    }
+
+    content h2 {
+        font-size: 1rem !important;
+    }
+}
+
 
 /* =========================================
    MOBILE

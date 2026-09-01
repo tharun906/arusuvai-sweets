@@ -31,6 +31,10 @@ public class OrderResponseDTO {
 
     private String deliveryAddress;
 
+    private Double latitude;
+
+    private Double longitude;
+
     private LocalDateTime createdAt;
 
     private List<OrderItemResponseDTO> items;
