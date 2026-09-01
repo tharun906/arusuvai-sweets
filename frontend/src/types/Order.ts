@@ -22,6 +22,10 @@ export interface Order {
 
     deliveryAddress: string;
 
+    latitude: number | null;
+
+    longitude: number | null;
+
     createdAt: string;
 
     items: OrderItem[];

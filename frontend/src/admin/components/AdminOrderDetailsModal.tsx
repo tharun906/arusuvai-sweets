@@ -1,6 +1,8 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { Order } from "../../types/Order";
 
 import "../styles/AdminOrderDetailsModal.css";
+import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 
 interface AdminOrderDetailsModalProps {
 
@@ -57,12 +59,27 @@ function AdminOrderDetailsModal({
                     </p>
 
                     <p>
-
                         <strong>Address:</strong>
-
                         {order.deliveryAddress}
-
                     </p>
+
+                    <div className="directions-container">
+                        {order.latitude != null && order.longitude != null && (
+                            <button
+                                type="button"
+                                className="directions-btn"
+                                onClick={() => {
+                                    const mapsUrl =
+                                        `https://www.google.com/maps/dir/?api=1&destination=${order.latitude},${order.longitude}`;
+
+                                    window.open(mapsUrl, "_blank");
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faLocationDot} /> Get Directions
+                            </button>
+                        )}
+                    </div>
+
 
                     <p>
 

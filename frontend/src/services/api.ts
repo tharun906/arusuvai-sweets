@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: "http://localhost:8080",
+    baseURL: "",
 });
 
 api.interceptors.request.use((config) => {
@@ -18,12 +18,33 @@ api.interceptors.request.use((config) => {
         token &&
         !config.headers.Authorization
     ) {
-
         config.headers.Authorization =
             `Bearer ${token}`;
     }
 
     return config;
 });
+
+
+/*
+ * Handle expired / invalid authentication
+ * centrally for the entire application.
+ */
+api.interceptors.response.use(
+    (response) => response,
+
+    (error) => {
+
+        if (error.response?.status === 401) {
+
+            localStorage.removeItem("token");
+            localStorage.removeItem("googleVerificationToken");
+
+            window.location.href = "/";
+        }
+
+        return Promise.reject(error);
+    }
+);
 
 export default api;
