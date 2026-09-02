@@ -151,6 +151,19 @@
     font-weight: 600;
 }
 
+.inputLabel {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.inputLabel span {
+    color: var(--text-dim);
+    font-weight: 400;
+}
+
 
 /* ========================================
    Secondary Button

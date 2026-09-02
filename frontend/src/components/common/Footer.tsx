@@ -46,7 +46,7 @@ function Footer() {
 
                     <p>+91 94431 78984</p>
 
-                    <p>support@arusuvaisweets.com</p>
+                    <p>support@arusuvaisweets.in</p>
 
                 </div>
 

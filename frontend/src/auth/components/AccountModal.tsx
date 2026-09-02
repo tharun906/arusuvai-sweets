@@ -412,216 +412,580 @@ function AccountModal({ open, onClose }: AccountModalProps) {
             }
         };
         return (
+
             <div className={styles.overlay}>
+    
                 <div className={styles.modal}>
-                    <h2 className={styles.title}>Login / Register</h2>
+    
+                    <h2 className={styles.title}>
+                        Login / Register
+                    </h2>
+    
+    
+                    {/* =========================
+                        PHONE STEP
+                    ========================= */}
+    
                     {!showRegistration ? (
+    
                         <>
+    
+                            <label className={styles.inputLabel}>
+                                Phone Number
+                            </label>
+    
                             <input
+                                type="tel"
                                 className={styles.input}
                                 value={phoneNumber}
-                                onChange={event => { setPhoneNumber(event.target.value); setPhoneError(""); }}
-                                placeholder="Enter Phone Number"
+                                onChange={event => {
+                                    setPhoneNumber(
+                                        event.target.value
+                                    );
+    
+                                    setPhoneError("");
+                                }}
+                                placeholder="Enter phone number"
                                 maxLength={10}
                             />
+    
                             {phoneError && (
-                                <p className={styles.errorText}>{phoneError}</p>
+                                <p className={styles.errorText}>
+                                    {phoneError}
+                                </p>
                             )}
-                            <p className={styles.infoText}>⚠️ Please make sure this number is correct.<br />We'll use it for your order updates.</p>
+    
+    
+                            <p className={styles.infoText}>
+                                ⚠️ Please make sure this number is correct.
+                                <br />
+                                We'll use it for your order updates.
+                            </p>
+    
+    
                             <button
                                 type="button"
                                 className={styles.primaryButton}
                                 onClick={handleContinue}
                                 disabled={loading}
                             >
-                                {loading ? "Checking..." : "Continue"}
+                                {loading
+                                    ? "Checking..."
+                                    : "Continue"}
                             </button>
+    
                         </>
+    
                     ) : (
+    
                         <>
+    
                             <p className={styles.infoText}>
+    
                                 {
                                     existingCustomer
+    
                                         ? "Your details are already saved. Review them and update your delivery details if needed."
+    
                                         : "Phone number confirmed successfully. Complete your profile to continue."
                                 }
+    
                             </p>
+    
+    
+                            {/* =========================
+                                FULL NAME
+                            ========================= */}
+    
+                            <label className={styles.inputLabel}>
+                                Full Name
+                            </label>
+    
                             <input
+                                type="text"
                                 className={styles.input}
                                 value={name}
-                                onChange={event => { setName(event.target.value); setNameError(""); }}
-                                placeholder="Full Name"
+                                onChange={event => {
+    
+                                    setName(
+                                        event.target.value
+                                    );
+    
+                                    setNameError("");
+                                }}
+                                placeholder="Enter your full name"
                             />
+    
                             {nameError && (
-                                <p className={styles.errorText}>{nameError}</p>
+                                <p className={styles.errorText}>
+                                    {nameError}
+                                </p>
                             )}
+    
+    
                             {/* =========================
                                 EMAIL
                             ========================= */}
+    
+                            <label className={styles.inputLabel}>
+                                Email <span>(Optional)</span>
+                            </label>
+    
                             <input
+                                type="email"
                                 className={styles.input}
                                 value={email}
-                                onChange={event => { setEmail(event.target.value); setEmailError(""); }}
-                                placeholder="Email (Optional)"
+                                onChange={event => {
+    
+                                    setEmail(
+                                        event.target.value
+                                    );
+    
+                                    setEmailError("");
+                                }}
+                                placeholder="Enter your email"
                             />
+    
                             {emailError && (
-                                <p className={styles.errorText}>{emailError}</p>
+                                <p className={styles.errorText}>
+                                    {emailError}
+                                </p>
                             )}
+    
+    
                             {/* =========================
                                 EXISTING CUSTOMER
                                 SAVED ADDRESS
                             ========================= */}
+    
                             {
-                                existingCustomer && !editingAddress
+                                existingCustomer &&
+                                !editingAddress
+    
                                     ? (
+    
                                         <>
-                                            <div className={styles.savedAddress}>
-                                                <p className={styles.savedAddressTitle}>Saved Delivery Address</p>
+    
+                                            <div
+                                                className={
+                                                    styles.savedAddress
+                                                }
+                                            >
+    
+                                                <p
+                                                    className={
+                                                        styles.savedAddressTitle
+                                                    }
+                                                >
+                                                    Saved Delivery Address
+                                                </p>
+    
                                                 <div>
+    
                                                     {existingCustomer.doorNo}
                                                     {", "}
-                                                    {existingCustomer.addressLine1}
-                                                    {existingCustomer.addressLine2 && `, ${existingCustomer.addressLine2}`}
-                                                    {existingCustomer.landmark && `, Near ${existingCustomer.landmark}`}
-                                                    {existingCustomer.city && `, ${existingCustomer.city}`}
-                                                    {existingCustomer.state && `, ${existingCustomer.state}`}
-                                                    {existingCustomer.pincode && ` - ${existingCustomer.pincode}`}
+    
+                                                    {
+                                                        existingCustomer.addressLine1
+                                                    }
+    
+                                                    {
+                                                        existingCustomer.addressLine2 &&
+                                                        `, ${existingCustomer.addressLine2}`
+                                                    }
+    
+                                                    {
+                                                        existingCustomer.landmark &&
+                                                        `, Near ${existingCustomer.landmark}`
+                                                    }
+    
+                                                    {
+                                                        existingCustomer.city &&
+                                                        `, ${existingCustomer.city}`
+                                                    }
+    
+                                                    {
+                                                        existingCustomer.state &&
+                                                        `, ${existingCustomer.state}`
+                                                    }
+    
+                                                    {
+                                                        existingCustomer.pincode &&
+                                                        ` - ${existingCustomer.pincode}`
+                                                    }
+    
                                                 </div>
+    
                                             </div>
-                                            {/* =========================
-                                                CHANGE ADDRESS
-                                            ========================= */}
+    
+    
+                                            {/* CHANGE ADDRESS */}
+    
                                             <button
                                                 type="button"
-                                                className={styles.secondaryButton}
-                                                onClick={() => setEditingAddress(true)}
+                                                className={
+                                                    styles.secondaryButton
+                                                }
+                                                onClick={() =>
+                                                    setEditingAddress(true)
+                                                }
                                             >
-                                                 Change Address
+                                                Change Address
                                             </button>
-                                            {/* =========================
-                                                FINAL SAVE
-                                            ========================= */}
+    
+    
+                                            {/* FINAL SAVE */}
+    
                                             <button
                                                 type="button"
-                                                className={styles.primaryButton}
+                                                className={
+                                                    styles.primaryButton
+                                                }
                                                 onClick={handleRegister}
                                                 disabled={loading}
                                             >
-                                                {loading ? "Saving..." : "Save"}
+                                                {
+                                                    loading
+                                                        ? "Saving..."
+                                                        : "Save"
+                                                }
                                             </button>
+    
                                         </>
+    
                                     )
+    
                                     : (
-                                        /* =========================
-                                           ADDRESS EDIT / NEW CUSTOMER
-                                        ========================= */
+    
                                         <>
-                                            {/* Door No */}
+                                            {/* =========================
+                                                ADDRESS SECTION
+                                            ========================= */}
+    
+    
+                                            {/* DOOR / FLAT NUMBER */}
+    
+                                            <label
+                                                className={
+                                                    styles.inputLabel
+                                                }
+                                            >
+                                                Door / Flat No
+                                            </label>
+    
                                             <input
+                                                type="text"
                                                 className={styles.input}
                                                 value={doorNo}
-                                                onChange={event => { setDoorNo(event.target.value); setDoorNoError(""); }}
-                                                placeholder="Door / Flat No"
+                                                onChange={event => {
+    
+                                                    setDoorNo(
+                                                        event.target.value
+                                                    );
+    
+                                                    setDoorNoError("");
+                                                }}
+                                                placeholder="Enter door / flat number"
                                             />
+    
                                             {doorNoError && (
-                                                <p className={styles.errorText}>{doorNoError}</p>
+                                                <p
+                                                    className={
+                                                        styles.errorText
+                                                    }
+                                                >
+                                                    {doorNoError}
+                                                </p>
                                             )}
-                                            {/* Address Line 1 */}
+    
+    
+                                            {/* ADDRESS LINE 1 */}
+    
+                                            <label
+                                                className={
+                                                    styles.inputLabel
+                                                }
+                                            >
+                                                Address Line 1
+                                            </label>
+    
                                             <input
+                                                type="text"
                                                 className={styles.input}
                                                 value={addressLine1}
-                                                onChange={event => { setAddressLine1(event.target.value); setAddressLine1Error(""); }}
-                                                placeholder="Address Line 1"
+                                                onChange={event => {
+    
+                                                    setAddressLine1(
+                                                        event.target.value
+                                                    );
+    
+                                                    setAddressLine1Error("");
+                                                }}
+                                                placeholder="Enter address"
                                             />
+    
                                             {addressLine1Error && (
-                                                <p className={styles.errorText}>{addressLine1Error}</p>
+                                                <p
+                                                    className={
+                                                        styles.errorText
+                                                    }
+                                                >
+                                                    {addressLine1Error}
+                                                </p>
                                             )}
-                                            {/* Address Line 2 */}
+    
+    
+                                            {/* ADDRESS LINE 2 */}
+    
+                                            <label
+                                                className={
+                                                    styles.inputLabel
+                                                }
+                                            >
+                                                Address Line 2{" "}
+                                                <span>(Optional)</span>
+                                            </label>
+    
                                             <input
+                                                type="text"
                                                 className={styles.input}
                                                 value={addressLine2}
-                                                onChange={event => setAddressLine2(event.target.value)}
-                                                placeholder="Address Line 2 (Optional)"
+                                                onChange={event =>
+                                                    setAddressLine2(
+                                                        event.target.value
+                                                    )
+                                                }
+                                                placeholder="Enter additional address details"
                                             />
-                                            {/* Landmark */}
+    
+    
+                                            {/* LANDMARK */}
+    
+                                            <label
+                                                className={
+                                                    styles.inputLabel
+                                                }
+                                            >
+                                                Landmark{" "}
+                                                <span>(Optional)</span>
+                                            </label>
+    
                                             <input
+                                                type="text"
                                                 className={styles.input}
                                                 value={landmark}
-                                                onChange={event => setLandmark(event.target.value)}
-                                                placeholder="Landmark (Optional)"
+                                                onChange={event =>
+                                                    setLandmark(
+                                                        event.target.value
+                                                    )
+                                                }
+                                                placeholder="Enter nearby landmark"
                                             />
-                                            {/* City */}
+    
+    
+                                            {/* CITY */}
+    
+                                            <label
+                                                className={
+                                                    styles.inputLabel
+                                                }
+                                            >
+                                                City
+                                            </label>
+    
                                             <input
+                                                type="text"
                                                 className={styles.input}
                                                 value={city}
-                                                onChange={event => { setCity(event.target.value); setCityError(""); }}
-                                                placeholder="City"
+                                                onChange={event => {
+    
+                                                    setCity(
+                                                        event.target.value
+                                                    );
+    
+                                                    setCityError("");
+                                                }}
+                                                placeholder="Enter city"
                                             />
+    
                                             {cityError && (
-                                                <p className={styles.errorText}>{cityError}</p>
+                                                <p
+                                                    className={
+                                                        styles.errorText
+                                                    }
+                                                >
+                                                    {cityError}
+                                                </p>
                                             )}
-                                            {/* State */}
+    
+    
+                                            {/* STATE */}
+    
+                                            <label
+                                                className={
+                                                    styles.inputLabel
+                                                }
+                                            >
+                                                State
+                                            </label>
+    
                                             <input
+                                                type="text"
                                                 className={styles.input}
                                                 value={state}
-                                                onChange={event => { setState(event.target.value); setStateError(""); }}
-                                                placeholder="State"
+                                                onChange={event => {
+    
+                                                    setState(
+                                                        event.target.value
+                                                    );
+    
+                                                    setStateError("");
+                                                }}
+                                                placeholder="Enter state"
                                             />
+    
                                             {stateError && (
-                                                <p className={styles.errorText}>{stateError}</p>
+                                                <p
+                                                    className={
+                                                        styles.errorText
+                                                    }
+                                                >
+                                                    {stateError}
+                                                </p>
                                             )}
-                                            {/* Pincode */}
+    
+    
+                                            {/* PINCODE */}
+    
+                                            <label
+                                                className={
+                                                    styles.inputLabel
+                                                }
+                                            >
+                                                Pincode
+                                            </label>
+    
                                             <input
+                                                type="text"
+                                                inputMode="numeric"
                                                 className={styles.input}
                                                 value={pincode}
-                                                onChange={event => { setPincode(event.target.value); setPincodeError(""); }}
-                                                placeholder="Pincode"
+                                                onChange={event => {
+    
+                                                    setPincode(
+                                                        event.target.value
+                                                    );
+    
+                                                    setPincodeError("");
+                                                }}
+                                                placeholder="Enter 6-digit pincode"
+                                                maxLength={6}
                                             />
+    
                                             {pincodeError && (
-                                                <p className={styles.errorText}>{pincodeError}</p>
+                                                <p
+                                                    className={
+                                                        styles.errorText
+                                                    }
+                                                >
+                                                    {pincodeError}
+                                                </p>
                                             )}
+    
+    
                                             {/* =========================
                                                 LOCATION
                                             ========================= */}
+    
+                                            <label
+                                                className={
+                                                    styles.inputLabel
+                                                }
+                                            >
+                                                Delivery Location
+                                            </label>
+    
                                             <button
                                                 type="button"
-                                                className={styles.primaryButton}
-                                                onClick={handleCurrentLocation}
-                                                disabled={capturingLocation}
+                                                className={
+                                                    styles.primaryButton
+                                                }
+                                                onClick={
+                                                    handleCurrentLocation
+                                                }
+                                                disabled={
+                                                    capturingLocation
+                                                }
                                             >
-                                        <FontAwesomeIcon
-                                                icon={locationCaptured ? faCheck : faLocationCrosshairs}
-                                                style={{ color: "#1e1e1e" }}
-                                            />
-
-                                            {
-                                                locationCaptured
-                                                    ? "Location Captured"
-                                                    : capturingLocation
-                                                        ? "Capturing Location..."
-                                                        : "Use Current Location"
-                                            }
+    
+                                                <FontAwesomeIcon
+                                                    icon={
+                                                        locationCaptured
+                                                            ? faCheck
+                                                            : faLocationCrosshairs
+                                                    }
+                                                    style={{
+                                                        color: "#1e1e1e"
+                                                    }}
+                                                />
+    
+                                                {
+                                                    locationCaptured
+                                                        ? "Location Captured"
+                                                        : capturingLocation
+                                                            ? "Capturing Location..."
+                                                            : "Use Current Location"
+                                                }
+    
                                             </button>
+    
+    
                                             {locationMessage && (
-                                                <p className={styles.infoText}>{locationMessage}</p>
+                                                <p
+                                                    className={
+                                                        styles.infoText
+                                                    }
+                                                >
+                                                    {locationMessage}
+                                                </p>
                                             )}
+    
+    
                                             {locationCaptured && (
-                                                <p className={styles.successText}>
+                                                <p
+                                                    className={
+                                                        styles.successText
+                                                    }
+                                                >
                                                     ✅ Location captured successfully.
                                                 </p>
                                             )}
+    
+    
                                             {locationError && (
-                                                <p className={styles.errorText}>{locationError}</p>
+                                                <p
+                                                    className={
+                                                        styles.errorText
+                                                    }
+                                                >
+                                                    {locationError}
+                                                </p>
                                             )}
+    
+    
                                             {/* =========================
                                                 SUBMIT / REGISTER
                                             ========================= */}
+    
                                             <button
                                                 type="button"
-                                                className={styles.primaryButton}
+                                                className={
+                                                    styles.primaryButton
+                                                }
                                                 onClick={handleRegister}
                                                 disabled={loading}
                                             >
+    
                                                 {
                                                     loading
                                                         ? "Saving..."
@@ -629,24 +993,38 @@ function AccountModal({ open, onClose }: AccountModalProps) {
                                                             ? "Submit"
                                                             : "Register"
                                                 }
+    
                                             </button>
+    
                                         </>
+    
                                     )
                             }
+    
                         </>
+    
                     )}
+    
+    
                     {/* =========================
                         CLOSE
                     ========================= */}
+    
                     <button
                         type="button"
-                        className={styles.closeButton}
+                        className={
+                            styles.closeButton
+                        }
                         onClick={handleClose}
                     >
                         Close
                     </button>
+    
                 </div>
+    
             </div>
         );
-        }
-        export default AccountModal;
+    }
+    
+    
+    export default AccountModal;
