@@ -16,11 +16,12 @@ public class CorsConfig {
             public void addCorsMappings(CorsRegistry registry) {
 
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:5173",                       // Local Vite dev server
-                                "http://13.232.71.15")
+                        .allowedOrigins(
+                                "http://localhost:5173",
+                                "https://arusuvaisweets.in"
+                        )
                         .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
-                        .allowedHeaders("*")
-                        .allowCredentials(true);
+                        .allowedHeaders("*");
             }
         };
     }
