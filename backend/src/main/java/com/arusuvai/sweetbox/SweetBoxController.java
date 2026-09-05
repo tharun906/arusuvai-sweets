@@ -18,8 +18,9 @@ public class SweetBoxController {
         this.sweetBoxService = sweetBoxService;
     }
 
+
     @GetMapping
-    public List<SweetBoxResponseDTO> getActiveSweetBoxes() {
-        return sweetBoxService.getActiveSweetBoxes();
+    public List<SweetBoxResponseDTO> getSweetBoxes() {
+        return sweetBoxService.getSweetBoxes();
     }
 }

@@ -42,24 +42,19 @@ public class ImageController {
             MultipartFile file,
 
             @RequestParam("folder")
-            String folder
+            String folder,
 
+            @RequestParam(value = "fileName", required = false)
+            String fileName
     ) {
 
-        /*
-         * Upload the image to the requested
-         * S3 folder.
-         */
         String imageUrl =
                 s3Service.uploadImage(
                         file,
-                        folder
+                        folder,
+                        fileName
                 );
 
-
-        /*
-         * Return the S3 URL to React.
-         */
         return ResponseEntity.ok(
                 imageUrl
         );

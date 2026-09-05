@@ -37,10 +37,11 @@ function ProductForm({ initialValues, buttonText, loading, onSubmit }: ProductFo
         * the products/ prefix in S3.
         */
         const imageUrl =
-            await imageService.uploadImage(
-                file,
-                "products"
-            );
+        await imageService.uploadImage(
+            file,
+            "products",
+            form.name
+        );
             setForm(previous => ({ ...previous, imageUrl }));
         } catch (error) {
 

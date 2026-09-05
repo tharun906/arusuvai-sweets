@@ -12,7 +12,7 @@ export function useSweetBox() {
         setLoading(true);
 
         try {
-            const data = await sweetBoxService.getActiveSweetBoxes();
+            const data = await sweetBoxService.getSweetBoxes();
             setSweetBoxes(data);
         } finally {
             setLoading(false);

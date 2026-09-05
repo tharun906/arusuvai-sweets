@@ -18,11 +18,10 @@ public class SweetBoxServiceImpl implements SweetBoxService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<SweetBoxResponseDTO> getActiveSweetBoxes() {
+    public List<SweetBoxResponseDTO> getSweetBoxes() {
 
         return sweetBoxRepository.findAll()
                 .stream()
-                .filter(SweetBoxEntity::isActive)
                 .map(this::mapToResponse)
                 .toList();
     }

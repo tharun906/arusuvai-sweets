@@ -14,7 +14,8 @@ export const imageService = {
      */
     uploadImage: async (
         file: File,
-        folder: string
+        folder: string,
+        fileName?: string
     ): Promise<string> => {
 
         /*
@@ -38,10 +39,14 @@ export const imageService = {
          * POST /api/images/upload?folder=products
          */
         const response =
-            await api.post<string>(
-                `/api/images/upload?folder=${encodeURIComponent(folder)}`,
-                formData
-            );
+        await api.post<string>(
+            `/api/images/upload?folder=${encodeURIComponent(folder)}${
+                fileName
+                    ? `&fileName=${encodeURIComponent(fileName)}`
+                    : ""
+            }`,
+            formData
+        );
 
         /*
          * Backend returns the public S3 image URL.

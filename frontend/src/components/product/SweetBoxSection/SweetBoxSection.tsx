@@ -48,16 +48,26 @@ function SweetBoxSection() {
                     <button
                         key={box.id}
                         type="button"
-                        className={selectedBox.id === box.id ? styles.selected : styles.selector}
+                        className={`${selectedBox.id === box.id ? styles.selected : styles.selector} ${
+                            !box.active ? styles.unavailable : ""
+                        }`}
                         onClick={() => handleSelectBox(box.id)}
                     >
                         <span>{box.name}</span>
                         <small>{box.totalWeight}</small>
+
+                        {!box.active && (
+                            <em>Unavailable</em>
+                        )}
                     </button>
                 ))}
             </div>
 
-            <div className={styles.boxContent}>
+            <div
+                className={`${styles.boxContent} ${
+                    !selectedBox.active ? styles.unavailableContent : ""
+                }`}
+            >
                 <div className={styles.imageContainer}>
                     <img src={selectedBox.imageUrl} alt={selectedBox.name} className={styles.image} />
                 </div>
@@ -122,9 +132,14 @@ function SweetBoxSection() {
 
                     <div className={styles.bottomActions}>
                         <QuantitySelector value={quantity} min={1} max={10} onChange={setQuantity} />
-                        <button type="button" className={styles.addButton} onClick={handleAddToCart}>
+                        <button
+                            type="button"
+                            className={styles.addButton}
+                            onClick={handleAddToCart}
+                            disabled={!selectedBox.active}
+                        >
                             <span>🛒</span>
-                            Add to Cart
+                            {selectedBox.active ? "Add to Cart" : "Unavailable"}
                         </button>
                     </div>
                 </div>

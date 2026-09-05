@@ -7,7 +7,6 @@ import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
-import software.amazon.awssdk.services.s3.model.S3Object;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.IOException;
@@ -48,34 +47,84 @@ public class S3Service {
      * UPLOAD IMAGE
      * ========================================
      *
-     * Uploads an image into the requested folder.
+     * Products:
      *
-     * Examples:
+     * uploadImage(file, "products", "Premium Mysore Pak")
      *
-     * uploadImage(file, "products")
-     * uploadImage(file, "sweet-boxes")
-     * uploadImage(file, "carousel")
-     * uploadImage(file, "gallery")
+     * Result:
+     *
+     * products/premium-mysore-pak.jpg
+     *
+     *
+     * Other folders:
+     *
+     * uploadImage(file, "carousel", null)
+     *
+     * uploadImage(file, "gallery", null)
+     *
+     * uploadImage(file, "sweet-boxes", null)
+     *
+     * These continue using UUID-based filenames.
      */
     public String uploadImage(
             MultipartFile file,
-            String folder
+            String folder,
+            String fileName
     ) {
 
         /*
-         * Generate a unique file name.
+         * Get the original file extension.
          *
          * Example:
          *
-         * products/
-         *   8f3c...-mysore-pak.jpg
+         * image.jpg → .jpg
+         * image.png → .png
+         * image.webp → .webp
          */
-        String fileName =
-                folder
-                        + "/"
-                        + UUID.randomUUID()
-                        + "-"
-                        + file.getOriginalFilename();
+        String extension = "";
+
+        if (file.getOriginalFilename() != null &&
+                file.getOriginalFilename().contains(".")) {
+
+            extension = file.getOriginalFilename()
+                    .substring(
+                            file.getOriginalFilename().lastIndexOf(".")
+                    );
+        }
+
+
+        /*
+         * Generate the final S3 object key.
+         *
+         * Products with a fileName:
+         *
+         * products/premium-mysore-pak.jpg
+         *
+         * Other folders without a fileName:
+         *
+         * carousel/UUID-banner.jpg
+         */
+        String finalFileName;
+
+        if (fileName != null && !fileName.isBlank()) {
+
+            String safeFileName = sanitizeFileName(fileName);
+
+            finalFileName =
+                    folder
+                            + "/"
+                            + safeFileName
+                            + extension;
+
+        } else {
+
+            finalFileName =
+                    folder
+                            + "/"
+                            + UUID.randomUUID()
+                            + "-"
+                            + file.getOriginalFilename();
+        }
 
 
         /*
@@ -88,7 +137,7 @@ public class S3Service {
         PutObjectRequest request =
                 PutObjectRequest.builder()
                         .bucket(bucketName)
-                        .key(fileName)
+                        .key(finalFileName)
                         .contentType(file.getContentType())
                         .build();
 
@@ -97,6 +146,9 @@ public class S3Service {
 
             /*
              * Upload the actual image bytes to S3.
+             *
+             * If the same key already exists,
+             * S3 replaces the existing object.
              */
             s3Client.putObject(
                     request,
@@ -116,16 +168,20 @@ public class S3Service {
 
         /*
          * Return the public S3 URL.
-         *
-         * Example:
-         *
-         * https://arusuvai-sweets.s3.amazonaws.com/
-         * products/uuid-mysore-pak.jpg
          */
         return "https://"
                 + bucketName
                 + ".s3.amazonaws.com/"
-                + fileName;
+                + finalFileName;
+    }
+
+    private String sanitizeFileName(String fileName) {
+
+        return fileName
+                .trim()
+                .toLowerCase()
+                .replaceAll("[^a-z0-9]+", "-")
+                .replaceAll("^-|-$", "");
     }
 
 
@@ -136,14 +192,6 @@ public class S3Service {
         /*
          * Ask S3 for all objects whose key starts
          * with the requested folder.
-         *
-         * Example:
-         *
-         * folder = "carousel"
-         *
-         * S3 searches:
-         *
-         * carousel/
          */
         ListObjectsV2Request request =
                 ListObjectsV2Request.builder()
@@ -188,11 +236,7 @@ public class S3Service {
      * DELETE IMAGE
      * ========================================
      *
-     * Deletes an object from S3 using its key.
-     *
-     * Example:
-     *
-     * carousel/uuid-banner.jpg
+     * Used by carousel/gallery etc.
      */
     public void deleteImage(
             String key
