@@ -27,8 +27,8 @@ function CarouselManagement() {
         if (!file.type.startsWith("image/")) {
             setError("Please select a valid image."); event.target.value = ""; return;
         }
-        if (file.size > 5 * 1024 * 1024) {
-            setError("Image size must be less than 5 MB."); event.target.value = ""; return;
+        if (file.size > 15 * 1024 * 1024) {
+            setError("Image size must be less than 15 MB."); event.target.value = ""; return;
         }
         try {
             setUploading(true); setError("");

@@ -17,6 +17,8 @@ public class GlobalExceptionHandler {
             ResourceNotFoundException exception,
             HttpServletRequest request) {
 
+        exception.printStackTrace();
+
         ApiErrorResponse response =
                 new ApiErrorResponse(
                         HttpStatus.NOT_FOUND.value(),
@@ -36,6 +38,8 @@ public class GlobalExceptionHandler {
             BusinessException exception,
             HttpServletRequest request) {
 
+        exception.printStackTrace();
+
         ApiErrorResponse response =
                 new ApiErrorResponse(
                         HttpStatus.BAD_REQUEST.value(),
@@ -49,10 +53,13 @@ public class GlobalExceptionHandler {
                 .body(response);
     }
 
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiErrorResponse> handleValidationException(
             MethodArgumentNotValidException exception,
             HttpServletRequest request) {
+
+        exception.printStackTrace();
 
         String message = exception.getBindingResult()
                 .getFieldErrors()
@@ -75,10 +82,22 @@ public class GlobalExceptionHandler {
                 .body(response);
     }
 
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiErrorResponse> handleUnexpectedException(
             Exception exception,
             HttpServletRequest request) {
+
+        /*
+         * TEMPORARY DEBUGGING
+         *
+         * This prints the REAL exception and
+         * complete stack trace to the backend console.
+         *
+         * This is what we need to identify
+         * the actual image upload failure.
+         */
+        exception.printStackTrace();
 
         ApiErrorResponse response =
                 new ApiErrorResponse(
@@ -92,5 +111,4 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(response);
     }
-
 }

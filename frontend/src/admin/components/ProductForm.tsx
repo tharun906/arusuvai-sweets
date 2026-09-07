@@ -27,7 +27,7 @@ function ProductForm({ initialValues, buttonText, loading, onSubmit }: ProductFo
         if (!file.type.startsWith("image/")) {
             setImageUrlError("Please select a valid image file."); return;
         }
-        if (file.size > 5 * 1024 * 1024) {
+        if (file.size > 15 * 1024 * 1024) {
             setImageUrlError("Image size must be less than 5 MB."); return;
         }
         setImageUrlError(""); setUploadingImage(true);

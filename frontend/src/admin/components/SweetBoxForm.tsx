@@ -126,10 +126,10 @@ function SweetBoxForm({
         /*
          * Limit image size to 5 MB.
          */
-        if (file.size > 5 * 1024 * 1024) {
+        if (file.size > 15 * 1024 * 1024) {
 
             setError(
-                "Image size must be less than 5 MB."
+                "Image size must be less than 15 MB."
             );
 
             return;
