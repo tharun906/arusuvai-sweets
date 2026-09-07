@@ -16,6 +16,24 @@ public class AuthResponse {
     private LoginResponse customer;
     private String token;
     private String googleVerificationToken;
+    private String googleEmail;
+
+    public AuthResponse(
+            boolean success,
+            String message,
+            boolean existingCustomer,
+            LoginResponse customer,
+            String token,
+            String googleVerificationToken
+    ) {
+        this.success = success;
+        this.message = message;
+        this.existingCustomer = existingCustomer;
+        this.customer = customer;
+        this.token = token;
+        this.googleVerificationToken = googleVerificationToken;
+        this.googleEmail = null;
+    }
 
     public AuthResponse(
             boolean success,
@@ -30,5 +48,6 @@ public class AuthResponse {
         this.customer = customer;
         this.token = token;
         this.googleVerificationToken = null;
+        this.googleEmail = null;
     }
 }

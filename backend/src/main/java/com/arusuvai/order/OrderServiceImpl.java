@@ -7,6 +7,7 @@ import com.arusuvai.enums.DeliveryType;
 import com.arusuvai.enums.PaymentMethod;
 import com.arusuvai.exception.BusinessException;
 import com.arusuvai.exception.ResourceNotFoundException;
+import com.arusuvai.notification.OrderEmailService;
 import com.arusuvai.product.ProductEntity;
 import com.arusuvai.product.ProductRepository;
 import com.arusuvai.sweetbox.SweetBoxRepository;
@@ -26,8 +27,18 @@ public class OrderServiceImpl implements OrderService {
     private final ProductRepository productRepository;
     private final DeliveryService deliveryService;
     private final SweetBoxRepository sweetBoxRepository;
+    private final OrderEmailService orderEmailService;
 
-    public OrderServiceImpl(OrderRepository orderRepository, OrderItemRepository orderItemRepository, ProductRepository productRepository, CustomerRepository customerRepository, OrderCalculationService orderCalculationService, DeliveryService deliveryService, SweetBoxRepository sweetBoxRepository) {
+    public OrderServiceImpl(
+            OrderRepository orderRepository,
+            OrderItemRepository orderItemRepository,
+            ProductRepository productRepository,
+            CustomerRepository customerRepository,
+            OrderCalculationService orderCalculationService,
+            DeliveryService deliveryService,
+            SweetBoxRepository sweetBoxRepository,
+            OrderEmailService orderEmailService
+    ) {
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
         this.productRepository = productRepository;
@@ -35,6 +46,7 @@ public class OrderServiceImpl implements OrderService {
         this.orderCalculationService = orderCalculationService;
         this.deliveryService = deliveryService;
         this.sweetBoxRepository = sweetBoxRepository;
+        this.orderEmailService = orderEmailService;
     }
 
 
@@ -187,6 +199,17 @@ public class OrderServiceImpl implements OrderService {
         }
 
         orderRepository.save(order);
+
+        String customerEmail = order.getCustomer().getEmail();
+
+        if (customerEmail != null && !customerEmail.isBlank()) {
+            orderEmailService.sendOrderSuccessfulEmail(
+                    customerEmail,
+                    order.getCustomer().getName(),
+                    String.valueOf(order.getId()),
+                    orderEmailService.buildOrderDetails(order)
+            );
+        }
         return mapToResponse(order);
     }
 
@@ -234,19 +257,56 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public OrderResponseDTO updateOrderStatus(Long orderId, OrderStatus orderStatus) {
-        OrderEntity order = orderRepository.findById(orderId).orElseThrow(() -> new ResourceNotFoundException("Order not found"));
+        OrderEntity order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
+
         DeliveryType deliveryType = order.getDeliveryType();
 
-        if (deliveryType == DeliveryType.LOCAL && orderStatus == OrderStatus.COURIER_DISPATCHED) {
+        if (deliveryType == DeliveryType.LOCAL
+                && orderStatus == OrderStatus.COURIER_DISPATCHED) {
             throw new BusinessException("Local orders cannot be marked as courier dispatched");
         }
 
-        if (deliveryType == DeliveryType.COURIER && orderStatus == OrderStatus.DELIVERED) {
-            throw new BusinessException("Courier orders cannot be marked as delivered");
-        }
+        // REMOVE THIS BLOCK — courier orders MUST be allowed to become DELIVERED
+    /*
+    if (deliveryType == DeliveryType.COURIER
+            && orderStatus == OrderStatus.DELIVERED) {
+        throw new BusinessException("Courier orders cannot be marked as delivered");
+    }
+    */
 
         order.setOrderStatus(orderStatus);
         orderRepository.save(order);
+
+        // Courier Dispatched email
+        if (orderStatus == OrderStatus.COURIER_DISPATCHED
+                && deliveryType == DeliveryType.COURIER) {
+
+            String customerEmail = order.getCustomer().getEmail();
+
+            if (customerEmail != null && !customerEmail.isBlank()) {
+                orderEmailService.sendCourierDispatchedEmail(
+                        customerEmail,
+                        order.getCustomer().getName(),
+                        String.valueOf(order.getId())
+                );
+            }
+        }
+
+        // Delivered email
+        if (orderStatus == OrderStatus.DELIVERED) {
+
+            String customerEmail = order.getCustomer().getEmail();
+
+            if (customerEmail != null && !customerEmail.isBlank()) {
+                orderEmailService.sendOrderDeliveredEmail(
+                        customerEmail,
+                        order.getCustomer().getName(),
+                        String.valueOf(order.getId())
+                );
+            }
+        }
+
         return mapToResponse(order);
     }
 

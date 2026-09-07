@@ -4,7 +4,12 @@ import { useAuthContext } from "../context/AuthContext";
 import { ROUTES } from "../../constants/routes";
 
 export default function GoogleOneTap() {
-    const { login, setGoogleAuthentication, setGoogleUser, isLoggedIn } = useAuthContext();
+    const {
+        login,
+        setGoogleAuthentication,
+        setGoogleUser,
+        isLoggedIn
+    } = useAuthContext();
 
     useGoogleOneTapLogin({
         use_fedcm_for_prompt: true,
@@ -60,23 +65,34 @@ export default function GoogleOneTap() {
                  * ========================================
                  */
 
-                setGoogleAuthentication(response.token);
+                setGoogleAuthentication(
+                    response.token,
+                    response.googleEmail ?? ""
+                );
+
+                if (response.googleEmail) {
+                    sessionStorage.setItem(
+                        "googleEmail",
+                        response.googleEmail
+                    );
+                }
 
                 /*
                  * Store Google verification token.
                  */
 
                 if (response.googleVerificationToken) {
-                    localStorage.setItem(
+                    sessionStorage.setItem(
                         "googleVerificationToken",
                         response.googleVerificationToken
                     );
                 } else {
-                    localStorage.setItem(
+                    sessionStorage.setItem(
                         "googleVerificationToken",
                         response.token
                     );
                 }
+
             } catch (error) {
                 console.error("Google login failed:", error);
             }

@@ -14,9 +14,9 @@ export const authService = {
     ): Promise<AuthResponse> => {
 
         const googleVerificationToken =
-            localStorage.getItem(
-                "googleVerificationToken"
-            );
+        sessionStorage.getItem(
+            "googleVerificationToken"
+        );
 
         const response =
             await api.post<AuthResponse>(

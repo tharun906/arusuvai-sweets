@@ -30,7 +30,7 @@ function Checkout() {
 
     useEffect(() => {
 
-        if (!customer || !phoneVerified) {
+        if (!customer || !phoneVerified || cartItems.length === 0) {
             return;
         }
     

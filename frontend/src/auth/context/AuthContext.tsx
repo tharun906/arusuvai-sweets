@@ -10,7 +10,7 @@ interface AuthContextType {
     isLoggedIn: boolean;
     isGoogleUser: boolean;
     setGoogleUser: (value: boolean) => void;
-    setGoogleAuthentication: (token: string) => void;
+    setGoogleAuthentication: (token: string, email: string) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -33,7 +33,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     });
 
     const [isGoogleUser, setGoogleUser] = useState<boolean>(() => {
-        return localStorage.getItem("googleProfileIncomplete") === "true";
+        return sessionStorage.getItem("googleProfileIncomplete") === "true";
     });
 
     /*
@@ -55,7 +55,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         localStorage.setItem("customer", JSON.stringify(customer));
         localStorage.setItem("token", token);
-        localStorage.removeItem("googleProfileIncomplete");
+        sessionStorage.removeItem("googleProfileIncomplete");
     };
 
     /*
@@ -69,12 +69,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
      *
      * customer remains null.
      */
-    const setGoogleAuthentication = (token: string) => {
+    const setGoogleAuthentication = (token: string, email: string) => {
         setToken(token);
         setGoogleUser(true);
-
-        localStorage.setItem("token", token);
-        localStorage.setItem("googleProfileIncomplete", "true");
+    
+        sessionStorage.setItem("token", token);
+        sessionStorage.setItem("googleProfileIncomplete", "true");
+        sessionStorage.setItem("googleEmail", email);
     };
 
     /*
@@ -116,7 +117,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         localStorage.removeItem("customer");
         localStorage.removeItem("token");
-        localStorage.removeItem("googleProfileIncomplete");
+        sessionStorage.removeItem("googleProfileIncomplete");
 
         if (callback) {
             callback();

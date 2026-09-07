@@ -13,4 +13,6 @@ export interface AuthResponse {
     token: string | null;
 
     googleVerificationToken: string | null;
+
+    googleEmail: string | null;
 }

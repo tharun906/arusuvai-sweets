@@ -207,9 +207,8 @@ function AccountModal({ open, onClose }: AccountModalProps) {
     
             setExistingCustomer(null);
             setEditingAddress(true);
-    
             setName("");
-            setEmail("");
+            setEmail(sessionStorage.getItem("googleEmail") ?? "");
             setDoorNo("");
             setAddressLine1("");
             setAddressLine2("");
@@ -528,9 +527,8 @@ function AccountModal({ open, onClose }: AccountModalProps) {
                             ========================= */}
     
                             <label className={styles.inputLabel}>
-                                Email <span>(Optional)</span>
+                              Email
                             </label>
-    
                             <input
                                 type="email"
                                 className={styles.input}
@@ -545,6 +543,10 @@ function AccountModal({ open, onClose }: AccountModalProps) {
                                 }}
                                 placeholder="Enter your email"
                             />
+
+                            <p className={styles.infoText}>
+                                Enter the correct email address to receive order updates and important information.
+                            </p>
     
                             {emailError && (
                                 <p className={styles.errorText}>
