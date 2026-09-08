@@ -1,497 +1,274 @@
 .hero {
     position: relative;
     width: 100%;
-
-    /* Let the complete desktop image define the height */
     aspect-ratio: 16 / 9;
-
     background-color: var(--background-color);
-
     background-image: url("../../../assets/herobanner/final_desklayout.png");
-
     background-size: 100% 100%;
     background-position: center top;
     background-repeat: no-repeat;
-
     overflow: hidden;
 }
-
-/* =========================================
-   DESKTOP CONTAINER
-========================================= */
-
 .container {
     position: relative;
     z-index: 2;
-
     width: min(92%, var(--container-width));
     min-height: 100%;
     margin: 0 auto;
     display: flex;
     align-items: center;
 }
-
-
-/* =========================================
-   LEFT CONTENT
-========================================= */
-
 .content {
     width: 45%;
     max-width: 620px;
-
     color: var(--text-primary);
-
     position: relative;
     z-index: 5;
     bottom: 20px;
 }
-
-
-/* =========================================
-   EYEBROW
-========================================= */
-
 .eyebrow {
     display: flex;
     align-items: center;
-
     gap: 14px;
-
     margin-bottom: 24px;
-
     color: var(--gold-color);
-
     font-size: 0.78rem;
     font-weight: 700;
-
     letter-spacing: 4px;
-
     animation: heroReveal 0.6s ease-out 0.1s both;
 }
-
-
-/* =========================================
-   MAIN TITLE
-========================================= */
-
-.primary,
-.secondary {
+.primary,.secondary {
     display: block;
-
     font-family: var(--font-heading);
-
     font-size: clamp(4rem, 5.5vw, 6rem);
-
     line-height: 0.95;
-
     font-weight: 700;
-
     letter-spacing: 2px;
 }
-
 .primary {
     color: var(--text-primary);
 }
-
 .secondary {
     color: var(--gold-color);
-
     margin-top: 8px;
 }
-
-
-/* =========================================
-   SUB HEADING
-========================================= */
-
 .content h2 {
     margin-top: 30px;
-
     color: var(--text-primary);
-
     font-size: clamp(1.8rem, 2.3vw, 2.5rem);
-
     line-height: 1.3;
-
     font-weight: 500;
-
     animation: heroReveal 0.7s ease-out 0.35s both;
 }
-
 .content h2 span {
     color: var(--gold-color);
 
     font-style: italic;
 }
-
-
-
-
-
-/* =========================================
-   DESCRIPTION
-========================================= */
-
 .content p {
     margin-top: 22px;
-
     max-width: 500px;
-
     color: var(--text-secondary);
-
     font-size: 1.05rem;
-
     line-height: 1.8;
-
     animation: heroReveal 0.7s ease-out 0.55s both;
 }
-
-
-/* =========================================
-   SHOP BUTTON
-========================================= */
-
 .button {
     margin-top: 32px;
-
     min-width: 255px;
-
     padding: 17px 38px;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     border: none;
-
     border-radius: var(--radius-pill);
-
     background: var(--gold-color);
-
     color: var(--background-color);
-
     font-size: 1rem;
-
     font-weight: 700;
-
     cursor: pointer;
-
-    box-shadow:
-        0 8px 22px rgba(212, 175, 55, 0.18);
-
+    box-shadow: 0 8px 22px rgba(212,175,55,0.18);
     transition: var(--transition);
-
     animation: heroReveal 0.7s ease-out 0.7s both;
 }
-
 .button:hover {
     transform: translateY(-3px);
-
     background: var(--gold-hover);
-
-    box-shadow:
-        0 12px 28px rgba(212, 175, 55, 0.25);
+    box-shadow: 0 12px 28px rgba(212,175,55,0.25);
 }
-
 .buttonText {
     flex: 1;
-
     text-align: center;
 }
-
 .arrow {
     margin-left: 8px;
-
     font-size: 1.1rem;
-
     transition: transform 0.25s ease;
 }
-
 .button:hover .arrow {
     transform: translateX(4px);
 }
-
-
-/* =========================================
-   MOBILE FEATURES
-========================================= */
-
 .features {
     display: none;
 }
-
 .feature {
     display: flex;
     align-items: center;
-
     gap: 8px;
-
     color: var(--text-secondary);
-
     font-size: 1rem;
-
     white-space: nowrap;
 }
-
 .featureIcon {
     color: var(--gold-color);
 }
-
 .featureDivider {
     width: 1px;
-
     height: 28px;
-
     background: var(--gold-color);
 }
-
-
-/* =========================================
-   MOBILE BACKGROUND
-========================================= */
-
-.mobileHeroImage {
+.mobileHeroVideo {
     display: none;
 }
-
-
-/* =========================================
-   ANIMATIONS
-========================================= */
-
 @keyframes heroReveal {
-
     from {
         opacity: 0;
         transform: translateY(20px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
     }
-
 }
-
-
-/* =========================================
-   TABLET
-========================================= */
-
 @media (max-width: 1100px) {
-
     .content {
         width: 80%;
     }
-
-    .primary,
-    .secondary {
+    .primary,.secondary {
         font-size: 3rem;
     }
-
-    .button{
-        margin-top: 0px;
+    .button {
+        margin-top: 0;
         min-width: 195px;
-padding: 10px 20px;
+        padding: 10px 20px;
     }
-
 }
-
-/* In-between — tablets / small laptops */
 @media (min-width: 712px) and (max-width: 1199px) {
-    .primary,
-    .secondary {
+    .primary,.secondary {
         font-size: 2.5rem;
     }
-
     .content {
         width: 55%;
     }
-
     .content p {
         font-size: .9rem;
     }
-
-    .eyebrow{
+    .eyebrow {
         margin-bottom: 9px;
-        font-size: 0.68rem;
+        font-size: .68rem;
         margin-top: 25px;
     }
-
-    .button{
+    .button {
         min-width: 160px;
         padding: 8px 15px;
-        font-size: 0.85rem;
+        font-size: .85rem;
         margin-top: 15px;
     }
-
     content h2 {
         font-size: 1rem !important;
     }
 }
-
-
-/* =========================================
-   MOBILE
-========================================= */
 @media (max-width: 480px) {
-
     .hero {
         position: relative;
         min-height: calc(100svh - 95px);
-
         background-image: none;
         background-color: var(--background-color);
-
         overflow: hidden;
     }
-
-
-    /* =========================================
-       MOBILE HERO IMAGE
-    ========================================= */
-
-    .mobileHeroImage {
+    .mobileHeroVideo {
         display: block;
-
         position: absolute;
         top: 0;
         left: 0;
-
         width: 100%;
         height: 100%;
-
         z-index: 0;
-
         overflow: hidden;
     }
-
-    .mobileHeroImage img {
+    
+    .mobileHeroVideo video {
         width: 100%;
-        height: calc(100% + 40px);
+        height: 100%;
         object-fit: cover;
-        object-position: center top;
-        transform: translateY(-64px);
+        object-position: center center;
         display: block;
     }
-
-
-    /* =========================================
-       MOBILE CONTENT
-    ========================================= */
-
     .container {
         position: relative;
         z-index: 2;
-
         width: 92%;
         min-height: 100%;
-
         padding: 15px 0 50px;
-
         display: block;
         margin: 0 auto;
     }
-
-
     .content {
         width: 100%;
         max-width: none;
-
         display: flex;
         flex-direction: column;
-
         position: relative;
         z-index: 5;
     }
-
-    /* Hide desktop branding */
-
-    .eyebrow,
-    .content h1 {
+    .eyebrow,.content h1 {
         display: none;
     }
-
-
-    /* =========================================
-       MOBILE TITLE
-    ========================================= */
-
     .content h2 {
-        margin: 30px auto;
+        margin-top: 30px;
         width: 100%;
-        font-size: 2.5rem !important;
+        font-size: 2rem !important;
         line-height: 1.5;
-        text-align: left;
-    }
-
-
-
-
-    /* =========================================
-       DESCRIPTION
-    ========================================= */
-
-    .content p {
-        order: 3;
-
-        width: 50%;
-
-        margin: 95px  0;
-
-        font-size: 0.9rem !important;
-        line-height: 1.7;
-
         text-align: left;
         color: white;
     }
-
-
-    /* =========================================
-       SHOP BUTTON
-    ========================================= */
-
+    .content p {
+        order: 3;
+        width: 100%;
+        margin-bottom: 95px 0;
+        font-size: .9rem !important;
+        line-height: 1.7;
+        text-align: center;
+        color: white;
+        margin-top: 60%;
+    }
     .button {
         order: 4;
-
         min-width: 175px;
-
         margin: 28px auto 0;
-
         padding: 10px 17px;
-
-        font-size: 0.9rem;
+        font-size: .9rem;
     }
-
-
-    /* =========================================
-       MOBILE FEATURES
-    ========================================= */
-
     .features {
         order: 5;
-
         display: flex;
-
         justify-content: center;
         align-items: center;
-
         flex-wrap: wrap;
-
         gap: 8px;
-
         margin-top: 28px;
-
-        font-size: 0.9rem !important;
+        font-size: .9rem !important;
     }
-
     .featureDivider {
         height: 20px;
     }
-
-    .feature{
-        font-size: 0.85rem;
+    .feature {
+        font-size: .85rem;
         color: white;
+    }
+
+    .content h2 span {
+        color: #fdcb13;
+        font-style: italic;
     }
 }

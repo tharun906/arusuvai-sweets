@@ -1,7 +1,9 @@
 package com.arusuvai.notification;
 
-import org.springframework.mail.SimpleMailMessage;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,22 +15,32 @@ public class EmailService {
         this.mailSender = mailSender;
     }
 
+    public void sendEmail(
+            String to,
+            String subject,
+            String htmlContent
+    ) {
 
+        try {
 
+            MimeMessage message = mailSender.createMimeMessage();
 
+            MimeMessageHelper helper =
+                    new MimeMessageHelper(message, false, "UTF-8");
 
-//    It gives us one common method to send any email.
-//    Later, Order Successful, Courier Dispatched, and Delivered emails can all reuse it.
+            helper.setFrom("support@arusuvaisweets.in");
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setText(htmlContent, true);
 
-    public void sendEmail(String to, String subject, String text) {
+            mailSender.send(message);
 
-        SimpleMailMessage message = new SimpleMailMessage();
+        } catch (MessagingException e) {
 
-        message.setFrom("support@arusuvaisweets.in");
-        message.setTo(to);
-        message.setSubject(subject);
-        message.setText(text);
-
-        mailSender.send(message);
+            throw new RuntimeException(
+                    "Failed to send email",
+                    e
+            );
+        }
     }
 }

@@ -5,16 +5,18 @@ import com.arusuvai.exception.*;
 import com.arusuvai.order.*;
 import com.arusuvai.product.*;
 import com.arusuvai.sweetbox.*;
+import com.arusuvai.util.WeightConverter;
 import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.util.*;
 
 @Service
 public class OrderCalculationServiceImpl implements OrderCalculationService {
+
     private final CustomerRepository customerRepository;
     private final ProductRepository productRepository;
     private final SweetBoxRepository sweetBoxRepository;
-
     private final DeliveryService deliveryService;
 
     public OrderCalculationServiceImpl(
@@ -30,32 +32,67 @@ public class OrderCalculationServiceImpl implements OrderCalculationService {
     }
 
     @Override
-    public OrderCalculationResult calculateCheckout(CheckoutRequestDTO request) {
+    public OrderCalculationResult calculateCheckout(
+            CheckoutRequestDTO request
+    ) {
+
         CustomerEntity customer =
                 customerRepository.findById(request.getCustomerId())
                         .orElseThrow(() ->
-                                new ResourceNotFoundException("Customer not found")
+                                new ResourceNotFoundException(
+                                        "Customer not found"
+                                )
                         );
 
         List<CalculatedOrderItem> items = new ArrayList<>();
+
         BigDecimal total = BigDecimal.ZERO;
 
+        BigDecimal totalWeightKg = BigDecimal.ZERO;
+
         for (OrderItemRequestDTO req : request.getItems()) {
-            CalculatedOrderItem item = new CalculatedOrderItem();
+
+            CalculatedOrderItem item =
+                    new CalculatedOrderItem();
 
             if (req.getItemType() == OrderItemType.PRODUCT) {
-                if (req.getProductId() == null) throw new BusinessException("Product ID is required");
-                if (req.getSweetBoxId() != null) throw new BusinessException("Product order cannot contain a sweet box ID");
-                if (req.getWeight() == null || req.getWeight().isBlank()) throw new BusinessException("Weight is required");
 
-                ProductEntity product = productRepository.findById(req.getProductId())
-                        .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+                if (req.getProductId() == null)
+                    throw new BusinessException(
+                            "Product ID is required"
+                    );
+
+                if (req.getSweetBoxId() != null)
+                    throw new BusinessException(
+                            "Product order cannot contain a sweet box ID"
+                    );
+
+                if (req.getWeight() == null ||
+                        req.getWeight().isBlank())
+                    throw new BusinessException(
+                            "Weight is required"
+                    );
+
+                ProductEntity product =
+                        productRepository.findById(req.getProductId())
+                                .orElseThrow(() ->
+                                        new ResourceNotFoundException(
+                                                "Product not found"
+                                        )
+                                );
 
                 BigDecimal price = switch (req.getWeight()) {
+
                     case "250g" -> product.getPrice250g();
+
                     case "500g" -> product.getPrice500g();
+
                     case "1kg" -> product.getPrice1kg();
-                    default -> throw new BusinessException("Invalid weight");
+
+                    default ->
+                            throw new BusinessException(
+                                    "Invalid weight"
+                            );
                 };
 
                 item.setItemType(OrderItemType.PRODUCT);
@@ -64,34 +101,97 @@ public class OrderCalculationServiceImpl implements OrderCalculationService {
                 item.setWeight(req.getWeight());
                 item.setQuantity(req.getQuantity());
                 item.setPricePerUnit(price);
-                item.setItemTotal(price.multiply(BigDecimal.valueOf(req.getQuantity())));
+
+                item.setItemTotal(
+                        price.multiply(
+                                BigDecimal.valueOf(
+                                        req.getQuantity()
+                                )
+                        )
+                );
 
             } else if (req.getItemType() == OrderItemType.SWEET_BOX) {
-                if (req.getSweetBoxId() == null) throw new BusinessException("Sweet box ID is required");
-                if (req.getProductId() != null) throw new BusinessException("Sweet box order cannot contain a product ID");
-                if (req.getWeight() != null) throw new BusinessException("Weight should not be provided for a sweet box");
-                if (req.getQuantity() > 10) throw new BusinessException("Maximum 10 boxes can be purchased per order");
 
-                SweetBoxEntity box = sweetBoxRepository.findById(req.getSweetBoxId())
-                        .orElseThrow(() -> new ResourceNotFoundException("Sweet box not found"));
+                if (req.getSweetBoxId() == null)
+                    throw new BusinessException(
+                            "Sweet box ID is required"
+                    );
 
-                if (!box.isActive()) throw new BusinessException("This sweet box is currently unavailable");
+                if (req.getProductId() != null)
+                    throw new BusinessException(
+                            "Sweet box order cannot contain a product ID"
+                    );
+
+                if (req.getWeight() != null)
+                    throw new BusinessException(
+                            "Weight should not be provided for a sweet box"
+                    );
+
+                if (req.getQuantity() > 10)
+                    throw new BusinessException(
+                            "Maximum 10 boxes can be purchased per order"
+                    );
+
+                SweetBoxEntity box =
+                        sweetBoxRepository.findById(
+                                req.getSweetBoxId()
+                        ).orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "Sweet box not found"
+                                )
+                        );
+
+                if (!box.isActive())
+                    throw new BusinessException(
+                            "This sweet box is currently unavailable"
+                    );
 
                 BigDecimal price = box.getPrice();
+
                 item.setItemType(OrderItemType.SWEET_BOX);
                 item.setProduct(null);
                 item.setSweetBox(box);
                 item.setWeight(box.getTotalWeight());
                 item.setQuantity(req.getQuantity());
                 item.setPricePerUnit(price);
-                item.setItemTotal(price.multiply(BigDecimal.valueOf(req.getQuantity())));
+
+                item.setItemTotal(
+                        price.multiply(
+                                BigDecimal.valueOf(
+                                        req.getQuantity()
+                                )
+                        )
+                );
 
             } else {
-                throw new BusinessException("Invalid order item type");
+
+                throw new BusinessException(
+                        "Invalid order item type"
+                );
             }
 
             items.add(item);
-            total = total.add(item.getItemTotal());
+
+            total = total.add(
+                    item.getItemTotal()
+            );
+
+            BigDecimal itemWeightKg =
+                    WeightConverter.toKg(
+                            item.getWeight()
+                    );
+
+            BigDecimal totalItemWeightKg =
+                    itemWeightKg.multiply(
+                            BigDecimal.valueOf(
+                                    item.getQuantity()
+                            )
+                    );
+
+            totalWeightKg =
+                    totalWeightKg.add(
+                            totalItemWeightKg
+                    );
         }
 
         if (customer.getLatitude() == null ||
@@ -109,7 +209,10 @@ public class OrderCalculationServiceImpl implements OrderCalculationService {
                 );
 
         DeliveryCheckResponse deliveryDetails =
-                deliveryService.getDeliveryDetails(distance);
+                deliveryService.getDeliveryDetails(
+                        distance,
+                        totalWeightKg
+                );
 
         BigDecimal deliveryCharge =
                 deliveryDetails.getDeliveryCharge();

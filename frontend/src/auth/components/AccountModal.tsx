@@ -242,6 +242,22 @@ function AccountModal({ open, onClose }: AccountModalProps) {
     
             navigator.geolocation.getCurrentPosition(
                 position => {
+
+                    console.log(
+                        "Captured latitude:",
+                        position.coords.latitude
+                    );
+                
+                    console.log(
+                        "Captured longitude:",
+                        position.coords.longitude
+                    );
+                
+                    console.log(
+                        "Location accuracy:",
+                        position.coords.accuracy,
+                        "meters"
+                    );
                     setLatitude(position.coords.latitude);
                     setLongitude(position.coords.longitude);
                     setCapturingLocation(false);

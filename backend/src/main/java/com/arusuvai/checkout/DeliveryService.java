@@ -59,7 +59,8 @@ public class DeliveryService {
     }
 
     public DeliveryCheckResponse getDeliveryDetails(
-            double distance
+            double distance,
+            BigDecimal totalWeightKg
     ) {
 
         BigDecimal deliveryCharge;
@@ -84,7 +85,6 @@ public class DeliveryService {
 
             message =
                     "Free delivery. Cash on Delivery and Online Payment are available.";
-
         }
 
         /*
@@ -104,7 +104,6 @@ public class DeliveryService {
 
             message =
                     "₹40 delivery charge. Cash on Delivery and Online Payment are available.";
-
         }
 
         /*
@@ -112,18 +111,36 @@ public class DeliveryService {
          * ABOVE 10 KM
          * ========================================
          *
-         * ₹70 courier delivery + Online Payment only
+         * Weight-based courier delivery
+         * ₹50 per kg
+         * Customer pays configured percentage
+         * Online Payment only
          */
         else {
 
+            BigDecimal courierCost =
+                    totalWeightKg.multiply(
+                            DeliveryConstants.COURIER_RATE_PER_KG
+                    );
+
             deliveryCharge =
-                    DeliveryConstants.OUTSIDE_LOCAL_DELIVERY_CHARGE;
+                    courierCost
+                            .multiply(
+                                    DeliveryConstants.COURIER_CUSTOMER_PERCENTAGE
+                            )
+                            .divide(
+                                    BigDecimal.valueOf(100)
+                            );
 
             codAvailable = false;
             localDelivery = false;
 
             message =
-                    "₹70 delivery charge. Only Online Payment is available.";
+                    "Courier delivery charge: ₹"
+                            + deliveryCharge
+                            .stripTrailingZeros()
+                            .toPlainString()
+                            + ". Only Online Payment is available.";
         }
 
         return new DeliveryCheckResponse(
@@ -136,6 +153,15 @@ public class DeliveryService {
         );
     }
 
+    /*
+     * Used by the delivery-location check endpoint.
+     *
+     * This endpoint does not know the customer's cart/order weight.
+     * Therefore, it only determines delivery availability and distance.
+     *
+     * The actual weight-based courier charge is calculated during
+     * checkout using getDeliveryDetails(distance, totalWeightKg).
+     */
     public DeliveryCheckResponse checkDeliveryAvailability(
             double customerLatitude,
             double customerLongitude
@@ -147,6 +173,38 @@ public class DeliveryService {
                         customerLongitude
                 );
 
-        return getDeliveryDetails(distance);
+        if (distance <= DeliveryConstants.FREE_DELIVERY_DISTANCE_KM) {
+
+            return new DeliveryCheckResponse(
+                    distance,
+                    true,
+                    true,
+                    DeliveryConstants.FREE_DELIVERY_CHARGE,
+                    true,
+                    "Free delivery. Cash on Delivery and Online Payment are available."
+            );
+
+        } else if (distance <= DeliveryConstants.COD_MAX_DISTANCE_KM) {
+
+            return new DeliveryCheckResponse(
+                    distance,
+                    true,
+                    true,
+                    DeliveryConstants.LOCAL_DELIVERY_CHARGE,
+                    true,
+                    "₹40 delivery charge. Cash on Delivery and Online Payment are available."
+            );
+
+        } else {
+
+            return new DeliveryCheckResponse(
+                    distance,
+                    true,
+                    false,
+                    null,
+                    false,
+                    "Courier delivery. Only Online Payment is available."
+            );
+        }
     }
 }

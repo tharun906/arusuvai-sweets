@@ -11,6 +11,7 @@ import { useProducts } from "../../hooks/useProducts";
 import { useCategories } from "../../hooks/useCategories";
 
 import Loading from "../../components/common/Loading";
+import EmailNotification from "../../components/home/EmailNotification/EmailNotification";
 
 
 function Home() {
@@ -55,6 +56,8 @@ function Home() {
     return (
 
         <>
+
+            <EmailNotification />
 
             {/* Hero */}
 

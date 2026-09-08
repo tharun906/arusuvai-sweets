@@ -1,5 +1,6 @@
 import styles from "./HeroBanner.module.css";
-import MobileHero from "../../../assets/herobanner/mobile_layout.png";
+import HeroVideo from "../../../assets/herobanner/test_video.mp4";
+
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -18,12 +19,19 @@ function HeroBanner() {
     return (
         <section className={styles.hero}>
 
-            {/* Mobile hero image */}
-            <div className={styles.mobileHeroImage}>
-                <img
-                    src={MobileHero}
-                    alt=""
-                />
+            {/* Mobile hero video */}
+            <div className={styles.mobileHeroVideo}>
+                <video
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                >
+                    <source
+                        src={HeroVideo}
+                        type="video/mp4"
+                    />
+                </video>
             </div>
 
             <div className={styles.container}>
@@ -50,6 +58,7 @@ function HeroBanner() {
                     </div>
 
                     <h1>
+
                         <span className={styles.primary}>
                             ARUSUVAI
                         </span>
@@ -57,6 +66,7 @@ function HeroBanner() {
                         <span className={styles.secondary}>
                             SWEETS
                         </span>
+
                     </h1>
 
                     <h2>
@@ -67,7 +77,6 @@ function HeroBanner() {
                             Made With Care.
                         </span>
                     </h2>
-
 
                     <p>
                         Handcrafted with premium ingredients,
@@ -97,39 +106,29 @@ function HeroBanner() {
                     <div className={styles.features}>
 
                         <div className={styles.feature}>
-
-       
                             <span>
                                 Pure Ghee
                             </span>
-
                         </div>
 
                         <div className={styles.featureDivider}></div>
 
                         <div className={styles.feature}>
-
-                          
                             <span>
                                 Premium
                                 <br />
                                 Quality
                             </span>
-
                         </div>
 
                         <div className={styles.featureDivider}></div>
 
                         <div className={styles.feature}>
-
-              
-
                             <span>
                                 Traditional
                                 <br />
                                 Recipes
                             </span>
-
                         </div>
 
                     </div>
