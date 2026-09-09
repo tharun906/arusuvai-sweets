@@ -169,6 +169,12 @@
     color: var(--info-color);
 }
 
+.order-status-badge.cancelled {
+    background: var(--error-background);
+    border: 1px solid var(--error-color);
+    color: var(--error-color);
+}
+
 /* ========================================
    Loading
 ======================================== */

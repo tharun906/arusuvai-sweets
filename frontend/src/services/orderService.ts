@@ -27,5 +27,17 @@ export const orderService = {
             );
 
         return response.data;
+    },
+
+    cancelOrder: async (
+        orderId: number
+    ): Promise<Order> => {
+
+        const response =
+            await api.post<Order>(
+                `${API_ENDPOINTS.ORDERS}/${orderId}/cancel`
+            );
+
+        return response.data;
     }
 };

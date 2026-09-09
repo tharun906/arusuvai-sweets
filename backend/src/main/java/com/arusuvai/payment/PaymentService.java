@@ -5,10 +5,29 @@ import com.arusuvai.order.OrderResponseDTO;
 import java.math.BigDecimal;
 
 public interface PaymentService {
-    PaymentResponseDTO createPaymentOrder(Long orderId, BigDecimal totalAmount);
-    OrderResponseDTO verifyPayment(PaymentVerifyRequestDTO request, Long customerId);
+
+    PaymentResponseDTO createPaymentOrder(
+            Long orderId,
+            BigDecimal totalAmount
+    );
+
+    OrderResponseDTO verifyPayment(
+            PaymentVerifyRequestDTO request,
+            Long customerId
+    );
+
     OrderResponseDTO markPaymentFailed(
             Long orderId,
             Long customerId
-    );    void handleWebhook(String payload, String signature);
+    );
+
+    void handleWebhook(
+            String payload,
+            String signature
+    );
+
+    BigDecimal refundPayment(
+            Long orderId,
+            BigDecimal refundAmount
+    );
 }

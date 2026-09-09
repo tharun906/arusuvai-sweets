@@ -33,4 +33,10 @@ public final class DeliveryConstants {
     // Customer pays 80% of the calculated courier cost
     public static final BigDecimal COURIER_CUSTOMER_PERCENTAGE =
             BigDecimal.valueOf(80);
+
+    // Customer receives 80% of the paid amount when
+// an eligible online order is cancelled.
+    public static final BigDecimal CANCELLATION_REFUND_PERCENTAGE =
+            BigDecimal.valueOf(80);
+
 }

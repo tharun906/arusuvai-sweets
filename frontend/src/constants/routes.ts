@@ -8,6 +8,17 @@ export const ROUTES = {
 
     ORDERS: "/orders",
 
+
+    ABOUT: "/about",
+    SERVICES: "/services",
+    CONTACT: "/contact",
+    PRIVACY_POLICY: "/privacy-policy",
+    TERMS_AND_CONDITIONS: "/terms-and-conditions",
+    SHIPPING_DELIVERY: "/shipping-delivery",
+    CANCELLATION_REFUND: "/cancellation-refund",
+    RETURN_REPLACEMENT: "/return-replacement",
+
+
     ADMIN_DASHBOARD: "/admin",
 
     ADMIN_ORDERS: "/admin/orders",

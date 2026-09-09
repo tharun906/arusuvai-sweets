@@ -4,33 +4,39 @@ export type PaymentStatus =
     | "FAILED"
     | "REFUNDED";
 
-export interface Order {
+export type PaymentMethod =
+    | "COD"
+    | "ONLINE";
 
-    orderId: number;
+    export interface Order {
 
-    customerId: number;
-
-    customerName: string;
-
-    totalAmount: number;
-
-    orderStatus: string;
-
-    paymentStatus: PaymentStatus;
-
-    deliveryType: "LOCAL" | "COURIER";
-
-    deliveryAddress: string;
-
-    latitude: number | null;
-
-    longitude: number | null;
-
-    createdAt: string;
-
-    items: OrderItem[];
-
-}
+        orderId: number;
+    
+        customerId: number;
+    
+        customerName: string;
+    
+        totalAmount: number;
+    
+        orderStatus: string;
+    
+        paymentStatus: PaymentStatus;
+    
+        paymentMethod: PaymentMethod;
+    
+        deliveryType: "LOCAL" | "COURIER";
+    
+        deliveryAddress: string;
+    
+        latitude: number | null;
+    
+        longitude: number | null;
+    
+        createdAt: string;
+    
+        items: OrderItem[];
+    
+    }
 
 export interface OrderItem {
 

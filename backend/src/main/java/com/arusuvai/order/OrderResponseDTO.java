@@ -1,6 +1,7 @@
 package com.arusuvai.order;
 
 import com.arusuvai.enums.DeliveryType;
+import com.arusuvai.enums.PaymentMethod;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,6 +27,8 @@ public class OrderResponseDTO {
     private OrderStatus orderStatus;
 
     private PaymentStatus paymentStatus;
+
+    private PaymentMethod paymentMethod;
 
     private DeliveryType deliveryType;
 

@@ -28,10 +28,19 @@ function OrderStatusSelect({
         }
     };
 
-    if (currentStatus === "DELIVERED") {
+    if (
+        currentStatus === "DELIVERED" ||
+        currentStatus === "CANCELLED"
+    ) {
         return (
-            <span className="order-status-badge delivered">
-                DELIVERED
+            <span
+                className={`order-status-badge ${
+                    currentStatus === "CANCELLED"
+                        ? "cancelled"
+                        : "delivered"
+                }`}
+            >
+                {currentStatus}
             </span>
         );
     }

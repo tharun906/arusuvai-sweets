@@ -27,4 +27,10 @@ public interface OrderService {
 
     OrderResponseDTO updateOrderStatus(Long orderId, OrderStatus orderStatus);
     OrderResponseDTO updatePaymentStatus(Long orderId, PaymentStatus paymentStatus);
+
+    OrderResponseDTO cancelOrder(
+            Long orderId,
+            Long customerId
+    );
+
 }

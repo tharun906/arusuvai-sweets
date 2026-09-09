@@ -40,16 +40,14 @@ public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
             String razorpayOrderId
     );
 
+
     @Query("""
     SELECT o
     FROM OrderEntity o
     WHERE o.customer.id = :customerId
-      AND (
-          o.paymentStatus = com.arusuvai.order.PaymentStatus.PAID
-          OR (
-              o.paymentMethod = com.arusuvai.enums.PaymentMethod.COD
-              AND o.paymentStatus = com.arusuvai.order.PaymentStatus.PENDING
-          )
+      AND NOT (
+          o.paymentMethod = com.arusuvai.enums.PaymentMethod.ONLINE
+          AND o.paymentStatus = com.arusuvai.order.PaymentStatus.PENDING
       )
     ORDER BY o.createdAt DESC
 """)

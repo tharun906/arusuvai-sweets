@@ -1,6 +1,8 @@
+import { Link } from "react-router-dom";
 import styles from "./Footer.module.css";
 
 import { APP_NAME } from "../../constants/appConstants";
+import { ROUTES } from "../../constants/routes";
 
 function Footer() {
 
@@ -17,11 +19,8 @@ function Footer() {
                     <h2>{APP_NAME}</h2>
 
                     <p>
-
                         Authentic Traditional Sweets
-
                         Crafted With Love & Quality.
-
                     </p>
 
                 </div>
@@ -30,11 +29,55 @@ function Footer() {
 
                     <h3>Quick Links</h3>
 
-                    <a href="/">Home</a>
+                    <Link to={ROUTES.HOME}>
+                        Home
+                    </Link>
 
-                    <a href="/orders">Orders</a>
+                    <Link to={ROUTES.ABOUT}>
+                        About Us
+                    </Link>
 
-                    <a href="/cart">Cart</a>
+                    <Link to={ROUTES.SERVICES}>
+                        Services
+                    </Link>
+
+                    <Link to={ROUTES.CONTACT}>
+                        Contact Us
+                    </Link>
+
+                    <Link to={ROUTES.ORDERS}>
+                        Orders
+                    </Link>
+
+                    <Link to={ROUTES.CART}>
+                        Cart
+                    </Link>
+
+                </div>
+
+                <div className={styles.policies}>
+
+                    <h3>Policies</h3>
+
+                    <Link to={ROUTES.PRIVACY_POLICY}>
+                        Privacy Policy
+                    </Link>
+
+                    <Link to={ROUTES.TERMS_AND_CONDITIONS}>
+                        Terms & Conditions
+                    </Link>
+
+                    <Link to={ROUTES.SHIPPING_DELIVERY}>
+                        Shipping & Delivery
+                    </Link>
+
+                    <Link to={ROUTES.CANCELLATION_REFUND}>
+                        Cancellation & Refund
+                    </Link>
+
+                    <Link to={ROUTES.RETURN_REPLACEMENT}>
+                        Return & Replacement
+                    </Link>
 
                 </div>
 
@@ -42,11 +85,23 @@ function Footer() {
 
                     <h3>Contact</h3>
 
-                    <p>Kumarananthapuram, Tiruppur, Tamil Nadu</p>
+                    <p>
+                        Arusuvai Catering
+                    </p>
 
-                    <p>+91 94431 78984</p>
+                    <p>
+                        19/9 Kumarananthapuram, 7th Street,
+                        West Manipal Store Opp,
+                        Tiruppur, Tamil Nadu – 641602
+                    </p>
 
-                    <p>support@arusuvaisweets.in</p>
+                    <a href="tel:+919443178984">
+                        +91 94431 78984
+                    </a>
+
+                    <a href="mailto:support@arusuvaisweets.in">
+                        support@arusuvaisweets.in
+                    </a>
 
                 </div>
 
@@ -59,9 +114,7 @@ function Footer() {
             </div>
 
         </footer>
-
     );
-
 }
 
 export default Footer;

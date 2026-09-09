@@ -6,6 +6,7 @@ export function useOrders() {
 
     const [orders, setOrders] = useState<Order[]>([]);
     const [loading, setLoading] = useState(false);
+    const [cancelling, setCancelling] = useState(false);
 
     const loadOrders = async (): Promise<void> => {
 
@@ -25,9 +26,32 @@ export function useOrders() {
         }
     };
 
+    const cancelOrder = async (
+        orderId: number
+    ): Promise<void> => {
+
+        setCancelling(true);
+
+        try {
+
+            await orderService.cancelOrder(orderId);
+
+            // Refresh My Orders so the UI immediately
+            // reflects CANCELLED / REFUNDED status.
+            await loadOrders();
+
+        } finally {
+
+            setCancelling(false);
+
+        }
+    };
+
     return {
         orders,
         loading,
-        loadOrders
+        cancelling,
+        loadOrders,
+        cancelOrder
     };
 }

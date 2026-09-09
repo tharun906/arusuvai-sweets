@@ -96,4 +96,20 @@ public class OrderController {
                 )
         );
     }
+
+    @PostMapping("/{orderId}/cancel")
+    public ResponseEntity<OrderResponseDTO> cancelMyOrder(
+            @PathVariable Long orderId,
+            Authentication authentication) {
+
+        Long customerId =
+                Long.parseLong(authentication.getName());
+
+        return ResponseEntity.ok(
+                orderService.cancelOrder(
+                        orderId,
+                        customerId
+                )
+        );
+    }
 }
