@@ -136,14 +136,14 @@ function OrderCard({
 
             <div className="order-items">
 
-                {order.items.map((item) => (
+            {order.items.map((item) => (
 
-                    <OrderItemRow
-                        key={`${item.itemType}-${item.productId ?? item.sweetBoxId}-${item.weight}`}
-                        item={item}
-                    />
+                <OrderItemRow
+                    key={`${item.itemType}-${item.productId ?? item.sweetBoxId ?? item.comboPackId}-${item.weight}`}
+                    item={item}
+                />
 
-                ))}
+            ))}
 
             </div>
 

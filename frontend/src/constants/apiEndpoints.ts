@@ -4,6 +4,8 @@ export const API_ENDPOINTS = {
 
     PRODUCTS: "/api/products",
 
+    COMBO_PACK: "/api/combo-pack",
+
     CHECKOUT_SUMMARY: "/api/checkout/summary",
 
     ORDERS: "/api/orders",

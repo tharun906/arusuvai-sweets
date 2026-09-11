@@ -8,13 +8,20 @@ interface OrderItemRowProps {
 
 function OrderItemRow({ item }: OrderItemRowProps) {
 
+    const itemName =
+        item.itemType === "PRODUCT"
+            ? item.productName
+            : item.itemType === "SWEET_BOX"
+                ? item.sweetBoxName
+                : item.comboPackName;
+
     return (
 
         <div className="order-item">
 
             <div className="order-item-details">
 
-                <h4>{item.productName}</h4>
+                <h4>{itemName}</h4>
 
                 <p>
                     {item.weight} × {item.quantity}

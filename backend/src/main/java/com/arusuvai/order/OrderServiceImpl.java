@@ -1,6 +1,7 @@
 package com.arusuvai.order;
 
 import com.arusuvai.checkout.*;
+import com.arusuvai.combopack.ComboPackRepository;
 import com.arusuvai.customer.CustomerEntity;
 import com.arusuvai.customer.CustomerRepository;
 import com.arusuvai.enums.DeliveryType;
@@ -32,7 +33,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderEmailService orderEmailService;
     private final PaymentService paymentService;
 
-    public OrderServiceImpl(OrderRepository orderRepository, OrderItemRepository orderItemRepository, ProductRepository productRepository, CustomerRepository customerRepository, OrderCalculationService orderCalculationService, DeliveryService deliveryService, SweetBoxRepository sweetBoxRepository, OrderEmailService orderEmailService, @Lazy PaymentService paymentService) {
+    public OrderServiceImpl(OrderRepository orderRepository, OrderItemRepository orderItemRepository, ProductRepository productRepository, CustomerRepository customerRepository, OrderCalculationService orderCalculationService, DeliveryService deliveryService, SweetBoxRepository sweetBoxRepository, ComboPackRepository comboPackRepository,OrderEmailService orderEmailService, @Lazy PaymentService paymentService) {
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
         this.productRepository = productRepository;
@@ -118,6 +119,7 @@ public class OrderServiceImpl implements OrderService {
             orderItem.setItemType(item.getItemType());
             orderItem.setProduct(item.getProduct());
             orderItem.setSweetBox(item.getSweetBox());
+            orderItem.setComboPack(item.getComboPack());
             orderItem.setWeight(item.getWeight());
             orderItem.setQuantity(item.getQuantity());
             orderItem.setPricePerUnit(item.getPricePerUnit());
@@ -138,12 +140,75 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private OrderResponseDTO mapToResponse(OrderEntity order) {
-        List<OrderItemResponseDTO> items = order.getOrderItems().stream().map(item -> {
-            if (item.getItemType() == OrderItemType.PRODUCT)
-                return new OrderItemResponseDTO(OrderItemType.PRODUCT, item.getProduct().getId(), item.getProduct().getName(), null, null, item.getWeight(), item.getQuantity(), item.getPricePerUnit(), item.getTotalPrice());
-            return new OrderItemResponseDTO(OrderItemType.SWEET_BOX, null, null, item.getSweetBox().getId(), item.getSweetBox().getName(), item.getWeight(), item.getQuantity(), item.getPricePerUnit(), item.getTotalPrice());
-        }).toList();
-        return new OrderResponseDTO(order.getId(), order.getCustomer().getId(), order.getCustomer().getName(), order.getTotalAmount(), order.getOrderStatus(), order.getPaymentStatus(), order.getPaymentMethod(), order.getDeliveryType(), order.getDeliveryAddress(), order.getCustomer().getLatitude(), order.getCustomer().getLongitude(), order.getCreatedAt(), items);
+
+        List<OrderItemResponseDTO> items =
+                order.getOrderItems().stream().map(item -> {
+
+                    if (item.getItemType() == OrderItemType.PRODUCT) {
+
+                        return new OrderItemResponseDTO(
+                                OrderItemType.PRODUCT,
+                                item.getProduct().getId(),
+                                item.getProduct().getName(),
+                                null,
+                                null,
+                                null,
+                                null,
+                                item.getWeight(),
+                                item.getQuantity(),
+                                item.getPricePerUnit(),
+                                item.getTotalPrice()
+                        );
+                    }
+
+                    if (item.getItemType() == OrderItemType.SWEET_BOX) {
+
+                        return new OrderItemResponseDTO(
+                                OrderItemType.SWEET_BOX,
+                                null,
+                                null,
+                                item.getSweetBox().getId(),
+                                item.getSweetBox().getName(),
+                                null,
+                                null,
+                                item.getWeight(),
+                                item.getQuantity(),
+                                item.getPricePerUnit(),
+                                item.getTotalPrice()
+                        );
+                    }
+
+                    return new OrderItemResponseDTO(
+                            OrderItemType.COMBO_PACK,
+                            null,
+                            null,
+                            null,
+                            null,
+                            item.getComboPack().getId(),
+                            item.getComboPack().getTitle(),
+                            item.getWeight(),
+                            item.getQuantity(),
+                            item.getPricePerUnit(),
+                            item.getTotalPrice()
+                    );
+
+                }).toList();
+
+        return new OrderResponseDTO(
+                order.getId(),
+                order.getCustomer().getId(),
+                order.getCustomer().getName(),
+                order.getTotalAmount(),
+                order.getOrderStatus(),
+                order.getPaymentStatus(),
+                order.getPaymentMethod(),
+                order.getDeliveryType(),
+                order.getDeliveryAddress(),
+                order.getCustomer().getLatitude(),
+                order.getCustomer().getLongitude(),
+                order.getCreatedAt(),
+                items
+        );
     }
 
     @Override
@@ -158,7 +223,7 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderStatus(OrderStatus.PREPARING);
 
         for (OrderItemEntity orderItem : order.getOrderItems()) {
-            if (orderItem.getItemType() == OrderItemType.SWEET_BOX) continue;
+            if (orderItem.getItemType() != OrderItemType.PRODUCT) continue;
             ProductEntity product = productRepository.findByIdForUpdate(orderItem.getProduct().getId()).orElseThrow(() -> new ResourceNotFoundException("Product not found"));
             BigDecimal orderedWeight = WeightConverter.toKg(orderItem.getWeight());
             BigDecimal stockToReduce = orderedWeight.multiply(BigDecimal.valueOf(orderItem.getQuantity()));
@@ -295,7 +360,7 @@ public class OrderServiceImpl implements OrderService {
 
     private void restoreProductStock(OrderEntity order) {
         for (OrderItemEntity orderItem : order.getOrderItems()) {
-            if (orderItem.getItemType() == OrderItemType.SWEET_BOX) continue;
+            if (orderItem.getItemType() != OrderItemType.PRODUCT) continue;
             ProductEntity product = productRepository.findByIdForUpdate(orderItem.getProduct().getId()).orElseThrow(() -> new ResourceNotFoundException("Product not found"));
             BigDecimal orderedWeight = WeightConverter.toKg(orderItem.getWeight());
             BigDecimal stockToRestore = orderedWeight.multiply(BigDecimal.valueOf(orderItem.getQuantity()));

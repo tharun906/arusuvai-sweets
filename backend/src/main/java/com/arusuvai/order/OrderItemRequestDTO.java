@@ -15,6 +15,8 @@ public class OrderItemRequestDTO {
 
     private Long sweetBoxId;
 
+    private Long comboPackId;
+
     private String weight;
 
     @NotNull

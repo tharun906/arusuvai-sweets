@@ -29,21 +29,14 @@ function AdminOrderDetailsModal({
                 <div className="modal-header">
 
                     <h2>
-
                         Order #{order.orderId}
-
                     </h2>
 
                     <button
-
                         className="close-btn"
-
                         onClick={onClose}
-
                     >
-
                         ✕
-
                     </button>
 
                 </div>
@@ -51,11 +44,8 @@ function AdminOrderDetailsModal({
                 <div className="order-info">
 
                     <p>
-
                         <strong>Customer:</strong>
-
                         {order.customerName}
-
                     </p>
 
                     <p>
@@ -64,46 +54,54 @@ function AdminOrderDetailsModal({
                     </p>
 
                     <div className="directions-container">
-                        {order.latitude != null && order.longitude != null && (
-                            <button
-                                type="button"
-                                className="directions-btn"
-                                onClick={() => {
-                                    const mapsUrl =
-                                        `https://www.google.com/maps/dir/?api=1&destination=${order.latitude},${order.longitude}`;
 
-                                    window.open(mapsUrl, "_blank");
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faLocationDot} /> Get Directions
-                            </button>
-                        )}
+                        {order.latitude != null &&
+                            order.longitude != null && (
+
+                                <button
+                                    type="button"
+                                    className="directions-btn"
+                                    onClick={() => {
+
+                                        const mapsUrl =
+                                            `https://www.google.com/maps/dir/?api=1&destination=${order.latitude},${order.longitude}`;
+
+                                        window.open(
+                                            mapsUrl,
+                                            "_blank"
+                                        );
+
+                                    }}
+                                >
+
+                                    <FontAwesomeIcon
+                                        icon={faLocationDot}
+                                    />
+
+                                    {" "}Get Directions
+
+                                </button>
+
+                            )}
+
                     </div>
 
-
                     <p>
-
                         <strong>Payment:</strong>
-
                         {order.paymentStatus}
-
                     </p>
 
                     <p>
-
                         <strong>Status:</strong>
-
                         {order.orderStatus}
-
                     </p>
 
                 </div>
 
                 <h3>
-
                     Ordered Items
-
                 </h3>
+
                 <div className="items-table-container">
 
                     <table className="items-table">
@@ -128,63 +126,52 @@ function AdminOrderDetailsModal({
 
                         <tbody>
 
-                            {
+                            {order.items.map((item) => (
 
-                                order.items.map((item) => (
+                                <tr
+                                    key={`${item.itemType}-${item.productId ?? item.sweetBoxId ?? item.comboPackId}-${item.weight}`}
+                                >
 
-                                    <tr
+                                    <td>
 
-                                        key={`${item.productId}-${item.weight}`}
-
-                                    >
-
-                                        <td>
-                                            {item.itemType === "SWEET_BOX"
+                                        {item.itemType === "PRODUCT"
+                                            ? item.productName
+                                            : item.itemType === "SWEET_BOX"
                                                 ? item.sweetBoxName
-                                                : item.productName}
-                                        </td>
+                                                : item.comboPackName}
 
-                                        <td>
+                                    </td>
 
-                                            {item.weight}
+                                    <td>
+                                        {item.weight}
+                                    </td>
 
-                                        </td>
+                                    <td>
+                                        {item.quantity}
+                                    </td>
 
-                                        <td>
+                                    <td>
+                                        ₹{item.pricePerUnit}
+                                    </td>
 
-                                            {item.quantity}
+                                    <td>
+                                        ₹{item.totalPrice}
+                                    </td>
 
-                                        </td>
+                                </tr>
 
-                                        <td>
-
-                                            ₹{item.pricePerUnit}
-
-                                        </td>
-
-                                        <td>
-
-                                            ₹{item.totalPrice}
-
-                                        </td>
-
-                                    </tr>
-
-                                ))
-
-                            }
+                            ))}
 
                         </tbody>
 
                     </table>
+
                 </div>
 
                 <div className="order-total">
 
                     <strong>
-
                         Total : ₹{order.totalAmount}
-
                     </strong>
 
                 </div>

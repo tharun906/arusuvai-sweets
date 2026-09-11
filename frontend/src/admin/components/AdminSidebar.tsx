@@ -74,83 +74,96 @@ function AdminSidebar() {
 
                 <nav className="admin-nav">
 
-                <NavLink
-                    to={ROUTES.ADMIN_ORDERS}
-                    onClick={closeSidebar}
-                    className={({ isActive }) =>
-                        `admin-nav-link ${
-                            isActive ? "active" : ""
-                        }`
-                    }
-                >
-                    <span></span>
-                    <span>Orders</span>
-                </NavLink>
+                    <NavLink
+                        to={ROUTES.ADMIN_ORDERS}
+                        onClick={closeSidebar}
+                        className={({ isActive }) =>
+                            `admin-nav-link ${
+                                isActive ? "active" : ""
+                            }`
+                        }
+                    >
+                        <span></span>
+                        <span>Orders</span>
+                    </NavLink>
 
-                <NavLink
-                    to={ROUTES.ADMIN_PRODUCTS}
-                    onClick={closeSidebar}
-                    className={({ isActive }) =>
-                        `admin-nav-link ${
-                            isActive ? "active" : ""
-                        }`
-                    }
-                >
-                    <span></span>
-                    <span>Products</span>
-                </NavLink>
+                    <NavLink
+                        to={ROUTES.ADMIN_PRODUCTS}
+                        onClick={closeSidebar}
+                        className={({ isActive }) =>
+                            `admin-nav-link ${
+                                isActive ? "active" : ""
+                            }`
+                        }
+                    >
+                        <span></span>
+                        <span>Products</span>
+                    </NavLink>
 
-                <NavLink
-                    to={ROUTES.ADMIN_SWEET_BOXES}
-                    onClick={closeSidebar}
-                    className={({ isActive }) =>
-                        `admin-nav-link ${
-                            isActive ? "active" : ""
-                        }`
-                    }
-                >
-                    <span></span>
-                    <span>Sweet Boxes</span>
-                </NavLink>
+                    <NavLink
+                        to={ROUTES.ADMIN_SWEET_BOXES}
+                        onClick={closeSidebar}
+                        className={({ isActive }) =>
+                            `admin-nav-link ${
+                                isActive ? "active" : ""
+                            }`
+                        }
+                    >
+                        <span></span>
+                        <span>Sweet Boxes</span>
+                    </NavLink>
 
-                <NavLink
-                    to={ROUTES.ADMIN_CAROUSEL}
-                    onClick={closeSidebar}
-                    className={({ isActive }) =>
-                        `admin-nav-link ${
-                            isActive ? "active" : ""
-                        }`
-                    }
-                >
-                    <span></span>
-                    <span>Brand Carousel</span>
-                </NavLink>
+                    <NavLink
+                        to={ROUTES.ADMIN_COMBO_PACK}
+                        onClick={closeSidebar}
+                        className={({ isActive }) =>
+                            `admin-nav-link ${
+                                isActive ? "active" : ""
+                            }`
+                        }
+                    >
+                        <span></span>
+                        <span>Combo Pack</span>
+                    </NavLink>
 
-                <NavLink
-                    to={ROUTES.ADMIN_CUSTOMERS}
-                    onClick={closeSidebar}
-                    className={({ isActive }) =>
-                        `admin-nav-link ${
-                            isActive ? "active" : ""
-                        }`
-                    }
-                >
-                    <span></span>
-                    <span>Customers</span>
-                </NavLink>
+                    <NavLink
+                        to={ROUTES.ADMIN_CAROUSEL}
+                        onClick={closeSidebar}
+                        className={({ isActive }) =>
+                            `admin-nav-link ${
+                                isActive ? "active" : ""
+                            }`
+                        }
+                    >
+                        <span></span>
+                        <span>Brand Carousel</span>
+                    </NavLink>
 
-                            <NavLink
-                to={ROUTES.ADMIN_GALLERY}
-                onClick={closeSidebar}
-                className={({ isActive }) =>
-                    `admin-nav-link ${
-                        isActive ? "active" : ""
-                    }`
-                }
-            >
-                <span></span>
-                <span>Gallery</span>
-            </NavLink>
+                    <NavLink
+                        to={ROUTES.ADMIN_CUSTOMERS}
+                        onClick={closeSidebar}
+                        className={({ isActive }) =>
+                            `admin-nav-link ${
+                                isActive ? "active" : ""
+                            }`
+                        }
+                    >
+                        <span></span>
+                        <span>Customers</span>
+                    </NavLink>
+
+                    <NavLink
+                        to={ROUTES.ADMIN_GALLERY}
+                        onClick={closeSidebar}
+                        className={({ isActive }) =>
+                            `admin-nav-link ${
+                                isActive ? "active" : ""
+                            }`
+                        }
+                    >
+                        <span></span>
+                        <span>Gallery</span>
+                    </NavLink>
 
                 </nav>
 

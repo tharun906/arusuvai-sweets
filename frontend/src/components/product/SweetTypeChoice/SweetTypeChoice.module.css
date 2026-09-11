@@ -3,11 +3,6 @@
     padding: 70px 5% 40px;
 }
 
-
-/* ========================================
-   HEADING
-======================================== */
-
 .heading {
     display: flex;
     align-items: center;
@@ -46,7 +41,7 @@
 
 
 /* ========================================
-   CARDS
+   EXISTING TWO CARDS
 ======================================== */
 
 .cards {
@@ -57,11 +52,6 @@
     max-width: 1100px;
     margin: 0 auto;
 }
-
-
-/* ========================================
-   CARD
-======================================== */
 
 .card {
     position: relative;
@@ -74,11 +64,6 @@
     box-shadow: var(--shadow-md);
 }
 
-
-/* ========================================
-   CARD VARIANTS
-======================================== */
-
 .defaultCard {
     background: #f7e7c0;
 }
@@ -87,27 +72,15 @@
     background: #dce8d5;
 }
 
-
-/* ========================================
-   BADGE
-======================================== */
-
 .boxBadge {
     position: absolute;
     top: 18px;
     left: 18px;
     z-index: 2;
-
     width: 64px;
     height: 64px;
-
     object-fit: contain;
 }
-
-
-/* ========================================
-   IMAGE
-======================================== */
 
 .imageContainer {
     width: 100%;
@@ -117,12 +90,9 @@
 
 .imageContainer img {
     display: block;
-
     width: 100%;
     height: 270px;
-
     object-fit: cover;
-
     transition: transform .3s ease;
 }
 
@@ -130,35 +100,45 @@
     transform: scale(1.08);
 }
 
-.card:hover{
+.card:hover {
     border: 3px solid var(--gold-color);
 }
-
-/* ========================================
-   CONTENT
-======================================== */
 
 .content {
     display: flex;
     flex-direction: column;
     align-items: center;
-
     padding: 20px 22px 24px;
-
     text-align: center;
-
     flex: 1;
 }
 
 .content button {
     margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    max-width: 360px;
+    padding: 13px 18px;
+    border: none;
+    border-radius: 12px;
+    background: var(--deep-background);
+    color: var(--gold-color);
+    font-family: "Playfair Display", serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+        transform .2s ease,
+        background .2s ease,
+        box-shadow .2s ease;
 }
 
 .content h3 {
     margin: 0;
-
     color: black;
-
     font-family: "Playfair Display", serif;
     font-size: 1.65rem;
     font-weight: 700;
@@ -166,77 +146,30 @@
 
 .content p {
     max-width: 400px;
-
     margin: 10px 0 18px;
-
     color: #1d1d1d;
-
     font-family: "Playfair Display", serif;
     font-size: .98rem;
     line-height: 1.5;
 }
-
-
-/* ========================================
-   WEIGHTS
-======================================== */
 
 .weights {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
-
     margin-bottom: 20px;
 }
 
 .weights span {
     padding: 8px 18px;
-
     border: 1px solid #b5790a;
     border-radius: 12px;
-
     background: rgba(255, 255, 255, .25);
-
     color: #1d1d1d;
-
     font-family: "Playfair Display", serif;
     font-size: .9rem;
     font-weight: 700;
-}
-
-
-/* ========================================
-   BUTTON
-======================================== */
-
-.content button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-
-    width: 100%;
-    max-width: 360px;
-
-    padding: 13px 18px;
-
-    border: none;
-    border-radius: 12px;
-
-    background: var(--deep-background);
-    color: var(--gold-color);
-
-    font-family: "Playfair Display", serif;
-    font-size: 1rem;
-    font-weight: 700;
-
-    cursor: pointer;
-
-    transition:
-        transform .2s ease,
-        background .2s ease,
-        box-shadow .2s ease;
 }
 
 .content button span {
@@ -245,10 +178,306 @@
 
 .content button:hover {
     background: var(--secondary-color);
-
-    transform: translateY(-0px);
-
     box-shadow: var(--shadow-sm);
+}
+
+
+/* ========================================
+   COMBO PACK
+======================================== */
+
+.comboCard {
+    display: flex;
+    width: 100%;
+    max-width: 1100px;
+    min-height: 165px;
+    margin: 24px auto 0;
+    overflow: hidden;
+    border: 1px solid rgba(181, 121, 10, .35);
+    border-radius: 20px;
+    background:
+        linear-gradient(
+            105deg,
+            #f8e9bd 0%,
+            #f4dfaa 55%,
+            #ead098 100%
+        );
+    box-shadow: var(--shadow-md);
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease,
+        border-color .25s ease;
+}
+
+.comboCard:hover {
+    transform: translateY(-2px);
+    border-color: var(--gold-color);
+    box-shadow: var(--shadow-md);
+}
+
+.comboImageWrapper {
+    position: relative;
+    width: 235px;
+    min-width: 235px;
+    overflow: hidden;
+}
+
+.comboImage {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 165px;
+    object-fit: cover;
+    transition: transform .35s ease;
+}
+
+.comboCard:hover .comboImage {
+    transform: scale(1.04);
+}
+
+.comboBadge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    padding: 6px 10px;
+    border-radius: 7px;
+    background: var(--deep-background);
+    color: var(--gold-color);
+    font-family: "Playfair Display", serif;
+    font-size: .63rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.comboInfo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+    flex: 1;
+    padding: 22px 28px;
+}
+
+.comboText {
+    min-width: 0;
+}
+
+.comboEyebrow {
+    color: #997000;
+    font-family: "Playfair Display", serif;
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+}
+
+.comboText h3 {
+    margin: 4px 0 5px;
+    color: #171717;
+    font-family: "Playfair Display", serif;
+    font-size: 1.55rem;
+    font-weight: 700;
+}
+
+.comboDescription {
+    margin: 0;
+    max-width: 520px;
+    color: #3b3b3b;
+    font-family: "Playfair Display", serif;
+    font-size: .9rem;
+    line-height: 1.4;
+}
+
+.comboDetails {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-top: 12px;
+}
+
+.comboDetail {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.detailLabel {
+    color: #6e6248;
+    font-family: "Playfair Display", serif;
+    font-size: .65rem;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+}
+
+.comboDetail strong {
+    color: #222;
+    font-family: "Playfair Display", serif;
+    font-size: .95rem;
+}
+
+.comboDetail .comboPrice {
+    color: #997000;
+    font-size: 1.15rem;
+}
+
+.comboDivider {
+    width: 1px;
+    height: 30px;
+    background: rgba(110, 98, 72, .3);
+}
+
+.comboButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-shrink: 0;
+    min-width: 150px;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 11px;
+    background: var(--deep-background);
+    color: var(--gold-color);
+    font-family: "Playfair Display", serif;
+    font-size: .9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        background .2s ease;
+}
+
+.comboButton:hover:not(:disabled) {
+    transform: translateY(-2px);
+    background: var(--secondary-color);
+    box-shadow: var(--shadow-sm);
+}
+
+.comboButton:disabled {
+    cursor: not-allowed;
+    opacity: .7;
+}
+
+.buttonArrow {
+    font-size: 1.05rem;
+}
+
+
+/* ========================================
+   BULK ORDERS
+======================================== */
+
+.bulkCard {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    width: 100%;
+    max-width: 1100px;
+    min-height: 105px;
+    margin: 16px auto 0;
+    padding: 18px 24px;
+    box-sizing: border-box;
+    border: 1px solid rgba(70, 115, 59, .25);
+    border-radius: 18px;
+    background:
+        linear-gradient(
+            105deg,
+            #e5efd9 0%,
+            #dce8d5 100%
+        );
+    box-shadow: var(--shadow-md);
+    cursor: pointer;
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease,
+        border-color .25s ease;
+}
+
+.bulkCard:hover {
+    transform: translateY(-2px);
+    border-color: #8ba47e;
+    box-shadow: var(--shadow-md);
+}
+
+.bulkIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--deep-background);
+    color: var(--gold-color);
+    font-size: 1.1rem;
+}
+
+.bulkInfo {
+    flex: 1;
+    min-width: 0;
+}
+
+.bulkEyebrow {
+    color: #527447;
+    font-family: "Playfair Display", serif;
+    font-size: .63rem;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+}
+
+.bulkInfo h3 {
+    margin: 2px 0 2px;
+    color: #171717;
+    font-family: "Playfair Display", serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.bulkInfo p {
+    margin: 0;
+    color: #31502a;
+    font-family: "Playfair Display", serif;
+    font-size: .82rem;
+    font-weight: 700;
+}
+
+.bulkInfo small {
+    display: block;
+    margin-top: 3px;
+    color: #555;
+    font-family: "Playfair Display", serif;
+    font-size: .7rem;
+}
+
+.bulkButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-shrink: 0;
+    min-width: 135px;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 10px;
+    background: var(--deep-background);
+    color: var(--gold-color);
+    font-family: "Playfair Display", serif;
+    font-size: .88rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+        transform .2s ease,
+        background .2s ease;
+}
+
+.bulkButton:hover {
+    background: var(--secondary-color);
+    transform: translateY(-1px);
+}
+
+.bulkButton span {
+    font-size: 1rem;
 }
 
 
@@ -304,6 +533,20 @@
         font-size: .82rem;
     }
 
+    .comboImageWrapper {
+        width: 190px;
+        min-width: 190px;
+    }
+
+    .comboInfo {
+        padding: 18px 20px;
+        gap: 18px;
+    }
+
+    .comboButton {
+        min-width: 130px;
+    }
+
 }
 
 
@@ -316,11 +559,6 @@
     .section {
         padding: 30px 12px 20px;
     }
-
-
-    /* ------------------------------------
-       Heading
-    ------------------------------------ */
 
     .heading {
         gap: 7px;
@@ -344,20 +582,10 @@
         height: 24px;
     }
 
-
-    /* ------------------------------------
-       TWO COLUMNS ON MOBILE
-    ------------------------------------ */
-
     .cards {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 10px;
     }
-
-
-    /* ------------------------------------
-       Card
-    ------------------------------------ */
 
     .card {
         min-width: 0;
@@ -365,23 +593,12 @@
         border-radius: 15px;
     }
 
-
-    /* ------------------------------------
-       Badge
-    ------------------------------------ */
-
     .boxBadge {
         top: 7px;
         left: 7px;
-
         width: 40px;
         height: 40px;
     }
-
-
-    /* ------------------------------------
-       Image
-    ------------------------------------ */
 
     .imageContainer {
         width: 100%;
@@ -394,11 +611,6 @@
         object-fit: cover;
     }
 
-
-    /* ------------------------------------
-       Content
-    ------------------------------------ */
-
     .content {
         padding: 10px 6px 9px;
     }
@@ -410,56 +622,174 @@
 
     .content p {
         margin: 5px 0 9px;
-
         font-size: .66rem;
         line-height: 1.3;
     }
 
-
-    /* ------------------------------------
-       Weights
-    ------------------------------------ */
-
     .weights {
         width: 100%;
-
         gap: 3px;
-
         margin-bottom: 9px;
     }
 
     .weights span {
         flex: 1;
-
         padding: 5px 2px;
-
-        border: 1px solid #b5790a;
         border-radius: 8px;
-
         font-size: .58rem;
-
         white-space: nowrap;
     }
 
-
-    /* ------------------------------------
-       Button
-    ------------------------------------ */
-
     .content button {
         width: 100%;
-
         padding: 8px 4px;
-
         gap: 5px;
-
         border-radius: 8px;
-
         font-size: .67rem;
     }
 
     .content button span {
         font-size: .75rem;
+    }
+
+
+    /* ========================================
+       COMBO MOBILE
+    ======================================== */
+
+    .comboCard {
+        min-height: 125px;
+        margin-top: 12px;
+        border-radius: 15px;
+    }
+
+    .comboImageWrapper {
+        width: 108px;
+        min-width: 108px;
+    }
+
+    .comboImage {
+        min-height: 125px;
+    }
+
+    .comboBadge {
+        top: 7px;
+        left: 7px;
+        padding: 4px 6px;
+        border-radius: 5px;
+        font-size: .43rem;
+        letter-spacing: .7px;
+    }
+
+    .comboInfo {
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: center;
+        gap: 7px;
+        padding: 10px 10px;
+    }
+
+    .comboEyebrow {
+        font-size: .47rem;
+        letter-spacing: 1px;
+    }
+
+    .comboText h3 {
+        margin: 2px 0 2px;
+        font-size: .82rem;
+        line-height: 1.1;
+    }
+
+    .comboDescription {
+        font-size: .54rem;
+        line-height: 1.25;
+    }
+
+    .comboDetails {
+        gap: 8px;
+        margin-top: 5px;
+    }
+
+    .detailLabel {
+        font-size: .45rem;
+        letter-spacing: .5px;
+    }
+
+    .comboDetail strong {
+        font-size: .63rem;
+    }
+
+    .comboDetail .comboPrice {
+        font-size: .75rem;
+    }
+
+    .comboDivider {
+        height: 22px;
+    }
+
+    .comboButton {
+        width: 100%;
+        min-width: 0;
+        padding: 6px 8px;
+        border-radius: 7px;
+        font-size: .58rem;
+    }
+
+    .buttonArrow {
+        font-size: .72rem;
+    }
+
+
+    /* ========================================
+       BULK MOBILE
+    ======================================== */
+
+    .bulkCard {
+        min-height: 78px;
+        margin-top: 10px;
+        padding: 11px;
+        gap: 9px;
+        border-radius: 14px;
+    }
+
+    .bulkIcon {
+        width: 31px;
+        height: 31px;
+        font-size: .72rem;
+    }
+
+    .bulkEyebrow {
+        font-size: .45rem;
+        letter-spacing: .8px;
+    }
+
+    .bulkInfo h3 {
+        margin: 2px 0;
+        font-size: .78rem;
+        line-height: 1.1;
+    }
+
+    .bulkInfo p {
+        font-size: .56rem;
+        line-height: 1.2;
+    }
+
+    .bulkInfo small {
+        margin-top: 2px;
+        font-size: .48rem;
+        line-height: 1.15;
+    }
+
+    .bulkButton {
+        min-width: 78px;
+        padding: 7px 6px;
+        gap: 4px;
+        border-radius: 7px;
+        font-size: .56rem;
+    }
+
+    .bulkButton span {
+        font-size: .65rem;
     }
 
 }
@@ -493,70 +823,53 @@
         height: 20px;
     }
 
-
     .cards {
         gap: 8px;
     }
 
-
     .card {
         border-radius: 13px;
-
     }
-
 
     .boxBadge {
         top: 6px;
         left: 6px;
-
         width: 36px;
         height: 36px;
     }
-
 
     .imageContainer img {
         height: 105px;
     }
 
-
     .content {
         padding: 9px 5px 8px;
     }
-
 
     .content h3 {
         font-size: .86rem;
     }
 
-
     .content p {
         font-size: .6rem;
         line-height: 1.25;
-
         margin: 4px 0 7px;
     }
-
 
     .weights {
         gap: 2px;
         margin-bottom: 7px;
     }
 
-
     .weights span {
         padding: 4px 1px;
-
         border-radius: 7px;
-
         font-size: .52rem;
     }
 
-
     .content button {
         padding: 7px 3px;
-
         border-radius: 7px;
-
         font-size: .8rem;
     }
 
@@ -564,9 +877,104 @@
         font-size: .68rem;
     }
 
-    .card:hover{
-        border: 1px solid var(--gold-color);
+
+    /* COMBO */
+
+    .comboCard {
+        min-height: 115px;
+        border-radius: 13px;
     }
-    
+
+    .comboImageWrapper {
+        width: 92px;
+        min-width: 92px;
+    }
+
+    .comboImage {
+        min-height: 115px;
+    }
+
+    .comboBadge {
+        top: 6px;
+        left: 6px;
+        padding: 3px 5px;
+        font-size: .38rem;
+    }
+
+    .comboInfo {
+        padding: 8px;
+        gap: 5px;
+    }
+
+    .comboEyebrow {
+        font-size: .4rem;
+    }
+
+    .comboText h3 {
+        font-size: .76rem;
+    }
+
+    .comboDescription {
+        font-size: .5rem;
+    }
+
+    .comboDetails {
+        gap: 6px;
+        margin-top: 3px;
+    }
+
+    .detailLabel {
+        font-size: .4rem;
+    }
+
+    .comboDetail strong {
+        font-size: .58rem;
+    }
+
+    .comboDetail .comboPrice {
+        font-size: .68rem;
+    }
+
+    .comboButton {
+        padding: 5px 6px;
+        font-size: .53rem;
+    }
+
+
+    /* BULK */
+
+    .bulkCard {
+        min-height: 72px;
+        padding: 9px;
+        gap: 7px;
+    }
+
+    .bulkIcon {
+        width: 27px;
+        height: 27px;
+        font-size: .62rem;
+    }
+
+    .bulkEyebrow {
+        font-size: .4rem;
+    }
+
+    .bulkInfo h3 {
+        font-size: .72rem;
+    }
+
+    .bulkInfo p {
+        font-size: .52rem;
+    }
+
+    .bulkInfo small {
+        font-size: .44rem;
+    }
+
+    .bulkButton {
+        min-width: 72px;
+        padding: 6px 5px;
+        font-size: .52rem;
+    }
 
 }

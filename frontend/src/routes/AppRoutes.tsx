@@ -21,6 +21,7 @@ import ShippingDelivery from "../pages/customer/business/ShippingDelivery";
 import CancellationRefund from "../pages/customer/business/CancellationRefund";
 import Services from "../pages/customer/business/Services";
 import ReturnReplacement from "../pages/customer/business/ReturnReplacement";
+import ComboPackManagement from "../admin/pages/ComboPackManagement";
 
 function AppRoutes() {
     return (
@@ -64,16 +65,55 @@ function AppRoutes() {
 
                 </Route>
                 <Route element={<AdminRoute />}>
-                    <Route element={<AdminLayout />}>
-                        <Route path={ROUTES.ADMIN_DASHBOARD} element={<Navigate to={ROUTES.ADMIN_ORDERS} replace />} />
-                        <Route path={ROUTES.ADMIN_ORDERS} element={<AdminOrders />} />
-                        <Route path={ROUTES.ADMIN_PRODUCTS} element={<Products />} />
-                        <Route path={ROUTES.ADMIN_SWEET_BOXES} element={<SweetBoxes />} />
-                        <Route path={ROUTES.ADMIN_CUSTOMERS} element={<Customers />} />
-                        <Route path={ROUTES.ADMIN_CAROUSEL} element={<CarouselManagement />} />
-                        <Route path={ROUTES.ADMIN_GALLERY} element={<GalleryManagement />} />
-                    </Route>
+                <Route element={<AdminLayout />}>
+
+                    <Route
+                        path={ROUTES.ADMIN_DASHBOARD}
+                        element={
+                            <Navigate
+                                to={ROUTES.ADMIN_ORDERS}
+                                replace
+                            />
+                        }
+                    />
+
+                    <Route
+                        path={ROUTES.ADMIN_ORDERS}
+                        element={<AdminOrders />}
+                    />
+
+                    <Route
+                        path={ROUTES.ADMIN_PRODUCTS}
+                        element={<Products />}
+                    />
+
+                    <Route
+                        path={ROUTES.ADMIN_SWEET_BOXES}
+                        element={<SweetBoxes />}
+                    />
+
+                    <Route
+                        path={ROUTES.ADMIN_COMBO_PACK}
+                        element={<ComboPackManagement />}
+                    />
+
+                    <Route
+                        path={ROUTES.ADMIN_CUSTOMERS}
+                        element={<Customers />}
+                    />
+
+                    <Route
+                        path={ROUTES.ADMIN_CAROUSEL}
+                        element={<CarouselManagement />}
+                    />
+
+                    <Route
+                        path={ROUTES.ADMIN_GALLERY}
+                        element={<GalleryManagement />}
+                    />
+
                 </Route>
+            </Route>
             </Routes>
         </BrowserRouter>
     );

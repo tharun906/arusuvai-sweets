@@ -54,9 +54,5 @@ public class AdminOrderController {
 
     }
 
-    //LATER -
-    // PREPARING → OUT_FOR_DELIVERY ✅
-    //OUT_FOR_DELIVERY → DELIVERED ✅
-    //DELIVERED → PREPARING ❌
-    //PENDING_PAYMENT → DELIVERED ❌
+
 }

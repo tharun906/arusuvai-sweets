@@ -11,43 +11,106 @@ import CartSummary from "../../components/cart/CartSummary";
 import { useAccountModal } from "../../context/AccountModalContext";
 import { PendingAction } from "../../constants/PendingAction";
 import Loading from "../../components/common/Loading";
+import { useComboPack } from "../../hooks/useComboPack";
 
 function Cart() {
-    const { cartItems, increaseQuantity, decreaseQuantity, removeFromCart } = useCart();
+    const {
+        cartItems,
+        increaseQuantity,
+        decreaseQuantity,
+        removeFromCart
+    } = useCart();
+
     const { setPendingAction, openModal } = useAccountModal();
-    const { products, loading: productsLoading } = useProducts();
-    const { sweetBoxes, loading: sweetBoxesLoading } = useSweetBox();
+
+    const {
+        products,
+        loading: productsLoading
+    } = useProducts();
+
+    const {
+        sweetBoxes,
+        loading: sweetBoxesLoading
+    } = useSweetBox();
+
+    const {
+        comboPacks,
+        loading: comboPacksLoading
+    } = useComboPack();
+
     const { isLoggedIn } = useAuthContext();
+
     const [showGoogleLogin, setShowGoogleLogin] = useState(false);
 
-    if (productsLoading || sweetBoxesLoading) {
+    if (productsLoading || sweetBoxesLoading || comboPacksLoading) {
         return <Loading />;
     }
-    if (cartItems.length === 0) return <EmptyCart />;
+
+    if (cartItems.length === 0) {
+        return <EmptyCart />;
+    }
 
     const grandTotal = cartItems.reduce((total, item) => {
+
         if (item.itemType === "PRODUCT") {
-            const product = products.find(p => p.id === item.productId);
-            if (!product || !item.weight) return total;
-            const price = item.weight === "250g" ? product.price250g : item.weight === "500g" ? product.price500g : product.price1kg;
+
+            const product = products.find(
+                p => p.id === item.productId
+            );
+
+            if (!product || !item.weight) {
+                return total;
+            }
+
+            const price =
+                item.weight === "250g"
+                    ? product.price250g
+                    : item.weight === "500g"
+                    ? product.price500g
+                    : product.price1kg;
+
             return total + price * item.quantity;
         }
 
         if (item.itemType === "SWEET_BOX") {
-            const sweetBox = sweetBoxes.find(box => box.id === item.sweetBoxId);
-            if (!sweetBox) return total;
+
+            const sweetBox = sweetBoxes.find(
+                box => box.id === item.sweetBoxId
+            );
+
+            if (!sweetBox) {
+                return total;
+            }
+
             return total + sweetBox.price * item.quantity;
         }
 
+        if (item.itemType === "COMBO_PACK") {
+
+            const comboPack = comboPacks.find(
+                combo => combo.id === item.comboPackId
+            );
+
+            if (!comboPack) {
+                return total;
+            }
+
+            return total + comboPack.price * item.quantity;
+        }
+
         return total;
+
     }, 0);
 
     const handleCheckout = () => {
+
         setPendingAction(PendingAction.CHECKOUT);
+
         if (isLoggedIn) {
             openModal();
             return;
         }
+
         setShowGoogleLogin(true);
     };
 
@@ -56,21 +119,38 @@ function Cart() {
             <GoogleLoginFallback
                 onSuccess={() => setShowGoogleLogin(false)}
                 onClose={() => setShowGoogleLogin(false)}
-                onError={message => console.error("Google login:", message)}
+                onError={message =>
+                    console.error("Google login:", message)
+                }
             />
         );
     }
 
     return (
         <section className={styles.page}>
-            <div className={styles.container}>
-                <div className={styles.items}>
-                    {cartItems.map(item => {
-                        if (item.itemType === "PRODUCT") {
-                            const product = products.find(p => p.id === item.productId);
-                            if (!product || !item.weight) return null;
 
-                            const price = item.weight === "250g" ? product.price250g : item.weight === "500g" ? product.price500g : product.price1kg;
+            <div className={styles.container}>
+
+                <div className={styles.items}>
+
+                    {cartItems.map(item => {
+
+                        if (item.itemType === "PRODUCT") {
+
+                            const product = products.find(
+                                p => p.id === item.productId
+                            );
+
+                            if (!product || !item.weight) {
+                                return null;
+                            }
+
+                            const price =
+                                item.weight === "250g"
+                                    ? product.price250g
+                                    : item.weight === "500g"
+                                    ? product.price500g
+                                    : product.price1kg;
 
                             return (
                                 <CartItem
@@ -81,16 +161,28 @@ function Cart() {
                                     price={price}
                                     quantity={item.quantity}
                                     subtotal={price * item.quantity}
-                                    onIncrease={() => increaseQuantity(item)}
-                                    onDecrease={() => decreaseQuantity(item)}
-                                    onRemove={() => removeFromCart(item)}
+                                    onIncrease={() =>
+                                        increaseQuantity(item)
+                                    }
+                                    onDecrease={() =>
+                                        decreaseQuantity(item)
+                                    }
+                                    onRemove={() =>
+                                        removeFromCart(item)
+                                    }
                                 />
                             );
                         }
 
                         if (item.itemType === "SWEET_BOX") {
-                            const sweetBox = sweetBoxes.find(box => box.id === item.sweetBoxId);
-                            if (!sweetBox) return null;
+
+                            const sweetBox = sweetBoxes.find(
+                                box => box.id === item.sweetBoxId
+                            );
+
+                            if (!sweetBox) {
+                                return null;
+                            }
 
                             return (
                                 <CartItem
@@ -100,20 +192,68 @@ function Cart() {
                                     weight={sweetBox.totalWeight}
                                     price={sweetBox.price}
                                     quantity={item.quantity}
-                                    subtotal={sweetBox.price * item.quantity}
-                                    onIncrease={() => increaseQuantity(item)}
-                                    onDecrease={() => decreaseQuantity(item)}
-                                    onRemove={() => removeFromCart(item)}
+                                    subtotal={
+                                        sweetBox.price * item.quantity
+                                    }
+                                    onIncrease={() =>
+                                        increaseQuantity(item)
+                                    }
+                                    onDecrease={() =>
+                                        decreaseQuantity(item)
+                                    }
+                                    onRemove={() =>
+                                        removeFromCart(item)
+                                    }
+                                />
+                            );
+                        }
+
+                        if (item.itemType === "COMBO_PACK") {
+
+                            const comboPack = comboPacks.find(
+                                combo => combo.id === item.comboPackId
+                            );
+
+                            if (!comboPack) {
+                                return null;
+                            }
+
+                            return (
+                                <CartItem
+                                    key={`combo-${item.comboPackId}`}
+                                    imageUrl={comboPack.imageUrl}
+                                    productName={comboPack.title}
+                                    weight={comboPack.weight}
+                                    price={comboPack.price}
+                                    quantity={item.quantity}
+                                    subtotal={
+                                        comboPack.price * item.quantity
+                                    }
+                                    onIncrease={() =>
+                                        increaseQuantity(item)
+                                    }
+                                    onDecrease={() =>
+                                        decreaseQuantity(item)
+                                    }
+                                    onRemove={() =>
+                                        removeFromCart(item)
+                                    }
                                 />
                             );
                         }
 
                         return null;
                     })}
+
                 </div>
 
-                <CartSummary total={grandTotal} onCheckout={handleCheckout} />
+                <CartSummary
+                    total={grandTotal}
+                    onCheckout={handleCheckout}
+                />
+
             </div>
+
         </section>
     );
 }

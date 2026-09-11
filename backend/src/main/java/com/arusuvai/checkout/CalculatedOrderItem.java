@@ -1,5 +1,6 @@
 package com.arusuvai.checkout;
 
+import com.arusuvai.combopack.ComboPackEntity;
 import com.arusuvai.order.OrderItemType;
 import com.arusuvai.product.ProductEntity;
 import com.arusuvai.sweetbox.SweetBoxEntity;
@@ -17,6 +18,8 @@ public class CalculatedOrderItem {
     private ProductEntity product;
 
     private SweetBoxEntity sweetBox;
+
+    private ComboPackEntity comboPack;
 
     private String weight;
 

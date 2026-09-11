@@ -55,44 +55,35 @@ export function CartProvider({
 
     const MAX_SWEET_BOX_QUANTITY = 10;
 
-
-    const isSameItem = (
-        first: CartItem,
-        second: CartItem
-    ): boolean => {
-
-        if (
-            first.itemType !==
-            second.itemType
-        ) {
-            return false;
-        }
-
+    const isSameItem = (first: CartItem, second: CartItem): boolean => {
+        if (first.itemType !== second.itemType) return false;
+    
         if (
             first.itemType === "PRODUCT" &&
             second.itemType === "PRODUCT"
         ) {
             return (
-                first.productId ===
-                    second.productId &&
-                first.weight ===
-                    second.weight
+                first.productId === second.productId &&
+                first.weight === second.weight
             );
         }
-
+    
         if (
             first.itemType === "SWEET_BOX" &&
             second.itemType === "SWEET_BOX"
         ) {
-            return (
-                first.sweetBoxId ===
-                second.sweetBoxId
-            );
+            return first.sweetBoxId === second.sweetBoxId;
         }
-
+    
+        if (
+            first.itemType === "COMBO_PACK" &&
+            second.itemType === "COMBO_PACK"
+        ) {
+            return first.comboPackId === second.comboPackId;
+        }
+    
         return false;
     };
-
 
     const increaseQuantity = (item: CartItem) => {
 

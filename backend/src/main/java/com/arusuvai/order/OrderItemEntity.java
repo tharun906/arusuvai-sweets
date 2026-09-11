@@ -1,5 +1,6 @@
 package com.arusuvai.order;
 
+import com.arusuvai.combopack.ComboPackEntity;
 import com.arusuvai.product.ProductEntity;
 import com.arusuvai.sweetbox.SweetBoxEntity;
 import jakarta.persistence.*;
@@ -22,9 +23,9 @@ public class OrderItemEntity {
     @JoinColumn(name = "order_id", nullable = false)
     private OrderEntity order;
 
- @Enumerated(EnumType.STRING)
-@Column(nullable = false)
-private OrderItemType itemType;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private OrderItemType itemType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
@@ -34,7 +35,11 @@ private OrderItemType itemType;
     @JoinColumn(name = "sweet_box_id")
     private SweetBoxEntity sweetBox;
 
-    @Column(nullable = false, length = 10)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "combo_pack_id")
+    private ComboPackEntity comboPack;
+
+    @Column(nullable = false, length = 50)
     private String weight;
 
     @Column(nullable = false)

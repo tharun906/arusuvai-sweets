@@ -1,0 +1,57 @@
+.combo-pack-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.combo-form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.combo-form-field label {
+    font-weight: 600;
+}
+
+.combo-form-field input,
+.combo-form-field textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font: inherit;
+    box-sizing: border-box;
+}
+
+.combo-form-field textarea {
+    resize: vertical;
+}
+
+.combo-image-preview img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-top: 8px;
+}
+
+.combo-form-error {
+    margin: 0;
+    color: var(--error-color);
+    font-size: 0.9rem;
+}
+
+.combo-submit-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.combo-submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}

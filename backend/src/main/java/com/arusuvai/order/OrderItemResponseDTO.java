@@ -17,6 +17,9 @@ public class OrderItemResponseDTO {
     private Long sweetBoxId;
     private String sweetBoxName;
 
+    private Long comboPackId;
+    private String comboPackName;
+
     private String weight;
 
     private Integer quantity;
