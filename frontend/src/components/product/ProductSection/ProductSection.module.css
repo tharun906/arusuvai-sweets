@@ -59,7 +59,10 @@
 
     border: 2px solid transparent;
 
-    transition: 0.25s ease;
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease,
+        border-color .25s ease;
 }
 
 .choiceCard:first-child {
@@ -101,7 +104,9 @@
 
 .choiceContent {
     flex: 1;
+
     text-align: center;
+
     color: #12382b;
 }
 
@@ -131,7 +136,9 @@
 .weightHints {
     display: flex;
     justify-content: center;
+
     gap: 8px;
+
     margin-bottom: 12px;
 }
 
@@ -169,11 +176,14 @@
 
     cursor: pointer;
 
-    transition: 0.2s ease;
+    transition:
+        transform .2s ease,
+        background .2s ease;
 }
 
 .choiceContent button span {
     margin-left: 10px;
+
     color: #faca16;
 }
 
@@ -189,6 +199,10 @@
 ========================================================= */
 
 .productsSection {
+    position: relative;
+
+    width: 100%;
+
     scroll-margin-top: 90px;
 }
 
@@ -201,6 +215,7 @@
     display: flex;
 
     justify-content: center;
+    align-items: center;
 
     flex-wrap: wrap;
 
@@ -215,6 +230,9 @@
 ========================================================= */
 
 .grid {
+    position: relative;
+
+    width: 100%;
     max-width: 1400px;
 
     margin: 0 auto;
@@ -227,7 +245,6 @@
     gap: 24px;
 
     justify-content: center;
-
     align-items: start;
 
     padding: 0 24px;
@@ -235,7 +252,7 @@
 
 
 /* =========================================================
-   TABLET / SMALLER DESKTOP
+   DESKTOP / TABLET
 ========================================================= */
 
 @media (max-width: 1200px) {
@@ -272,15 +289,22 @@
 
 @media (max-width: 768px) {
 
+    /* -----------------------------------------
+       CHOICE SECTION
+    ----------------------------------------- */
+
     .choiceSection {
         padding: 25px 12px 5px;
     }
 
 
-    /* Choice heading */
+    /* -----------------------------------------
+       CHOICE HEADING
+    ----------------------------------------- */
 
     .choiceHeading {
         gap: 8px;
+
         margin-bottom: 15px;
     }
 
@@ -293,10 +317,13 @@
     }
 
 
-    /* Choice cards */
+    /* -----------------------------------------
+       CHOICE CARDS
+    ----------------------------------------- */
 
     .choiceGrid {
         grid-template-columns: 1fr;
+
         gap: 12px;
     }
 
@@ -309,7 +336,9 @@
     }
 
 
-    /* Choice image */
+    /* -----------------------------------------
+       CHOICE IMAGE
+    ----------------------------------------- */
 
     .choiceImage {
         width: 43%;
@@ -320,7 +349,9 @@
     }
 
 
-    /* Choice content */
+    /* -----------------------------------------
+       CHOICE CONTENT
+    ----------------------------------------- */
 
     .choiceContent h3 {
         font-size: 1.15rem;
@@ -328,11 +359,14 @@
 
     .choiceContent p {
         font-size: 0.78rem;
+
         line-height: 1.35;
     }
 
 
-    /* Weight hints */
+    /* -----------------------------------------
+       WEIGHT HINTS
+    ----------------------------------------- */
 
     .weightHints {
         gap: 4px;
@@ -340,11 +374,14 @@
 
     .weightHints span {
         padding: 4px 7px;
+
         font-size: 0.68rem;
     }
 
 
-    /* Button */
+    /* -----------------------------------------
+       CHOICE BUTTON
+    ----------------------------------------- */
 
     .choiceContent button {
         min-width: 135px;
@@ -355,13 +392,28 @@
     }
 
 
-    /* Product grid */
+    /* -----------------------------------------
+       PRODUCT CATEGORIES
+    ----------------------------------------- */
+
+    .categories {
+        gap: 8px;
+
+        margin-bottom: 25px;
+    }
+
+
+    /* -----------------------------------------
+       PRODUCT GRID
+    ----------------------------------------- */
 
     .grid {
         grid-template-columns:
             repeat(2, minmax(0, 1fr));
 
         gap: 14px;
+
+        padding: 0 12px;
     }
 
 }
@@ -373,6 +425,10 @@
 
 @media (max-width: 480px) {
 
+    /* -----------------------------------------
+       PRODUCT GRID
+    ----------------------------------------- */
+
     .grid {
         grid-template-columns:
             repeat(2, minmax(0, 1fr));
@@ -380,6 +436,17 @@
         gap: 10px;
 
         padding: 0 14px;
+    }
+
+
+    /* -----------------------------------------
+       PRODUCT CATEGORIES
+    ----------------------------------------- */
+
+    .categories {
+        gap: 6px;
+
+        margin-bottom: 20px;
     }
 
 }

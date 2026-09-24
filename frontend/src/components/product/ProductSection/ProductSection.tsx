@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from "react";
+
 import Section from "../../common/Section";
 import ProductCard from "./ProductCard/ProductCard";
 import SweetBoxSection from "../SweetBoxSection/SweetBoxSection";
@@ -32,6 +34,94 @@ function ProductSection({
 
 }: ProductSectionProps) {
 
+    const productSectionRef =
+        useRef<HTMLDivElement | null>(null);
+
+    const [festiveActive, setFestiveActive] =
+        useState(false);
+
+
+    /*
+     * ========================================
+     * FESTIVE ANIMATION
+     * ========================================
+     *
+     * Runs when the Product Section
+     * enters the viewport.
+     */
+
+    useEffect(() => {
+
+        const section =
+            productSectionRef.current;
+
+        if (!section) return;
+
+        const observer =
+            new IntersectionObserver(
+                ([entry]) => {
+
+                    if (entry.isIntersecting) {
+
+                        setFestiveActive(true);
+
+                        setTimeout(() => {
+                            setFestiveActive(false);
+                        }, 2400);
+
+                    }
+
+                },
+                {
+                    threshold: 0.25,
+                }
+            );
+
+        observer.observe(section);
+
+        return () => {
+            observer.disconnect();
+        };
+
+    }, []);
+
+
+    /*
+     * ========================================
+     * CATEGORY CHANGE ANIMATION
+     * ========================================
+     */
+
+    const triggerFestiveAnimation = () => {
+
+        setFestiveActive(false);
+
+        requestAnimationFrame(() => {
+
+            requestAnimationFrame(() => {
+
+                setFestiveActive(true);
+
+                setTimeout(() => {
+                    setFestiveActive(false);
+                }, 2400);
+
+            });
+
+        });
+
+    };
+
+
+    const handleCategorySelect =
+        (id: number | null) => {
+
+            onCategorySelect(id);
+
+            triggerFestiveAnimation();
+
+        };
+
 
     return (
 
@@ -50,6 +140,7 @@ function ProductSection({
 
             <div
                 id="products"
+                ref={productSectionRef}
                 className={styles.productsSection}
             >
 
@@ -61,7 +152,9 @@ function ProductSection({
 
                 >
 
-                    {/* Categories */}
+                    {/* =========================
+                        CATEGORIES
+                    ========================= */}
 
                     <div className={styles.categories}>
 
@@ -72,7 +165,7 @@ function ProductSection({
                             }
 
                             onClick={() =>
-                                onCategorySelect(null)
+                                handleCategorySelect(null)
                             }
 
                         >
@@ -93,7 +186,7 @@ function ProductSection({
                                 }
 
                                 onClick={() =>
-                                    onCategorySelect(
+                                    handleCategorySelect(
                                         category.id
                                     )
                                 }
@@ -109,7 +202,9 @@ function ProductSection({
                     </div>
 
 
-                    {/* Products */}
+                    {/* =========================
+                        PRODUCTS
+                    ========================= */}
 
                     <div className={styles.grid}>
 
@@ -120,6 +215,10 @@ function ProductSection({
                                 key={product.id}
 
                                 product={product}
+
+                                festiveActive={
+                                    festiveActive
+                                }
 
                             />
 

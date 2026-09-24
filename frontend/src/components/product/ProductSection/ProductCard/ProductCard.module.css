@@ -1,27 +1,352 @@
+/* ========================================
+   PRODUCT CARD
+======================================== */
+
 .card {
+    position: relative;
+
     width: 100%;
     max-width: none;
     margin: 0;
 
-    background: white;
+    background: #0b3b2f;
+
+    border: 1px solid rgba(181, 121, 10, .45);
     border-radius: 18px;
-    overflow: hidden;
+
+    overflow: visible;
 
     display: flex;
     flex-direction: column;
 
-    transition: .3s;
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, .12);
 
-    box-shadow: 0 8px 20px rgba(0, 0, 0, .08);
+    transition:
+        transform .3s ease,
+        border-color .3s ease,
+        box-shadow .3s ease;
 }
+
+
+/* ========================================
+   CONTENT LAYER
+======================================== */
+
+.cardContent {
+    position: relative;
+
+    z-index: 3;
+
+    width: 100%;
+
+    overflow: hidden;
+
+    border-radius: 18px;
+
+    background: #0b3b2f;
+}
+
+
+/* ========================================
+   NORMAL HOVER
+======================================== */
 
 .card:hover {
-    transform: translateY(-5px);
-    border-color: var(--border-strong);
-    box-shadow: var(--shadow-md);
+    transform: translateY(-4px);
+
+    border-color: var(--gold-color);
+
+    box-shadow:
+        0 12px 28px rgba(0, 0, 0, .22);
 }
 
-/* Smaller desktop / tablet */
+
+/* ========================================
+   FESTIVE ACTIVE STATE
+======================================== */
+
+.festiveActive {
+
+    animation:
+        festiveCardGlow 2.4s ease-out forwards;
+}
+
+
+/* ========================================
+   FESTIVE GLOW
+======================================== */
+
+@keyframes festiveCardGlow {
+
+    0% {
+
+        border-color:
+            rgba(181, 121, 10, .35);
+
+        box-shadow:
+            0 0 0 rgba(250, 202, 22, 0),
+            0 8px 20px rgba(0, 0, 0, .12);
+    }
+
+    20% {
+
+        border-color:
+            rgba(250, 202, 22, 1);
+
+        box-shadow:
+            0 0 8px rgba(250, 202, 22, .9),
+            0 0 22px rgba(250, 202, 22, .7),
+            0 0 42px rgba(250, 202, 22, .45);
+    }
+
+    45% {
+
+        border-color:
+            rgba(255, 215, 70, 1);
+
+        box-shadow:
+            0 0 10px rgba(255, 215, 70, .95),
+            0 0 28px rgba(250, 202, 22, .75),
+            0 0 55px rgba(250, 202, 22, .45);
+    }
+
+    70% {
+
+        border-color:
+            rgba(250, 202, 22, .75);
+
+        box-shadow:
+            0 0 7px rgba(250, 202, 22, .6),
+            0 0 20px rgba(250, 202, 22, .35);
+    }
+
+    100% {
+
+        border-color:
+            rgba(181, 121, 10, .45);
+
+        box-shadow:
+            0 8px 20px rgba(0, 0, 0, .12);
+    }
+}
+
+
+/* ========================================
+   SPRINKLE CONTAINER
+======================================== */
+
+.sprinkles {
+
+    position: absolute;
+
+    inset: -16px;
+
+    z-index: 1;
+
+    pointer-events: none;
+
+    overflow: visible;
+}
+
+
+/* ========================================
+   INDIVIDUAL SPRINKLE
+======================================== */
+
+.sprinkle {
+
+    position: absolute;
+
+    width: 4px;
+    height: 13px;
+
+    border-radius: 3px;
+
+    background: var(--gold-color);
+
+    opacity: 0;
+
+    box-shadow:
+        0 0 5px rgba(250, 202, 22, .9);
+
+    animation:
+        sprinkleBurst 1.7s ease-out forwards;
+}
+
+
+/* ========================================
+   SPRINKLE POSITIONS
+======================================== */
+
+.sprinkle:nth-child(1) {
+    top: 5%;
+    left: 18%;
+    transform: rotate(25deg);
+    animation-delay: .02s;
+}
+
+.sprinkle:nth-child(2) {
+    top: 3%;
+    left: 42%;
+    transform: rotate(70deg);
+    animation-delay: .08s;
+}
+
+.sprinkle:nth-child(3) {
+    top: 7%;
+    right: 20%;
+    transform: rotate(120deg);
+    animation-delay: .14s;
+}
+
+.sprinkle:nth-child(4) {
+    top: 24%;
+    right: 2%;
+    transform: rotate(40deg);
+    animation-delay: .18s;
+}
+
+.sprinkle:nth-child(5) {
+    top: 45%;
+    right: -2%;
+    transform: rotate(90deg);
+    animation-delay: .24s;
+}
+
+.sprinkle:nth-child(6) {
+    bottom: 22%;
+    right: 1%;
+    transform: rotate(145deg);
+    animation-delay: .30s;
+}
+
+.sprinkle:nth-child(7) {
+    bottom: 5%;
+    right: 20%;
+    transform: rotate(35deg);
+    animation-delay: .36s;
+}
+
+.sprinkle:nth-child(8) {
+    bottom: 1%;
+    left: 48%;
+    transform: rotate(100deg);
+    animation-delay: .42s;
+}
+
+.sprinkle:nth-child(9) {
+    bottom: 5%;
+    left: 20%;
+    transform: rotate(55deg);
+    animation-delay: .48s;
+}
+
+.sprinkle:nth-child(10) {
+    bottom: 22%;
+    left: 1%;
+    transform: rotate(120deg);
+    animation-delay: .54s;
+}
+
+.sprinkle:nth-child(11) {
+    top: 46%;
+    left: -2%;
+    transform: rotate(70deg);
+    animation-delay: .60s;
+}
+
+.sprinkle:nth-child(12) {
+    top: 23%;
+    left: 0%;
+    transform: rotate(25deg);
+    animation-delay: .66s;
+}
+
+.sprinkle:nth-child(13) {
+    top: 13%;
+    left: 65%;
+    transform: rotate(150deg);
+    animation-delay: .72s;
+}
+
+.sprinkle:nth-child(14) {
+    top: 67%;
+    right: 5%;
+    transform: rotate(20deg);
+    animation-delay: .78s;
+}
+
+.sprinkle:nth-child(15) {
+    bottom: 35%;
+    left: 4%;
+    transform: rotate(110deg);
+    animation-delay: .84s;
+}
+
+.sprinkle:nth-child(16) {
+    top: 38%;
+    right: 8%;
+    transform: rotate(60deg);
+    animation-delay: .90s;
+}
+
+
+/* ========================================
+   SPRINKLE ANIMATION
+======================================== */
+
+@keyframes sprinkleBurst {
+
+    0% {
+
+        opacity: 0;
+
+        transform:
+            translate3d(0, 0, 0)
+            rotate(0deg)
+            scale(.4);
+    }
+
+    20% {
+
+        opacity: 1;
+    }
+
+    55% {
+
+        opacity: 1;
+
+        transform:
+            translate3d(
+                0,
+                -8px,
+                0
+            )
+            rotate(90deg)
+            scale(1);
+    }
+
+    100% {
+
+        opacity: 0;
+
+        transform:
+            translate3d(
+                0,
+                -18px,
+                0
+            )
+            rotate(180deg)
+            scale(.65);
+    }
+}
+
+
+/* ========================================
+   DESKTOP / TABLET
+======================================== */
+
 @media (max-width: 1200px) {
 
     .card {
@@ -31,34 +356,73 @@
 
 }
 
+
+/* ========================================
+   MOBILE
+======================================== */
+
 @media (max-width: 768px) {
 
     .card {
+
         width: 100%;
         max-width: none;
         margin: 0;
-        border-radius: 40px;
-        padding: 1px;
-        border: 2px solid #FDCB137A;
 
+        border-radius: 18px;
 
+        border: 1px solid rgba(250, 202, 22, .55);
+        padding: 5px;
+    }
+
+    .cardContent {
+        border-radius: 17px;
     }
 
 }
 
+
+/* ========================================
+   SMALL MOBILE
+======================================== */
+
 @media (max-width: 480px) {
 
     .card {
+
         width: 100%;
-        border-radius: 40px;
-        padding: 2px;
 
+        border-radius: 16px;
 
+        border:
+            1px solid rgba(250, 202, 22, .55);
+
+        padding: 5px;
+            
+    }
+
+    .cardContent {
+        border-radius: 15px;
+    }
+
+    .sprinkles {
+        inset: -12px;
+    }
+
+    .sprinkle {
+        width: 3px;
+        height: 9px;
     }
 
     .card:hover {
-        transform: translateY(-5px);
-        border-color: #fdca13ce !important;
-        box-shadow: var(--shadow-md);
+
+        transform: translateY(-3px);
+
+        border-color:
+            rgba(250, 202, 22, .9);
+
+        box-shadow:
+            0 8px 20px rgba(0, 0, 0, .18);
     }
+
 }

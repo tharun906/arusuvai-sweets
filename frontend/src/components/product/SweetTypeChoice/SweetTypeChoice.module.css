@@ -1,15 +1,18 @@
+/* =========================================================
+   SWEET TYPE CHOICE
+========================================================= */
+
 .section {
+    position: relative;
     width: 100%;
     padding: 70px 5% 40px;
+    overflow: visible;
 }
 
-.comboPackTitle {
-    margin: 0;
-    font-weight: 700;
-    color: #0F3622;
-    line-height: 1.3;
+/* =========================================================
+   HEADING
+========================================================= */
 
-}
 .heading {
     display: flex;
     align-items: center;
@@ -47,9 +50,9 @@
 }
 
 
-/* ========================================
-   EXISTING TWO CARDS
-======================================== */
+/* =========================================================
+   TOP TWO CARDS
+========================================================= */
 
 .cards {
     display: grid;
@@ -62,13 +65,23 @@
 
 .card {
     position: relative;
-    overflow: hidden;
+    overflow: visible;
+    isolation: isolate;
+
     display: flex;
     flex-direction: column;
+
     min-width: 0;
     padding: 8px;
+
     border-radius: 24px;
+
     box-shadow: var(--shadow-md);
+
+    transition:
+        transform .25s ease,
+        box-shadow .35s ease,
+        border-color .35s ease;
 }
 
 .defaultCard {
@@ -83,23 +96,32 @@
     position: absolute;
     top: 18px;
     left: 18px;
-    z-index: 2;
+    z-index: 3;
+
     width: 64px;
     height: 64px;
+
     object-fit: contain;
 }
 
 .imageContainer {
+    position: relative;
+    z-index: 2;
+
     width: 100%;
     overflow: hidden;
+
     border-radius: 18px 18px 0 0;
 }
 
 .imageContainer img {
     display: block;
+
     width: 100%;
     height: 270px;
+
     object-fit: cover;
+
     transition: transform .3s ease;
 }
 
@@ -108,44 +130,29 @@
 }
 
 .card:hover {
-    border: 3px solid var(--gold-color);
+    border: 2px solid var(--gold-color);
 }
 
 .content {
+    position: relative;
+    z-index: 2;
+
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px 22px 24px;
-    text-align: center;
-    flex: 1;
-}
 
-.content button {
-    margin-top: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    width: 100%;
-    max-width: 360px;
-    padding: 13px 18px;
-    border: none;
-    border-radius: 12px;
-    background: var(--deep-background);
-    color: var(--gold-color);
-    font-family: "Playfair Display", serif;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition:
-        transform .2s ease,
-        background .2s ease,
-        box-shadow .2s ease;
+    flex: 1;
+
+    padding: 20px 22px 24px;
+
+    text-align: center;
 }
 
 .content h3 {
     margin: 0;
+
     color: black;
+
     font-family: "Playfair Display", serif;
     font-size: 1.65rem;
     font-weight: 700;
@@ -153,8 +160,11 @@
 
 .content p {
     max-width: 400px;
+
     margin: 10px 0 18px;
+
     color: #1d1d1d;
+
     font-family: "Playfair Display", serif;
     font-size: .98rem;
     line-height: 1.5;
@@ -164,19 +174,57 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
     gap: 10px;
+
     margin-bottom: 20px;
 }
 
 .weights span {
     padding: 8px 18px;
+
     border: 1px solid #b5790a;
     border-radius: 12px;
+
     background: rgba(255, 255, 255, .25);
+
     color: #1d1d1d;
+
     font-family: "Playfair Display", serif;
     font-size: .9rem;
     font-weight: 700;
+}
+
+.content button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 12px;
+
+    width: 100%;
+    max-width: 360px;
+
+    margin-top: auto;
+
+    padding: 13px 18px;
+
+    border: none;
+    border-radius: 12px;
+
+    background: var(--deep-background);
+    color: var(--gold-color);
+
+    font-family: "Playfair Display", serif;
+    font-size: 1rem;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform .2s ease,
+        background .2s ease,
+        box-shadow .2s ease;
 }
 
 .content button span {
@@ -185,23 +233,34 @@
 
 .content button:hover {
     background: var(--secondary-color);
+
+    transform: translateY(-1px);
+
     box-shadow: var(--shadow-sm);
 }
 
 
-/* ========================================
+/* =========================================================
    COMBO PACK
-======================================== */
+========================================================= */
 
 .comboCard {
+    position: relative;
+    overflow: visible;
+    isolation: isolate;
+
     display: flex;
+
     width: 100%;
     max-width: 1100px;
+
     min-height: 165px;
+
     margin: 24px auto 0;
-    overflow: hidden;
+
     border: 1px solid rgba(181, 121, 10, .35);
     border-radius: 20px;
+
     background:
         linear-gradient(
             105deg,
@@ -209,7 +268,9 @@
             #f4dfaa 55%,
             #ead098 100%
         );
+
     box-shadow: var(--shadow-md);
+
     transition:
         transform .25s ease,
         box-shadow .25s ease,
@@ -218,23 +279,33 @@
 
 .comboCard:hover {
     transform: translateY(-2px);
+
     border-color: var(--gold-color);
+
     box-shadow: var(--shadow-md);
 }
 
 .comboImageWrapper {
     position: relative;
+
     width: 235px;
     min-width: 235px;
+
     overflow: hidden;
+
+    border-radius: 19px 0 0 19px;
 }
 
 .comboImage {
     display: block;
+
     width: 100%;
     height: 100%;
+
     min-height: 165px;
+
     object-fit: cover;
+
     transition: transform .35s ease;
 }
 
@@ -244,24 +315,38 @@
 
 .comboBadge {
     position: absolute;
+
     top: 14px;
     left: 14px;
+
+    z-index: 3;
+
     padding: 6px 10px;
+
     border-radius: 7px;
+
     background: var(--deep-background);
     color: var(--gold-color);
+
     font-family: "Playfair Display", serif;
     font-size: .63rem;
     font-weight: 700;
+
     letter-spacing: 1px;
 }
 
 .comboInfo {
+    position: relative;
+    z-index: 2;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
+
     gap: 25px;
+
     flex: 1;
+
     padding: 22px 28px;
 }
 
@@ -270,25 +355,33 @@
 }
 
 .comboEyebrow {
-    color: #2B2B2B;
+    color: #997000;
+
     font-family: "Playfair Display", serif;
     font-size: .68rem;
     font-weight: 700;
+
     letter-spacing: 1.8px;
 }
 
-.comboText h3 {
+.comboPackTitle {
     margin: 4px 0 5px;
+
     color: #171717;
+
     font-family: "Playfair Display", serif;
     font-size: 1.55rem;
     font-weight: 700;
 }
 
-.comboDescription {
-    margin: 0;
-    max-width: 520px;
+.comboContents {
+    display: flex;
+    flex-direction: column;
+
+    gap: 2px;
+
     color: #3b3b3b;
+
     font-family: "Playfair Display", serif;
     font-size: .9rem;
     line-height: 1.4;
@@ -297,38 +390,46 @@
 .comboDetails {
     display: flex;
     align-items: center;
+
     gap: 18px;
+
     margin-top: 12px;
 }
 
 .comboDetail {
     display: flex;
     flex-direction: column;
+
     gap: 2px;
 }
 
 .detailLabel {
-    color: #2B2B2B;
+    color: #6e6248;
+
     font-family: "Playfair Display", serif;
     font-size: .65rem;
+
     text-transform: uppercase;
     letter-spacing: .8px;
-    font-weight: 700;
 }
 
 .comboDetail strong {
-    color: #997000;
+    color: #222;
+
+    font-family: "Playfair Display", serif;
     font-size: .95rem;
 }
 
 .comboDetail .comboPrice {
     color: #997000;
+
     font-size: 1.15rem;
 }
 
 .comboDivider {
     width: 1px;
     height: 30px;
+
     background: rgba(110, 98, 72, .3);
 }
 
@@ -336,18 +437,27 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
     gap: 12px;
+
     flex-shrink: 0;
+
     min-width: 150px;
+
     padding: 12px 18px;
+
     border: none;
     border-radius: 11px;
+
     background: var(--deep-background);
     color: var(--gold-color);
+
     font-family: "Playfair Display", serif;
     font-size: .9rem;
     font-weight: 700;
+
     cursor: pointer;
+
     transition:
         transform .2s ease,
         box-shadow .2s ease,
@@ -356,7 +466,9 @@
 
 .comboButton:hover:not(:disabled) {
     transform: translateY(-2px);
+
     background: var(--secondary-color);
+
     box-shadow: var(--shadow-sm);
 }
 
@@ -369,124 +481,156 @@
     font-size: 1.05rem;
 }
 
-.comboContents {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    margin-top: 4px;
-}
 
-.comboContents span {
-    color: #4A4A4A;
-    font-family: "Playfair Display", serif;
-    font-size: .78rem;
-    line-height: 1.3;
-}
-
-
-/* ========================================
+/* =========================================================
    BULK ORDERS
-======================================== */
+========================================================= */
 
 .bulkCard {
     position: relative;
+    overflow: visible;
+    isolation: isolate;
+
     display: flex;
     align-items: center;
-    gap: 18px;
+
     width: 100%;
     max-width: 1100px;
+
     min-height: 105px;
-    margin: 16px auto 0;
-    padding: 18px 24px;
-    box-sizing: border-box;
-    border: 1px solid rgba(70, 115, 59, .25);
-    border-radius: 18px;
+
+    margin: 12px auto 0;
+
+    padding: 18px;
+
+    gap: 14px;
+
+    border: 1px solid rgba(67, 100, 70, .25);
+    border-radius: 20px;
+
     background:
         linear-gradient(
             105deg,
-            #e5efd9 0%,
-            #dce8d5 100%
+            #e5f0df,
+            #d8e8d1
         );
+
     box-shadow: var(--shadow-md);
+
     cursor: pointer;
+
     transition:
         transform .25s ease,
-        box-shadow .25s ease,
-        border-color .25s ease;
+        box-shadow .3s ease,
+        border-color .3s ease;
 }
 
 .bulkCard:hover {
     transform: translateY(-2px);
-    border-color: #8ba47e;
+
+    border-color: var(--gold-color);
+
     box-shadow: var(--shadow-md);
 }
 
 .bulkIcon {
+    position: relative;
+    z-index: 2;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 46px;
-    height: 46px;
+
     flex-shrink: 0;
+
+    width: 40px;
+    height: 40px;
+
     border-radius: 50%;
+
     background: var(--deep-background);
     color: var(--gold-color);
-    font-size: 1.1rem;
+
+    font-size: .85rem;
 }
 
 .bulkInfo {
-    flex: 1;
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    flex-direction: column;
+
     min-width: 0;
 }
 
 .bulkEyebrow {
-    color: #527447;
+    color: #60705c;
+
     font-family: "Playfair Display", serif;
-    font-size: .63rem;
+    font-size: .62rem;
     font-weight: 700;
-    letter-spacing: 1.4px;
+
+    letter-spacing: 1.3px;
 }
 
 .bulkInfo h3 {
-    margin: 2px 0 2px;
-    color: #171717;
+    margin: 3px 0;
+
+    color: #17251b;
+
     font-family: "Playfair Display", serif;
-    font-size: 1.3rem;
+    font-size: 1.15rem;
     font-weight: 700;
 }
 
 .bulkInfo p {
     margin: 0;
-    color: #31502a;
+
+    color: #27372b;
+
     font-family: "Playfair Display", serif;
-    font-size: .82rem;
+    font-size: .78rem;
     font-weight: 700;
 }
 
 .bulkInfo small {
-    display: block;
     margin-top: 3px;
-    color: #555;
+
+    color: #536454;
+
     font-family: "Playfair Display", serif;
-    font-size: .7rem;
+    font-size: .65rem;
 }
 
 .bulkButton {
+    position: relative;
+    z-index: 2;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    flex-shrink: 0;
-    min-width: 135px;
-    padding: 11px 18px;
+
+    gap: 6px;
+
+    margin-left: auto;
+
+    min-width: 115px;
+
+    padding: 10px 14px;
+
     border: none;
     border-radius: 10px;
+
     background: var(--deep-background);
     color: var(--gold-color);
+
     font-family: "Playfair Display", serif;
-    font-size: .88rem;
+    font-size: .75rem;
     font-weight: 700;
+
     cursor: pointer;
+
     transition:
         transform .2s ease,
         background .2s ease;
@@ -494,17 +638,353 @@
 
 .bulkButton:hover {
     background: var(--secondary-color);
+
     transform: translateY(-1px);
 }
 
 .bulkButton span {
-    font-size: 1rem;
+    font-size: .9rem;
 }
 
 
-/* ========================================
+/* =========================================================
+   DIWALI SPARKS
+   Sparks stay BEHIND the cards.
+========================================================= */
+
+.card::before,
+.comboCard::before,
+.bulkCard::before {
+    content: "";
+
+    position: absolute;
+
+    inset: -7px;
+
+    border-radius: inherit;
+
+    pointer-events: none;
+
+    z-index: -1;
+
+    background:
+        radial-gradient(circle at 4% 18%,
+            #ffd84d 0 2px,
+            transparent 3px),
+
+        radial-gradient(circle at 16% 2%,
+            #fff3b0 0 1.5px,
+            transparent 3px),
+
+        radial-gradient(circle at 32% 0%,
+            #ffd84d 0 2px,
+            transparent 3px),
+
+        radial-gradient(circle at 50% 3%,
+            #fff3b0 0 1.5px,
+            transparent 3px),
+
+        radial-gradient(circle at 69% 0%,
+            #ffd84d 0 2px,
+            transparent 3px),
+
+        radial-gradient(circle at 87% 8%,
+            #fff3b0 0 1.5px,
+            transparent 3px),
+
+        radial-gradient(circle at 100% 28%,
+            #ffd84d 0 2px,
+            transparent 3px),
+
+        radial-gradient(circle at 100% 52%,
+            #fff3b0 0 1.5px,
+            transparent 3px),
+
+        radial-gradient(circle at 100% 78%,
+            #ffd84d 0 2px,
+            transparent 3px),
+
+        radial-gradient(circle at 82% 100%,
+            #fff3b0 0 1.5px,
+            transparent 3px),
+
+        radial-gradient(circle at 60% 100%,
+            #ffd84d 0 2px,
+            transparent 3px),
+
+        radial-gradient(circle at 38% 100%,
+            #fff3b0 0 1.5px,
+            transparent 3px),
+
+        radial-gradient(circle at 16% 100%,
+            #ffd84d 0 2px,
+            transparent 3px),
+
+        radial-gradient(circle at 0% 78%,
+            #fff3b0 0 1.5px,
+            transparent 3px),
+
+        radial-gradient(circle at 0% 48%,
+            #ffd84d 0 2px,
+            transparent 3px),
+
+        radial-gradient(circle at 0% 25%,
+            #fff3b0 0 1.5px,
+            transparent 3px);
+
+    opacity: 0;
+
+    filter:
+        drop-shadow(0 0 4px #ffd84d)
+        drop-shadow(0 0 9px rgba(255, 205, 45, .85));
+}
+
+
+/* =========================================================
+   SECONDARY SMALL SPARKS
+========================================================= */
+
+.card::after,
+.comboCard::after,
+.bulkCard::after {
+    content: "";
+
+    position: absolute;
+
+    inset: -11px;
+
+    border-radius: inherit;
+
+    pointer-events: none;
+
+    z-index: -2;
+
+    background:
+        radial-gradient(circle at 8% 30%,
+            #ffd84d 0 1px,
+            transparent 3px),
+
+        radial-gradient(circle at 25% 5%,
+            #ffd84d 0 1px,
+            transparent 3px),
+
+        radial-gradient(circle at 43% 97%,
+            #fff1a8 0 1px,
+            transparent 3px),
+
+        radial-gradient(circle at 62% 4%,
+            #ffd84d 0 1px,
+            transparent 3px),
+
+        radial-gradient(circle at 81% 96%,
+            #ffd84d 0 1px,
+            transparent 3px),
+
+        radial-gradient(circle at 97% 45%,
+            #fff1a8 0 1px,
+            transparent 3px),
+
+        radial-gradient(circle at 3% 70%,
+            #ffd84d 0 1px,
+            transparent 3px),
+
+        radial-gradient(circle at 73% 1%,
+            #fff1a8 0 1px,
+            transparent 3px);
+
+    opacity: 0;
+
+    filter:
+        drop-shadow(0 0 4px #ffd84d)
+        drop-shadow(0 0 8px rgba(255, 200, 30, .75));
+}
+
+
+/* =========================================================
+   FESTIVE ACTIVE STATE
+========================================================= */
+
+.festiveActive .card::before,
+.festiveActive .comboCard::before,
+.festiveActive .bulkCard::before {
+    animation:
+        perimeterSparks
+        2s
+        ease-out
+        forwards;
+}
+
+.festiveActive .card::after,
+.festiveActive .comboCard::after,
+.festiveActive .bulkCard::after {
+    animation:
+        perimeterSparksSecondary
+        2.2s
+        ease-out
+        .15s
+        forwards;
+}
+
+
+/* =========================================================
+   STAGGER THE FOUR CARDS
+========================================================= */
+
+.festiveActive .card:nth-child(1)::before,
+.festiveActive .card:nth-child(1)::after {
+    animation-delay: 0s;
+}
+
+.festiveActive .card:nth-child(2)::before,
+.festiveActive .card:nth-child(2)::after {
+    animation-delay: .15s;
+}
+
+.festiveActive .comboCard::before,
+.festiveActive .comboCard::after {
+    animation-delay: .3s;
+}
+
+.festiveActive .bulkCard::before,
+.festiveActive .bulkCard::after {
+    animation-delay: .45s;
+}
+
+
+/* =========================================================
+   SPARK ANIMATIONS
+========================================================= */
+
+@keyframes perimeterSparks {
+
+    0% {
+        opacity: 0;
+        transform: scale(.82);
+    }
+
+    12% {
+        opacity: .9;
+        transform: scale(.94);
+    }
+
+    28% {
+        opacity: 1;
+        transform: scale(1.03);
+    }
+
+    45% {
+        opacity: .8;
+        transform: scale(1);
+    }
+
+    62% {
+        opacity: 1;
+        transform: scale(1.015);
+    }
+
+    82% {
+        opacity: .45;
+        transform: scale(1.02);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1.04);
+    }
+}
+
+@keyframes perimeterSparksSecondary {
+
+    0% {
+        opacity: 0;
+        transform: scale(.78);
+    }
+
+    18% {
+        opacity: .9;
+        transform: scale(.96);
+    }
+
+    38% {
+        opacity: .65;
+        transform: scale(1.02);
+    }
+
+    58% {
+        opacity: .9;
+        transform: scale(1);
+    }
+
+    78% {
+        opacity: .4;
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1.05);
+    }
+}
+
+
+/* =========================================================
+   SOFT CARD GLOW DURING FESTIVE ANIMATION
+========================================================= */
+
+.festiveActive .card,
+.festiveActive .comboCard,
+.festiveActive .bulkCard {
+    animation: festiveCardGlow 2s ease-out forwards;
+}
+
+.festiveActive .card:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.festiveActive .card:nth-child(2) {
+    animation-delay: .15s;
+}
+
+.festiveActive .comboCard {
+    animation-delay: .3s;
+}
+
+.festiveActive .bulkCard {
+    animation-delay: .45s;
+}
+
+@keyframes festiveCardGlow {
+
+    0% {
+        box-shadow:
+            var(--shadow-md),
+            0 0 0 rgba(255, 210, 50, 0);
+    }
+
+    25% {
+        box-shadow:
+            var(--shadow-md),
+            0 0 10px rgba(255, 210, 50, .7),
+            0 0 22px rgba(255, 210, 50, .35);
+    }
+
+    55% {
+        box-shadow:
+            var(--shadow-md),
+            0 0 13px rgba(255, 210, 50, .6),
+            0 0 25px rgba(255, 210, 50, .25);
+    }
+
+    100% {
+        box-shadow:
+            var(--shadow-md),
+            0 0 0 rgba(255, 210, 50, 0);
+    }
+}
+
+
+/* =========================================================
    TABLET
-======================================== */
+========================================================= */
 
 @media (max-width: 900px) {
 
@@ -555,25 +1035,33 @@
     }
 
     .comboImageWrapper {
-        width: 190px;
-        min-width: 190px;
+        width: 200px;
+        min-width: 200px;
     }
 
     .comboInfo {
-        padding: 18px 20px;
-        gap: 18px;
+        padding: 18px;
+        gap: 15px;
+    }
+
+    .comboPackTitle {
+        font-size: 1.25rem;
+    }
+
+    .comboDescription {
+        font-size: .78rem;
     }
 
     .comboButton {
-        min-width: 130px;
+        min-width: 125px;
+        padding: 10px 12px;
     }
-
 }
 
 
-/* ========================================
+/* =========================================================
    MOBILE
-======================================== */
+========================================================= */
 
 @media (max-width: 768px) {
 
@@ -593,8 +1081,10 @@
 
     .heading p {
         margin-top: 5px;
+
         font-size: .72rem;
         line-height: 1.35;
+
         white-space: nowrap;
     }
 
@@ -605,30 +1095,36 @@
 
     .cards {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+
         gap: 10px;
     }
 
     .card {
         min-width: 0;
+
         padding: 3px;
+
         border-radius: 15px;
     }
 
     .boxBadge {
         top: 7px;
         left: 7px;
+
         width: 40px;
         height: 40px;
     }
 
     .imageContainer {
         width: 100%;
+
         border-radius: 12px 12px 0 0;
     }
 
     .imageContainer img {
         width: 100%;
         height: 115px;
+
         object-fit: cover;
     }
 
@@ -643,29 +1139,40 @@
 
     .content p {
         margin: 5px 0 9px;
+
         font-size: .66rem;
         line-height: 1.3;
     }
 
     .weights {
         width: 100%;
+
         gap: 3px;
+
         margin-bottom: 9px;
     }
 
     .weights span {
         flex: 1;
+
         padding: 5px 2px;
+
         border-radius: 8px;
+
         font-size: .58rem;
+
         white-space: nowrap;
     }
 
     .content button {
         width: 100%;
+
         padding: 8px 4px;
+
         gap: 5px;
+
         border-radius: 8px;
+
         font-size: .67rem;
     }
 
@@ -674,132 +1181,146 @@
     }
 
 
-    /* ========================================
+    /* =====================================================
        COMBO MOBILE
-    ======================================== */
+    ===================================================== */
 
     .comboCard {
         min-height: 125px;
+
         margin-top: 12px;
+
         border-radius: 15px;
     }
 
     .comboImageWrapper {
-        width: 40%;
-        min-width: 40%;
+        width: 140px;
+        min-width: 140px;
+
+        border-radius: 14px 0 0 14px;
     }
 
     .comboImage {
         min-height: 125px;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
     }
 
     .comboBadge {
         top: 7px;
         left: 7px;
+
         padding: 4px 6px;
+
         border-radius: 5px;
+
         font-size: .43rem;
+
         letter-spacing: .7px;
     }
 
     .comboInfo {
+        display: flex;
         flex-direction: column;
+
         align-items: stretch;
         justify-content: center;
-        gap: 7px;
-        padding: 10px 10px;
+
+        gap: 5px;
+
+        padding: 10px 9px;
     }
 
     .comboEyebrow {
         font-size: .47rem;
+
         letter-spacing: 1px;
     }
 
-    .comboText h3 {
-        margin: 2px 0 2px;
-        font-size: .82rem;
+    .comboPackTitle {
+        margin: 2px 0 1px;
+
+        font-size: .86rem;
         line-height: 1.1;
     }
 
-    .comboDescription {
-        font-size: .54rem;
+    .comboContents {
+        gap: 1px;
+
+        font-size: .52rem;
         line-height: 1.25;
     }
 
     .comboDetails {
         gap: 8px;
-        margin-top: 5px;
+
+        margin-top: 3px;
     }
 
     .detailLabel {
-        font-size: .45rem;
+        font-size: .43rem;
+
         letter-spacing: .5px;
     }
 
     .comboDetail strong {
-        font-size: .63rem;
+        font-size: .62rem;
     }
 
     .comboDetail .comboPrice {
-        font-size: .75rem;
+        font-size: .74rem;
     }
 
     .comboDivider {
-        height: 22px;
+        height: 20px;
     }
 
     .comboButton {
         width: 100%;
         min-width: 0;
-        padding: 7px 3px;
+
+        padding: 6px 7px;
+
         border-radius: 7px;
-        font-size: .8rem;
+
+        font-size: .57rem;
     }
 
     .buttonArrow {
-        font-size: .72rem;
-    }
-
-    .comboContents {
-        gap: 1px;
-        margin-top: 3px;
-    }
-
-    .comboContents span {
-        font-size: .52rem;
-        line-height: 1.25;
+        font-size: .7rem;
     }
 
 
-
-    /* ========================================
+    /* =====================================================
        BULK MOBILE
-    ======================================== */
+    ===================================================== */
 
     .bulkCard {
         min-height: 78px;
+
         margin-top: 10px;
+
         padding: 11px;
+
         gap: 9px;
+
         border-radius: 14px;
     }
 
     .bulkIcon {
         width: 31px;
         height: 31px;
+
         font-size: .72rem;
     }
 
     .bulkEyebrow {
         font-size: .45rem;
+
         letter-spacing: .8px;
     }
 
     .bulkInfo h3 {
         margin: 2px 0;
+
         font-size: .78rem;
         line-height: 1.1;
     }
@@ -811,28 +1332,32 @@
 
     .bulkInfo small {
         margin-top: 2px;
+
         font-size: .48rem;
         line-height: 1.15;
     }
 
     .bulkButton {
         min-width: 78px;
+
         padding: 7px 6px;
+
         gap: 4px;
+
         border-radius: 7px;
+
         font-size: .56rem;
     }
 
     .bulkButton span {
         font-size: .65rem;
     }
-
 }
 
 
-/* ========================================
+/* =========================================================
    SMALL MOBILE
-======================================== */
+========================================================= */
 
 @media (max-width: 480px) {
 
@@ -842,6 +1367,7 @@
 
     .heading {
         gap: 5px;
+
         margin-bottom: 15px;
     }
 
@@ -869,6 +1395,7 @@
     .boxBadge {
         top: 6px;
         left: 6px;
+
         width: 36px;
         height: 36px;
     }
@@ -887,24 +1414,31 @@
 
     .content p {
         font-size: .6rem;
+
         line-height: 1.25;
+
         margin: 4px 0 7px;
     }
 
     .weights {
         gap: 2px;
+
         margin-bottom: 7px;
     }
 
     .weights span {
         padding: 4px 1px;
+
         border-radius: 7px;
+
         font-size: .52rem;
     }
 
     .content button {
         padding: 7px 3px;
+
         border-radius: 7px;
+
         font-size: .8rem;
     }
 
@@ -913,52 +1447,55 @@
     }
 
 
-    /* COMBO */
+    /* =====================================================
+       COMBO SMALL MOBILE
+    ===================================================== */
 
     .comboCard {
         min-height: 115px;
+
         border-radius: 13px;
     }
 
     .comboImageWrapper {
-        width: 40%;
-        min-width: 40%;
+        width: 125px;
+        min-width: 125px;
     }
 
     .comboImage {
         min-height: 115px;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
     }
 
     .comboBadge {
         top: 6px;
         left: 6px;
+
         padding: 3px 5px;
+
         font-size: .38rem;
     }
 
     .comboInfo {
         padding: 8px;
-        gap: 5px;
+        gap: 4px;
     }
 
     .comboEyebrow {
-        font-size: .7rem;
+        font-size: .4rem;
     }
 
-    .comboText h3 {
+    .comboPackTitle {
         font-size: .76rem;
     }
 
-    .comboDescription {
-        font-size: .5rem;
+    .comboContents {
+        font-size: .48rem;
     }
 
     .comboDetails {
         gap: 6px;
-        margin-top: 3px;
+
+        margin-top: 2px;
     }
 
     .detailLabel {
@@ -974,56 +1511,73 @@
     }
 
     .comboButton {
-        padding: 7px 3px;
-        border-radius: 7px;
-        font-size: .8rem;
-    }
+        padding: 5px 6px;
 
-    .comboContents {
-        gap: 1px;
-        margin-top: 2px;
-    }
-
-    .comboContents span {
-        font-size: .8rem;
-        line-height: 1.2;
+        font-size: .53rem;
     }
 
 
-    /* BULK */
+    /* =====================================================
+       BULK SMALL MOBILE
+    ===================================================== */
 
     .bulkCard {
         min-height: 72px;
+
         padding: 9px;
+
         gap: 7px;
     }
 
     .bulkIcon {
         width: 27px;
         height: 27px;
+
         font-size: .62rem;
     }
 
     .bulkEyebrow {
-        font-size: .6rem;
+        font-size: .4rem;
     }
 
     .bulkInfo h3 {
-        font-size: .86rem;
+        font-size: .72rem;
     }
 
     .bulkInfo p {
-        font-size: .6rem;
+        font-size: .52rem;
     }
 
     .bulkInfo small {
-        font-size: .6rem;
+        font-size: .44rem;
     }
 
     .bulkButton {
         min-width: 72px;
-        padding: 6px 5px;
-        font-size: .62rem;
-    }
 
+        padding: 6px 5px;
+
+        font-size: .52rem;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .card,
+    .comboCard,
+    .bulkCard,
+    .card::before,
+    .card::after,
+    .comboCard::before,
+    .comboCard::after,
+    .bulkCard::before,
+    .bulkCard::after {
+        animation: none !important;
+        transition: none !important;
+    }
 }
