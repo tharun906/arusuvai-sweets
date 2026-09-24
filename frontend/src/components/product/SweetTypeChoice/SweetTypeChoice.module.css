@@ -3,6 +3,13 @@
     padding: 70px 5% 40px;
 }
 
+.comboPackTitle {
+    margin: 0;
+    font-weight: 700;
+    color: #0F3622;
+    line-height: 1.3;
+
+}
 .heading {
     display: flex;
     align-items: center;
@@ -263,7 +270,7 @@
 }
 
 .comboEyebrow {
-    color: #997000;
+    color: #2B2B2B;
     font-family: "Playfair Display", serif;
     font-size: .68rem;
     font-weight: 700;
@@ -301,16 +308,16 @@
 }
 
 .detailLabel {
-    color: #6e6248;
+    color: #2B2B2B;
     font-family: "Playfair Display", serif;
     font-size: .65rem;
     text-transform: uppercase;
     letter-spacing: .8px;
+    font-weight: 700;
 }
 
 .comboDetail strong {
-    color: #222;
-    font-family: "Playfair Display", serif;
+    color: #997000;
     font-size: .95rem;
 }
 
@@ -360,6 +367,20 @@
 
 .buttonArrow {
     font-size: 1.05rem;
+}
+
+.comboContents {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 4px;
+}
+
+.comboContents span {
+    color: #4A4A4A;
+    font-family: "Playfair Display", serif;
+    font-size: .78rem;
+    line-height: 1.3;
 }
 
 
@@ -664,12 +685,15 @@
     }
 
     .comboImageWrapper {
-        width: 108px;
-        min-width: 108px;
+        width: 40%;
+        min-width: 40%;
     }
 
     .comboImage {
         min-height: 125px;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
 
     .comboBadge {
@@ -730,14 +754,25 @@
     .comboButton {
         width: 100%;
         min-width: 0;
-        padding: 6px 8px;
+        padding: 7px 3px;
         border-radius: 7px;
-        font-size: .58rem;
+        font-size: .8rem;
     }
 
     .buttonArrow {
         font-size: .72rem;
     }
+
+    .comboContents {
+        gap: 1px;
+        margin-top: 3px;
+    }
+
+    .comboContents span {
+        font-size: .52rem;
+        line-height: 1.25;
+    }
+
 
 
     /* ========================================
@@ -886,12 +921,15 @@
     }
 
     .comboImageWrapper {
-        width: 92px;
-        min-width: 92px;
+        width: 40%;
+        min-width: 40%;
     }
 
     .comboImage {
         min-height: 115px;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
 
     .comboBadge {
@@ -907,7 +945,7 @@
     }
 
     .comboEyebrow {
-        font-size: .4rem;
+        font-size: .7rem;
     }
 
     .comboText h3 {
@@ -936,8 +974,19 @@
     }
 
     .comboButton {
-        padding: 5px 6px;
-        font-size: .53rem;
+        padding: 7px 3px;
+        border-radius: 7px;
+        font-size: .8rem;
+    }
+
+    .comboContents {
+        gap: 1px;
+        margin-top: 2px;
+    }
+
+    .comboContents span {
+        font-size: .8rem;
+        line-height: 1.2;
     }
 
 
@@ -956,25 +1005,25 @@
     }
 
     .bulkEyebrow {
-        font-size: .4rem;
+        font-size: .6rem;
     }
 
     .bulkInfo h3 {
-        font-size: .72rem;
+        font-size: .86rem;
     }
 
     .bulkInfo p {
-        font-size: .52rem;
+        font-size: .6rem;
     }
 
     .bulkInfo small {
-        font-size: .44rem;
+        font-size: .6rem;
     }
 
     .bulkButton {
         min-width: 72px;
         padding: 6px 5px;
-        font-size: .52rem;
+        font-size: .62rem;
     }
 
 }

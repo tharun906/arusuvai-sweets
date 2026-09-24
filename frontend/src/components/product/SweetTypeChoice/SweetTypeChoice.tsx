@@ -213,44 +213,48 @@ function SweetTypeChoice() {
 
                     <div className={styles.comboInfo}>
 
-                        <div className={styles.comboText}>
+                        <span className={styles.comboEyebrow}>
+                            ARUSUVAI'S PICK
+                        </span>
 
-                            <span className={styles.comboEyebrow}>
-                                ARUSUVAI'S PICK
+                        <h3 className={styles.comboPackTitle}>
+                            {comboPack.title}
+                        </h3>
+
+                        <div className={styles.comboContents}>
+
+                            <span>
+                                8 Variety Sweets
                             </span>
 
-                            <h3>
-                                {comboPack.title}
-                            </h3>
+                            <span>
+                                + 250g Mixture
+                            </span>
 
-                            <p className={styles.comboDescription}>
-                                {comboPack.contents}
-                            </p>
+                        </div>
 
-                            <div className={styles.comboDetails}>
+                        <div className={styles.comboDetails}>
 
-                                <div className={styles.comboDetail}>
-                                    <span className={styles.detailLabel}>
-                                        Weight
-                                    </span>
+                            <div className={styles.comboDetail}>
+                                <span className={styles.detailLabel}>
+                                    Weight
+                                </span>
 
-                                    <strong>
-                                        {comboPack.weight}
-                                    </strong>
-                                </div>
+                                <strong>
+                                    {comboPack.weight}
+                                </strong>
+                            </div>
 
-                                <div className={styles.comboDivider} />
+                            <div className={styles.comboDivider} />
 
-                                <div className={styles.comboDetail}>
-                                    <span className={styles.detailLabel}>
-                                        Price
-                                    </span>
+                            <div className={styles.comboDetail}>
+                                <span className={styles.detailLabel}>
+                                    Price
+                                </span>
 
-                                    <strong className={styles.comboPrice}>
-                                        ₹{comboPack.price}
-                                    </strong>
-                                </div>
-
+                                <strong className={styles.comboPrice}>
+                                    ₹{comboPack.price}
+                                </strong>
                             </div>
 
                         </div>
@@ -261,7 +265,6 @@ function SweetTypeChoice() {
                             disabled={!comboPack.active}
                             onClick={handleAddComboToCart}
                         >
-
                             <span>
                                 {comboPack.active
                                     ? "Add to Cart"
@@ -274,10 +277,9 @@ function SweetTypeChoice() {
                                     →
                                 </span>
                             )}
-
                         </button>
 
-                    </div>
+                        </div>
 
                 </div>
 
