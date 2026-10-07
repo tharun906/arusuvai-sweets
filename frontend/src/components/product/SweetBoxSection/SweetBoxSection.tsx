@@ -17,6 +17,7 @@ function SweetBoxSection() {
     const [selectedBoxId, setSelectedBoxId] = useState<number | null>(null);
     const [quantity, setQuantity] = useState(1);
     const loading = sweetBoxLoading || productsLoading;
+    const [festiveBoxId, setFestiveBoxId] = useState<number | null>(null);
 
     if (loading) return <Loading />;
     if (sweetBoxes.length === 0) return null;
@@ -26,6 +27,15 @@ function SweetBoxSection() {
     const handleSelectBox = (id: number) => {
         setSelectedBoxId(id);
         setQuantity(1);
+        setFestiveBoxId(null);
+    
+        requestAnimationFrame(() => {
+            setFestiveBoxId(id);
+        });
+    
+        setTimeout(() => {
+            setFestiveBoxId(null);
+        }, 2300);
     };
 
     const handleAddToCart = () => {
@@ -42,7 +52,7 @@ function SweetBoxSection() {
                 </div>
                 <img src={headingRight} alt="" className={styles.headingImage} />
             </div>
-
+    
             <div className={styles.boxSelectors}>
                 {sweetBoxes.map(box => (
                     <button
@@ -50,65 +60,90 @@ function SweetBoxSection() {
                         type="button"
                         className={`${selectedBox.id === box.id ? styles.selected : styles.selector} ${
                             !box.active ? styles.unavailable : ""
-                        }`}
+                        } ${festiveBoxId === box.id ? styles.festiveActive : ""}`}
                         onClick={() => handleSelectBox(box.id)}
                     >
                         <span>{box.name}</span>
                         <small>{box.totalWeight}</small>
-
+    
                         {!box.active && (
                             <em>Unavailable</em>
                         )}
                     </button>
                 ))}
             </div>
-
+    
             <div
                 className={`${styles.boxContent} ${
                     !selectedBox.active ? styles.unavailableContent : ""
                 }`}
             >
                 <div className={styles.imageContainer}>
-                    <img src={selectedBox.imageUrl} alt={selectedBox.name} className={styles.image} />
+                    <img
+                        src={selectedBox.imageUrl}
+                        alt={selectedBox.name}
+                        className={styles.image}
+                    />
                 </div>
-
+    
                 <div className={styles.details}>
                     <div className={styles.productHeader}>
                         <div>
                             <h3>{selectedBox.name}</h3>
-                            <span className={styles.weightText}>{selectedBox.totalWeight}</span>
+                            <span className={styles.weightText}>
+                                {selectedBox.totalWeight}
+                            </span>
                         </div>
-                        <strong className={styles.productPrice}>₹{selectedBox.price}</strong>
+    
+                        <strong className={styles.productPrice}>
+                            ₹{selectedBox.price}
+                        </strong>
                     </div>
-
-                    <p className={styles.description}>A delightful assortment of our signature sweets.</p>
-
+    
+                    <p className={styles.description}>
+                        A delightful assortment of our signature sweets.
+                    </p>
+    
                     <div className={styles.highlights}>
                         <div className={styles.highlight}>
-                            <img src={weight} alt="" className={styles.highlightIcon} />
+                            <img
+                                src={weight}
+                                alt=""
+                                className={styles.highlightIcon}
+                            />
                             <div>
                                 <small>Total Weight</small>
                                 <strong>{selectedBox.totalWeight}</strong>
                             </div>
                         </div>
-
+    
                         <div className={styles.highlight}>
-                            <img src={price} alt="" className={styles.highlightIcon} />
+                            <img
+                                src={price}
+                                alt=""
+                                className={styles.highlightIcon}
+                            />
                             <div>
                                 <small>Price</small>
                                 <strong>₹{selectedBox.price}</strong>
                             </div>
                         </div>
                     </div>
-
+    
                     <div className={styles.contents}>
                         <h4>What's Inside?</h4>
+    
                         <div className={styles.items}>
                             {selectedBox.items.map(item => {
-                                const product = products.find(p => p.id === item.productId);
-
+                                const product = products.find(
+                                    p => p.id === item.productId
+                                );
+    
                                 return (
-                                    <div key={item.productId} className={styles.item}>
+                                    <div
+                                        key={item.productId}
+                                        className={styles.item}
+                                    >
                                         <div className={styles.itemProduct}>
                                             <div className={styles.itemImageContainer}>
                                                 {product?.imageUrl ? (
@@ -118,20 +153,32 @@ function SweetBoxSection() {
                                                         className={styles.itemImage}
                                                     />
                                                 ) : (
-                                                    <div className={styles.itemImagePlaceholder}>🍬</div>
+                                                    <div className={styles.itemImagePlaceholder}>
+                                                        🍬
+                                                    </div>
                                                 )}
                                             </div>
+    
                                             <span>{item.productName}</span>
                                         </div>
-                                        <span className={styles.itemQuantity}>{item.quantity} pcs</span>
+    
+                                        <span className={styles.itemQuantity}>
+                                            {item.quantity} pcs
+                                        </span>
                                     </div>
                                 );
                             })}
                         </div>
                     </div>
-
+    
                     <div className={styles.bottomActions}>
-                        <QuantitySelector value={quantity} min={1} max={10} onChange={setQuantity} />
+                        <QuantitySelector
+                            value={quantity}
+                            min={1}
+                            max={10}
+                            onChange={setQuantity}
+                        />
+    
                         <button
                             type="button"
                             className={styles.addButton}

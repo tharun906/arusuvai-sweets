@@ -19,7 +19,7 @@
 .brand h2 {
     margin: 0 0 14px;
 
-    color: var(--text-primary);
+    color: var(--gold-color);
 
     font-family: "Playfair Display", serif;
 
@@ -32,7 +32,7 @@
 
     max-width: 320px;
 
-    color: var(--text-dim);
+    color: var(--text-secondary);
 
     font-size: .95rem;
     line-height: 1.8;
@@ -51,7 +51,7 @@
 .contact h3 {
     margin: 0 0 7px;
 
-    color: var(--text-primary);
+    color: var(--gold-color);
 
     font-size: .9rem;
     font-weight: 600;

@@ -113,6 +113,287 @@
     transform: translateY(-2px);
 }
 
+
+
+/* ========================================
+   FESTIVE SWEET BOX SELECTOR EFFECT
+======================================== */
+
+.festiveActive {
+    position: relative;
+    z-index: 2;
+    overflow: visible;
+
+    animation: festiveSelectorGlow 2.4s ease-out forwards;
+}
+
+
+/* ========================================
+   MOVING GOLD BORDER
+======================================== */
+
+.festiveActive::before {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    border-radius: inherit;
+    padding: 2px;
+
+    background: conic-gradient(
+        from 0deg,
+        transparent 0deg,
+        transparent 25deg,
+        #FDCB13 45deg,
+        #FFF2A3 65deg,
+        transparent 90deg,
+        transparent 135deg,
+        #FDCB13 160deg,
+        #FFF2A3 180deg,
+        transparent 205deg,
+        transparent 250deg,
+        #FDCB13 275deg,
+        #FFF2A3 295deg,
+        transparent 320deg,
+        transparent 360deg
+    );
+
+    /*
+       Cut the center out so only the border
+       remains visible.
+    */
+    -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+
+    filter:
+        drop-shadow(0 0 4px rgba(253, 203, 19, 0.9))
+        drop-shadow(0 0 9px rgba(253, 203, 19, 0.55));
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    animation: festiveBorderTravel 2.4s ease-out forwards;
+}
+
+
+/* ========================================
+   FESTIVE PARTICLES
+======================================== */
+
+.festiveActive::after {
+    content: "";
+    position: absolute;
+
+    /*
+       Extend outside the button so the
+       particles appear around it.
+    */
+    inset: -14px;
+
+    border-radius: inherit;
+
+    pointer-events: none;
+    z-index: -1;
+
+    background:
+        radial-gradient(circle at 5% 20%,
+            #FDCB13 0 1.5px,
+            transparent 2.5px),
+
+        radial-gradient(circle at 20% 0%,
+            #FFF2A3 0 1.5px,
+            transparent 2.5px),
+
+        radial-gradient(circle at 50% -5%,
+            #FDCB13 0 1.5px,
+            transparent 2.5px),
+
+        radial-gradient(circle at 80% 2%,
+            #FFF2A3 0 1.5px,
+            transparent 2.5px),
+
+        radial-gradient(circle at 98% 20%,
+            #FDCB13 0 1.5px,
+            transparent 2.5px),
+
+        radial-gradient(circle at 105% 50%,
+            #FFF2A3 0 1.5px,
+            transparent 2.5px),
+
+        radial-gradient(circle at 95% 80%,
+            #FDCB13 0 1.5px,
+            transparent 2.5px),
+
+        radial-gradient(circle at 75% 103%,
+            #FFF2A3 0 1.5px,
+            transparent 2.5px),
+
+        radial-gradient(circle at 50% 108%,
+            #FDCB13 0 1.5px,
+            transparent 2.5px),
+
+        radial-gradient(circle at 25% 103%,
+            #FFF2A3 0 1.5px,
+            transparent 2.5px),
+
+        radial-gradient(circle at 2% 80%,
+            #FDCB13 0 1.5px,
+            transparent 2.5px),
+
+        radial-gradient(circle at -5% 50%,
+            #FFF2A3 0 1.5px,
+            transparent 2.5px);
+
+    filter:
+        drop-shadow(0 0 3px #FDCB13)
+        drop-shadow(0 0 5px rgba(253, 203, 19, 0.6));
+
+    opacity: 0;
+
+    animation: festiveParticlesTravel 2.4s ease-out forwards;
+}
+
+
+/* ========================================
+   BUTTON GLOW
+======================================== */
+
+@keyframes festiveSelectorGlow {
+
+    0% {
+        box-shadow:
+            0 0 0 rgba(253, 203, 19, 0);
+    }
+
+    15% {
+        box-shadow:
+            0 0 7px rgba(253, 203, 19, 0.9),
+            0 0 15px rgba(253, 203, 19, 0.55);
+    }
+
+    35% {
+        box-shadow:
+            0 0 10px rgba(253, 203, 19, 1),
+            0 0 22px rgba(253, 203, 19, 0.7);
+    }
+
+    60% {
+        box-shadow:
+            0 0 8px rgba(253, 203, 19, 0.75),
+            0 0 17px rgba(253, 203, 19, 0.45);
+    }
+
+    100% {
+        box-shadow:
+            0 0 0 rgba(253, 203, 19, 0);
+    }
+}
+
+
+/* ========================================
+   BORDER TRAVEL
+======================================== */
+
+@keyframes festiveBorderTravel {
+
+    0% {
+        opacity: 0;
+        transform: rotate(0deg) scale(0.96);
+    }
+
+    12% {
+        opacity: 1;
+    }
+
+    35% {
+        opacity: 1;
+    }
+
+    55% {
+        opacity: 0.95;
+        transform: rotate(180deg) scale(1);
+    }
+
+    75% {
+        opacity: 0.7;
+    }
+
+    100% {
+        opacity: 0;
+        transform: rotate(360deg) scale(1.03);
+    }
+}
+
+
+/* ========================================
+   PARTICLE TRAVEL
+======================================== */
+
+@keyframes festiveParticlesTravel {
+
+    0% {
+        opacity: 0;
+        transform:
+            rotate(0deg)
+            scale(0.75);
+    }
+
+    12% {
+        opacity: 1;
+    }
+
+    30% {
+        opacity: 1;
+        transform:
+            rotate(45deg)
+            scale(0.95);
+    }
+
+    55% {
+        opacity: 1;
+        transform:
+            rotate(180deg)
+            scale(1.05);
+    }
+
+    75% {
+        opacity: 0.75;
+        transform:
+            rotate(270deg)
+            scale(1.08);
+    }
+
+    100% {
+        opacity: 0;
+        transform:
+            rotate(360deg)
+            scale(1.15);
+    }
+}
+
+
+/* ========================================
+   REDUCED MOTION
+======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .festiveActive,
+    .festiveActive::before,
+    .festiveActive::after {
+        animation: none;
+    }
+
+    .festiveActive {
+        box-shadow:
+            0 0 12px rgba(253, 203, 19, 0.7);
+    }
+}
+
 .selector span,
 .selected span {
     font-size: .95rem;
