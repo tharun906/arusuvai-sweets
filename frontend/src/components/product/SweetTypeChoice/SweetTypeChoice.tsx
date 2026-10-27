@@ -6,7 +6,7 @@ import {
 
 import styles from "./SweetTypeChoice.module.css";
 
-import sweetBoxImage from "../../../assets/SweetChoice.jpeg";
+import sweetBoxImage from "../../../assets/Arusuvai Traditional Sweets Box.png";
 import customizeImage from "../../../assets/SweetChoice.jpeg";
 import headingLeft from "../../../assets/headingLeft.webp";
 import headingRight from "../../../assets/headingRight.webp";

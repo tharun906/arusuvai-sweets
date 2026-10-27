@@ -1,7 +1,5 @@
 import styles from "./HeroBanner.module.css";
-import HeroVideo from "../../../assets/herobanner/test_video.mp4";
-
-
+import HeroVideo from "../../../assets/herobanner/arusuvai_edit.mp4";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faBagShopping,
