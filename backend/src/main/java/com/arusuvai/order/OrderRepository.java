@@ -1,7 +1,11 @@
+
 package com.arusuvai.order;
 
+import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -36,20 +40,35 @@ public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
     """)
     BigDecimal getTotalSales();
 
-    Optional<OrderEntity> findByRazorpayOrderId(
-            String razorpayOrderId
+    Optional<OrderEntity> findByRazorpayOrderId(String razorpayOrderId);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("SELECT o FROM OrderEntity o WHERE o.id = :orderId")
+    Optional<OrderEntity> findByIdForUpdate(
+            @Param("orderId") Long orderId
     );
 
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("""
+        SELECT o
+        FROM OrderEntity o
+        WHERE o.razorpayOrderId = :razorpayOrderId
+    """)
+    Optional<OrderEntity> findByRazorpayOrderIdForUpdate(
+            @Param("razorpayOrderId") String razorpayOrderId
+    );
 
     @Query("""
-    SELECT o
-    FROM OrderEntity o
-    WHERE o.customer.id = :customerId
-      AND NOT (
-          o.paymentMethod = com.arusuvai.enums.PaymentMethod.ONLINE
-          AND o.paymentStatus = com.arusuvai.order.PaymentStatus.PENDING
-      )
-    ORDER BY o.createdAt DESC
-""")
-    List<OrderEntity> findCustomerOrdersForMyOrders(Long customerId);
+        SELECT o
+        FROM OrderEntity o
+        WHERE o.customer.id = :customerId
+          AND NOT (
+              o.paymentMethod = com.arusuvai.enums.PaymentMethod.ONLINE
+              AND o.paymentStatus = com.arusuvai.order.PaymentStatus.PENDING
+          )
+        ORDER BY o.createdAt DESC
+    """)
+    List<OrderEntity> findCustomerOrdersForMyOrders(
+            @Param("customerId") Long customerId
+    );
 }
