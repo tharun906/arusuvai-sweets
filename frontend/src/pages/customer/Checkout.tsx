@@ -15,6 +15,7 @@ import PaymentMethodCard from "../../components/checkout/PaymentMethodCard";
 import CheckoutSummaryCard from "../../components/checkout/CheckoutSummaryCard";
 import axios from "axios";
 import Loading from "../../components/common/Loading";
+import OrderProcessingOverlay from "../../components/checkout/OrderProcessingOverlay";
 
 function Checkout() {
     const navigate = useNavigate();
@@ -144,6 +145,7 @@ function Checkout() {
     if (!summary || !deliveryStatus) return <>No Checkout Data</>;
     return (
         <section className={styles.page}>
+            {paymentLoading && <OrderProcessingOverlay />}
             <div className={styles.container}>
                 <div className={styles.left}>
                     <CheckoutItems items={summary.items} />
