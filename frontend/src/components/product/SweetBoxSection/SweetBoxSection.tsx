@@ -132,6 +132,11 @@ function SweetBoxSection() {
     
                     <div className={styles.contents}>
                         <h4>What's Inside?</h4>
+
+                        <p className={styles.contentsNote}>
+                            Note: Sweet varieties and piece counts may vary slightly based on
+                            availability. The total box weight will remain the same.
+                        </p>
     
                         <div className={styles.items}>
                             {selectedBox.items.map(item => {

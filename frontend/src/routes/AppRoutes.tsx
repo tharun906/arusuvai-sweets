@@ -22,10 +22,13 @@ import CancellationRefund from "../pages/customer/business/CancellationRefund";
 import Services from "../pages/customer/business/Services";
 import ReturnReplacement from "../pages/customer/business/ReturnReplacement";
 import ComboPackManagement from "../admin/pages/ComboPackManagement";
+import ScrollToTop from "../components/common/ScrollToTop";
 
 function AppRoutes() {
     return (
         <BrowserRouter>
+         <ScrollToTop />
+
             <Routes>
             <Route element={<CustomerLayout />}>
 

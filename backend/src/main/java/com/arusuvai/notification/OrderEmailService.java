@@ -43,7 +43,11 @@ public class OrderEmailService {
     public String buildOrderDetails(OrderEntity order) {
         StringBuilder details = new StringBuilder();
         for (OrderItemEntity item : order.getOrderItems()) {
-            String itemName = item.getItemType() == OrderItemType.PRODUCT ? item.getProduct().getName() : item.getSweetBox().getName();
+            String itemName = switch (item.getItemType()) {
+                case PRODUCT -> item.getProduct().getName();
+                case SWEET_BOX -> item.getSweetBox().getName();
+                case COMBO_PACK -> item.getComboPack().getTitle();
+            };
             details.append("""
                     <div style="display:flex;justify-content:space-between;padding:6px 0;"><span>%s × %s</span><strong>₹%s</strong></div>
                     """.formatted(itemName, item.getQuantity(), item.getTotalPrice()));
