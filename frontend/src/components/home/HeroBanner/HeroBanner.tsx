@@ -67,14 +67,14 @@ function HeroBanner() {
 
                     </h1>
 
-                    <h2>
+                    {/* <h2>
                         A Sweet Tradition,
                         <br />
 
                         <span>
                             Made With Care.
                         </span>
-                    </h2>
+                    </h2> */}
 
                     <p>
                         Handcrafted with premium ingredients,

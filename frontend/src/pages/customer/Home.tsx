@@ -12,6 +12,7 @@ import { useCategories } from "../../hooks/useCategories";
 
 import Loading from "../../components/common/Loading";
 import EmailNotification from "../../components/home/EmailNotification/EmailNotification";
+import FestivePromoBanner from "../../components/home/FestivePromoBanner/FestivePromoBanner";
 
 
 function Home() {
@@ -58,6 +59,7 @@ function Home() {
         <>
 
             <EmailNotification />
+            <FestivePromoBanner />
 
             {/* Hero */}
 
